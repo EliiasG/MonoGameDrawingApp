@@ -6,14 +6,17 @@ namespace MonoGameDrawingApp
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+        SpriteFont font;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            Window.AllowAltF4 = true;
+            Window.AllowUserResizing = true;
         }
 
         protected override void Initialize()
@@ -28,15 +31,11 @@ namespace MonoGameDrawingApp
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            font = Content.Load<SpriteFont>("font");
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -45,7 +44,9 @@ namespace MonoGameDrawingApp
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(font, "Hello, world", Vector2.Zero, Color.White);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\MonoGameDrawingApp\\MonoGameDrawingApp\\MonoGameDrawingApp.csproj": {}
+    "C:\\Projects\\Git\\MonoGameDrawingApp\\MonoGameDrawingApp\\MonoGameDrawingApp.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\MonoGameDrawingApp\\MonoGameDrawingApp\\MonoGameDrawingApp.csproj": {
+    "C:\\Projects\\Git\\MonoGameDrawingApp\\MonoGameDrawingApp\\MonoGameDrawingApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\MonoGameDrawingApp\\MonoGameDrawingApp\\MonoGameDrawingApp.csproj",
+        "projectUniqueName": "C:\\Projects\\Git\\MonoGameDrawingApp\\MonoGameDrawingApp\\MonoGameDrawingApp.csproj",
         "projectName": "MonoGameDrawingApp",
-        "projectPath": "C:\\Projects\\MonoGameDrawingApp\\MonoGameDrawingApp\\MonoGameDrawingApp.csproj",
+        "projectPath": "C:\\Projects\\Git\\MonoGameDrawingApp\\MonoGameDrawingApp\\MonoGameDrawingApp.csproj",
         "packagesPath": "C:\\Users\\egrun\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\MonoGameDrawingApp\\MonoGameDrawingApp\\obj\\",
+        "outputPath": "C:\\Projects\\Git\\MonoGameDrawingApp\\MonoGameDrawingApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
