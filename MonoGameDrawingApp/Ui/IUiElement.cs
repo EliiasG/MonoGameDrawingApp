@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoGameDrawingApp.UI
+namespace MonoGameDrawingApp.Ui
 {
-    internal interface IUIElement
+    internal interface IUiElement
     {
+        Texture2D Render(int width, int height);
     }
 }
