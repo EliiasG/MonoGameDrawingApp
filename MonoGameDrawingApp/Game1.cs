@@ -1,14 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameDrawingApp.Ui;
+using MonoGameDrawingApp.Ui.Split;
+using System;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp
 {
     public class Game1 : Game
     {
-        GraphicsDeviceManager _graphics;
-        SpriteBatch _spriteBatch;
-        SpriteFont font;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private SpriteFont font;
+        IUiElement split;
 
         public Game1()
         {
@@ -21,8 +26,10 @@ namespace MonoGameDrawingApp
 
         protected override void Initialize()
         {
+            Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-
+            split = new VSplitDraggable(new ColorRect(Color.Gold), new ColorRect(Color.Red), 200, 20);
+            //split = new ColorRect(Color.Gold);
             base.Initialize();
         }
 
@@ -44,8 +51,14 @@ namespace MonoGameDrawingApp
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch);
+            Texture2D render = split.Render(graphics, Vector2.Zero, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(font, "Hello, world", Vector2.Zero, Color.White);
+            _spriteBatch.Draw(
+                texture: render,
+                position: new Vector2(0),
+                color: Color.White
+            );
             _spriteBatch.End();
             base.Draw(gameTime);
         }
