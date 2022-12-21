@@ -12,8 +12,8 @@ namespace MonoGameDrawingApp
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private SpriteFont font;
-        IUiElement split;
+        private SpriteFont _font;
+        Split _split;
 
         public Game1()
         {
@@ -28,7 +28,8 @@ namespace MonoGameDrawingApp
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-            split = new VSplitDraggable(new ColorRect(Color.Gold), new ColorRect(Color.Red), 200, 20);
+            IUiElement top = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Gold), 100, 20);
+            _split = new VSplitDraggable(top, new ColorRect(Color.Red), 200, 20);
             //split = new ColorRect(Color.Gold);
             base.Initialize();
         }
@@ -38,21 +39,22 @@ namespace MonoGameDrawingApp
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            font = Content.Load<SpriteFont>("font");
+            _font = Content.Load<SpriteFont>("font");
         }
 
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
             Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch);
-            Texture2D render = split.Render(graphics, Vector2.Zero, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            Texture2D render = _split.Render(graphics, Vector2.Zero, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             _spriteBatch.Begin();
             _spriteBatch.Draw(
                 texture: render,

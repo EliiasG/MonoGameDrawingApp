@@ -44,32 +44,38 @@ namespace MonoGameDrawingApp.Ui.Split
                 color: Color.White
             );
             _updateSplitPosition(position);
+            _outer.SplitPosition = SplitPosition;
+            _bottom.SplitPosition = HandleHeight;
             return elementBuilder.Finish();
         }
+
+        public override int MaxPosition => base.MaxPosition - HandleHeight;
+
+        public override int RequiredHeight => base.RequiredHeight + HandleHeight;
 
         private void _updateSplitPosition(Vector2 position)
         {
             MouseState mouse = Mouse.GetState();
-
             position = position + new Vector2(0, _outer.SplitPosition);
 
             bool left = mouse.LeftButton == ButtonState.Pressed;
 
-            if(left)
+            bool justPressed = left && !_wasPressed;
+            _wasPressed = left;
+
+            if (!left)
             {
                 _dragOffset = -1;
                 return;
             }
 
-            bool justPressed = left && !_wasPressed;
+            
             bool isInVertical = mouse.Y >= position.Y && mouse.Y <= position.Y + HandleHeight;
             bool isInHorizontal = mouse.X >= position.X && mouse.X <= position.X + _width;
-            _wasPressed = left;
-            Debug.WriteLine(mouse.LeftButton);
+            
             if(justPressed && isInVertical && isInHorizontal)
             {
-                _dragOffset = mouse.Y - (int) position.Y;
-                Debug.WriteLine("Click!");
+                _dragOffset = (int) position.Y - mouse.Y;
             }
 
             if(left && _dragOffset != -1)

@@ -17,9 +17,9 @@ namespace MonoGameDrawingApp.Ui
             Color = color;
         }
 
-        public int RequiredWidth => 0;
+        public int RequiredWidth => 1;
 
-        public int RequiredHeight => 0;
+        public int RequiredHeight => 1;
 
         public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
         {

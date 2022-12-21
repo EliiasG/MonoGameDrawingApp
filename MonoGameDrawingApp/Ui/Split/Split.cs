@@ -20,7 +20,11 @@ namespace MonoGameDrawingApp.Ui.Split
 
         public int SplitPosition {
             set => _splitPosition = value;
-            get => Math.Clamp(_splitPosition, MinPosition, MaxPosition); //clamping in get because Min and Max position may change between setting
+            get 
+            {
+                _splitPosition = Math.Clamp(_splitPosition, MinPosition, MaxPosition);
+                return _splitPosition;
+            } //clamping in get because Min and Max position may change between setting
         }
 
         public abstract int RequiredWidth { get; }
