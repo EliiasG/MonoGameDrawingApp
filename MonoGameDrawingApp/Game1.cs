@@ -28,8 +28,8 @@ namespace MonoGameDrawingApp
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-            IUiElement top = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Gold), 100, 20);
-            _split = new VSplitDraggable(top, new ColorRect(Color.Red), 200, 20);
+            IUiElement top = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Gold), 100, 10);
+            _split = new VSplitDraggable(top, new ColorRect(Color.Red), 200, 10);
             //split = new ColorRect(Color.Gold);
             base.Initialize();
         }
@@ -55,6 +55,8 @@ namespace MonoGameDrawingApp
             // TODO: Add your drawing code here
             Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch);
             Texture2D render = _split.Render(graphics, Vector2.Zero, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            Mouse.SetCursor(graphics.Cursor);
+
             _spriteBatch.Begin();
             _spriteBatch.Draw(
                 texture: render,
@@ -62,6 +64,7 @@ namespace MonoGameDrawingApp
                 color: Color.White
             );
             _spriteBatch.End();
+            render.Dispose();
             base.Draw(gameTime);
         }
     }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Split
 {
@@ -17,11 +15,10 @@ namespace MonoGameDrawingApp.Ui.Split
         public IUiElement Splitter;
         public bool _wasPressed = false;
 
-
         public VSplitDraggable(IUiElement first, IUiElement second, int splitPosition, int handleHeight) : base(first, second, splitPosition)
         {
             HandleHeight = handleHeight;
-            Splitter = new ColorRect(Color.White);
+            Splitter = new ColorRect(Color.Transparent);
             /* layout:
             outer:
                 First
@@ -43,9 +40,11 @@ namespace MonoGameDrawingApp.Ui.Split
                 position: new Vector2(0),
                 color: Color.White
             );
-            _updateSplitPosition(position);
+            _updateSplitPosition(position, graphics);
             _outer.SplitPosition = SplitPosition;
             _bottom.SplitPosition = HandleHeight;
+
+            outerRender.Dispose();
             return elementBuilder.Finish();
         }
 
@@ -53,7 +52,7 @@ namespace MonoGameDrawingApp.Ui.Split
 
         public override int RequiredHeight => base.RequiredHeight + HandleHeight;
 
-        private void _updateSplitPosition(Vector2 position)
+        private void _updateSplitPosition(Vector2 position, Graphics graphics)
         {
             MouseState mouse = Mouse.GetState();
             position = position + new Vector2(0, _outer.SplitPosition);
@@ -63,17 +62,24 @@ namespace MonoGameDrawingApp.Ui.Split
             bool justPressed = left && !_wasPressed;
             _wasPressed = left;
 
+            
+            
+            bool isInVertical = mouse.Y >= position.Y && mouse.Y <= position.Y + HandleHeight;
+            bool isInHorizontal = mouse.X >= position.X && mouse.X <= position.X + _width;
+            bool isIn = isInVertical && isInHorizontal;
+
+            if (isIn || _dragOffset != -1)
+            {
+                graphics.Cursor = MouseCursor.SizeNS;
+            }
+
             if (!left)
             {
                 _dragOffset = -1;
                 return;
             }
 
-            
-            bool isInVertical = mouse.Y >= position.Y && mouse.Y <= position.Y + HandleHeight;
-            bool isInHorizontal = mouse.X >= position.X && mouse.X <= position.X + _width;
-            
-            if(justPressed && isInVertical && isInHorizontal)
+            if (justPressed && isIn)
             {
                 _dragOffset = (int) position.Y - mouse.Y;
             }

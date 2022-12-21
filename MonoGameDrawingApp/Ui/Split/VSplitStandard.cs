@@ -33,6 +33,9 @@ namespace MonoGameDrawingApp.Ui.Split
                 color: Color.White
             );
 
+            firstRender.Dispose();
+            secondRender.Dispose();
+
             return elementBuilder.Finish();
         }
     }
