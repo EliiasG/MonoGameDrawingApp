@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace MonoGameDrawingApp.Ui.Split
+namespace MonoGameDrawingApp.Ui.Split.Vertical
 {
     public abstract class VSplit : Split
     {
-        protected VSplit(IUiElement first, IUiElement second, int splitPosition) : base(first, second, splitPosition) {}
+        protected VSplit(IUiElement first, IUiElement second, int splitPosition) : base(first, second, splitPosition) { }
 
         public override int RequiredWidth => Math.Max(First.RequiredWidth, Second.RequiredWidth);
 

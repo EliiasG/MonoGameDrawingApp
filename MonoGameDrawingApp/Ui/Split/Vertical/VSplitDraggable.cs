@@ -2,11 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace MonoGameDrawingApp.Ui.Split
+namespace MonoGameDrawingApp.Ui.Split.Vertical
 {
     public class VSplitDraggable : VSplit
     {
-
         public readonly int HandleHeight;
         private readonly VSplit _outer;
         private readonly VSplit _bottom;
@@ -65,8 +64,6 @@ namespace MonoGameDrawingApp.Ui.Split
             bool justPressed = left && !_wasPressed;
             _wasPressed = left;
 
-            
-            
             bool isInVertical = mouse.Y >= position.Y && mouse.Y <= position.Y + HandleHeight;
             bool isInHorizontal = mouse.X >= position.X && mouse.X <= position.X + _width;
             bool isIn = isInVertical && isInHorizontal;
@@ -84,10 +81,10 @@ namespace MonoGameDrawingApp.Ui.Split
 
             if (justPressed && isIn)
             {
-                _dragOffset = (int) position.Y - mouse.Y;
+                _dragOffset = (int)position.Y - mouse.Y;
             }
 
-            if(left && _dragOffset != -1)
+            if (left && _dragOffset != -1)
             {
                 SplitPosition = mouse.Y + _dragOffset;
             }

@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui;
 using MonoGameDrawingApp.Ui.Split;
+using MonoGameDrawingApp.Ui.Split.Horizontal;
+using MonoGameDrawingApp.Ui.Split.Vertical;
 using System;
 using System.Diagnostics;
 
@@ -29,7 +31,7 @@ namespace MonoGameDrawingApp
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-            IUiElement top = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Gold), 100, 10);
+            IUiElement top = new HSplitDraggable(new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Green), 100, 10), new ColorRect(Color.Gold), 500, 10);
             _split = new VSplitDraggable(top, new ColorRect(Color.Red), 200, 10);
             //_split = new ColorRect(Color.Gold);
             base.Initialize();
