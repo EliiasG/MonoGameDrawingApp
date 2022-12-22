@@ -10,7 +10,11 @@ namespace MonoGameDrawingApp.Ui.Split
 {
     internal class VSplitStandard : VSplit
     {
-        public VSplitStandard(IUiElement first, IUiElement second, int splitPosition) : base(first, second, splitPosition) {}
+        private RenderHelper _renderHelper;
+        public VSplitStandard(IUiElement first, IUiElement second, int splitPosition) : base(first, second, splitPosition)
+        {
+            _renderHelper = new RenderHelper();
+        }
 
         protected override Texture2D _render(Graphics graphics, Vector2 position)
         {
@@ -19,7 +23,7 @@ namespace MonoGameDrawingApp.Ui.Split
             Texture2D firstRender = First.Render(graphics, position, _width, SplitPosition);
             Texture2D secondRender = Second.Render(graphics, position + secondPosition, _width, _height - SplitPosition);
 
-            ElementBuilder elementBuilder = new ElementBuilder(graphics, _width, _height);
+            _renderHelper.Begin(graphics, _width, _height);
 
             graphics.SpriteBatch.Draw(
                 texture: firstRender,
@@ -33,10 +37,7 @@ namespace MonoGameDrawingApp.Ui.Split
                 color: Color.White
             );
 
-            firstRender.Dispose();
-            secondRender.Dispose();
-
-            return elementBuilder.Finish();
+            return _renderHelper.Finish();
         }
     }
 }

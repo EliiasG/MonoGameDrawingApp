@@ -13,7 +13,8 @@ namespace MonoGameDrawingApp
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
-        Split _split;
+        private IUiElement _split;
+
 
         public Game1()
         {
@@ -30,7 +31,7 @@ namespace MonoGameDrawingApp
             // TODO: Add your initialization logic here
             IUiElement top = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Gold), 100, 10);
             _split = new VSplitDraggable(top, new ColorRect(Color.Red), 200, 10);
-            //split = new ColorRect(Color.Gold);
+            //_split = new ColorRect(Color.Gold);
             base.Initialize();
         }
 
@@ -45,7 +46,6 @@ namespace MonoGameDrawingApp
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            
         }
 
         protected override void Draw(GameTime gameTime)
@@ -64,7 +64,6 @@ namespace MonoGameDrawingApp
                 color: Color.White
             );
             _spriteBatch.End();
-            render.Dispose();
             base.Draw(gameTime);
         }
     }

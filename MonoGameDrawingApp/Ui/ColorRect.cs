@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,12 @@ namespace MonoGameDrawingApp.Ui
     public class ColorRect : IUiElement
     {
         public Color Color;
+        private RenderHelper _renderHelper;
 
         public ColorRect(Color color)
         {
             Color = color;
+            _renderHelper = new RenderHelper();
         }
 
         public int RequiredWidth => 1;
@@ -23,11 +26,9 @@ namespace MonoGameDrawingApp.Ui
 
         public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
         {
-            RenderTarget2D renderTarget = new RenderTarget2D(graphics.Device, width, height);
-            graphics.Device.SetRenderTarget(renderTarget);
+            _renderHelper.Begin(graphics, width, height);
             graphics.Device.Clear(Color);
-            graphics.Device.SetRenderTarget(null);
-            return renderTarget;
+            return _renderHelper.Finish();
         }
     }
 }

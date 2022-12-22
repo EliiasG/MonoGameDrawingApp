@@ -11,6 +11,7 @@ namespace MonoGameDrawingApp.Ui.Split
         private readonly VSplit _outer;
         private readonly VSplit _bottom;
         private int _dragOffset = -1;
+        private RenderHelper _renderHelper;
 
         public IUiElement Splitter;
         public bool _wasPressed = false;
@@ -29,12 +30,15 @@ namespace MonoGameDrawingApp.Ui.Split
             _bottom = new VSplitStandard(Splitter, Second, handleHeight);
 
             _outer = new VSplitStandard(First, _bottom, splitPosition);
+
+            _renderHelper = new RenderHelper();
         }
 
         protected override Texture2D _render(Graphics graphics, Vector2 position)
         {
             Texture2D outerRender = _outer.Render(graphics, position, _width, _height);
-            ElementBuilder elementBuilder = new ElementBuilder(graphics, _width, _height);
+            _renderHelper.Begin(graphics, _width, _height);
+
             graphics.SpriteBatch.Draw(
                 texture: outerRender,
                 position: new Vector2(0),
@@ -44,8 +48,7 @@ namespace MonoGameDrawingApp.Ui.Split
             _outer.SplitPosition = SplitPosition;
             _bottom.SplitPosition = HandleHeight;
 
-            outerRender.Dispose();
-            return elementBuilder.Finish();
+            return _renderHelper.Finish();
         }
 
         public override int MaxPosition => base.MaxPosition - HandleHeight;
