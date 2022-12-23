@@ -2,10 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui;
-using MonoGameDrawingApp.Ui.Split;
+using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Split.Vertical;
-using System;
 using System.Diagnostics;
 
 namespace MonoGameDrawingApp
@@ -14,9 +13,7 @@ namespace MonoGameDrawingApp
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private SpriteFont _font;
         private IUiElement _split;
-
 
         public Game1()
         {
@@ -31,7 +28,11 @@ namespace MonoGameDrawingApp
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-            IUiElement top = new HSplitDraggable(new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Green), 100, 10), new ColorRect(Color.Gold), 500, 10);
+            ScrollBar scrollBar = new HScrollBar();
+            scrollBar.End = 1000;
+            scrollBar.Size = 100;
+            scrollBar.ScrollSpeed = 0.1f;
+            IUiElement top = new HSplitDraggable(scrollBar, new ColorRect(Color.Gold), 500, 10);
             _split = new VSplitDraggable(top, new ColorRect(Color.Red), 200, 10);
             //_split = new ColorRect(Color.Gold);
             base.Initialize();
@@ -42,7 +43,6 @@ namespace MonoGameDrawingApp
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _font = Content.Load<SpriteFont>("font");
         }
 
         protected override void Update(GameTime gameTime)

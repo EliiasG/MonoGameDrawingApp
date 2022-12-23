@@ -1,10 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 
 namespace MonoGameDrawingApp.Ui.Split.Vertical
 {
-    public abstract class VSplit : Split
+    public abstract class VSplit : BaseSplit
     {
         protected VSplit(IUiElement first, IUiElement second, int splitPosition) : base(first, second, splitPosition) { }
 

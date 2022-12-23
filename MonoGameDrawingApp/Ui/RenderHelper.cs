@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui
 {
@@ -12,7 +7,6 @@ namespace MonoGameDrawingApp.Ui
     {
         private RenderTarget2D _renderTarget = null;
         private Graphics _graphics = null;
-        public RenderHelper() { }
 
         public void Begin(Graphics graphics, int width, int height)
         {

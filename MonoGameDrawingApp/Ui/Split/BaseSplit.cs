@@ -4,14 +4,15 @@ using System;
 
 namespace MonoGameDrawingApp.Ui.Split
 {
-    public abstract class Split : IUiElement
+    public abstract class BaseSplit : IUiElement
     {
         public IUiElement First;
         public IUiElement Second;
         private int _splitPosition;
         protected int _height;
         protected int _width;
-        public Split(IUiElement first, IUiElement second, int splitPosition)
+
+        public BaseSplit(IUiElement first, IUiElement second, int splitPosition)
         {
             SplitPosition = splitPosition;
             First = first;

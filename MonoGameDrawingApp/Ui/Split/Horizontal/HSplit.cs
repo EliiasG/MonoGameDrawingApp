@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Split.Horizontal
 {
-    public abstract class HSplit : Split
+    public abstract class HSplit : BaseSplit
     {
         protected HSplit(IUiElement first, IUiElement second, int splitPosition) : base(first, second, splitPosition) { }
 
