@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Split.Vertical;
 using System;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Scroll
 {
@@ -10,6 +12,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
     {
         public readonly bool IsLeft;
         public readonly bool IsTop;
+        public readonly bool AllowHoverScrolling;
 
         public readonly IUiElement Child;
 
@@ -22,16 +25,19 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         public IUiElement Corner = new ColorRect(Color.Transparent);
 
+        private MouseState _oldMouse;
+
         private PeekWindow _peekWindow;
 
         private VSplit _outer;
         private HSplit _main;
         private HSplit _scrollBar;
 
-        public ScrollWindow(IUiElement child, bool isLeft = false, bool isTop = false)
+        public ScrollWindow(IUiElement child, bool isLeft = false, bool isTop = false, bool allowHoverScrolling = true)
         {
             IsLeft = isLeft;
             IsTop = isTop;
+            AllowHoverScrolling = allowHoverScrolling;
             Child = child;
 
             VScrollBar = new VScrollBar();
@@ -39,7 +45,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
             _peekWindow = new PeekWindow(child);
             //TODO implent scrolling when hovering over window
-            if (isLeft) 
+            if (isLeft)
             {
                 _main = new HSplitStandard(VScrollBar, _peekWindow, 1);
                 _scrollBar = new HSplitStandard(Corner, HScrollBar, 1);
@@ -57,8 +63,6 @@ namespace MonoGameDrawingApp.Ui.Scroll
             {
                 _outer = new VSplitStandard(_main, _scrollBar, 1);
             }
-
-            
         }
 
         public int RequiredWidth => 1;
@@ -69,6 +73,10 @@ namespace MonoGameDrawingApp.Ui.Scroll
         {
             _updateSplits(width, height);
             _updateBars(width, height);
+            if(AllowHoverScrolling)
+            {
+                _updateHoverScrolling(position, width, height);
+            }
             _updatePosition();
             return _outer.Render(graphics, position, width, height);
         }
@@ -97,6 +105,29 @@ namespace MonoGameDrawingApp.Ui.Scroll
         private void _updatePosition()
         {
             _peekWindow.Position = new Vector2(HScrollBar.Position, VScrollBar.Position);
+        }
+
+        private void _updateHoverScrolling(Vector2 position, int width, int height)
+        {
+            MouseState mouse = Mouse.GetState();
+            if(!new Rectangle(position.ToPoint(), new Point(width, height)).Contains(mouse.Position))
+            {
+                return;
+            }
+            bool shift = Keyboard.GetState().IsKeyDown(Keys.LeftShift);
+            
+            int scrollDiff = _oldMouse.ScrollWheelValue - mouse.ScrollWheelValue;
+
+            if (shift)
+            {
+                HScrollBar.Position += (int)(scrollDiff * HScrollBar.ScrollSpeed);
+            }
+            else
+            {
+                VScrollBar.Position += (int)(scrollDiff * VScrollBar.ScrollSpeed);
+            }
+
+            _oldMouse = mouse;
         }
     }
 }

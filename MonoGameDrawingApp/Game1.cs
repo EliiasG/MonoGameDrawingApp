@@ -31,7 +31,7 @@ namespace MonoGameDrawingApp
             
             //crap code, just for testing
             IUiElement test = new VSplitDraggable(new HSplitDraggable(new ColorRect(Color.Green), new ColorRect(Color.Blue), 200, 10), new ColorRect(Color.Brown), 500, 10);
-            test = new MinSize(test, 1000, 1000);
+            test = new MinSize(test, 200, 1000);
 
             ScrollWindow scrollBar = new ScrollWindow(test, true, true);
 
