@@ -28,12 +28,18 @@ namespace MonoGameDrawingApp
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-            ScrollBar scrollBar = new HScrollBar();
-            scrollBar.End = 1000;
-            scrollBar.Size = 100;
-            scrollBar.ScrollSpeed = 0.1f;
-            IUiElement top = new HSplitDraggable(scrollBar, new ColorRect(Color.Gold), 500, 10);
-            _split = new VSplitDraggable(top, new ColorRect(Color.Red), 200, 10);
+            
+            //crap code, just for testing
+            IUiElement test = new VSplitDraggable(new HSplitDraggable(new ColorRect(Color.Green), new ColorRect(Color.Blue), 200, 10), new ColorRect(Color.Brown), 500, 10);
+            test = new MinSize(test, 1000, 1000);
+
+            ScrollWindow scrollBar = new ScrollWindow(test, true, true);
+
+            scrollBar.HScrollBar.ScrollSpeed = 0.05f;
+            scrollBar.VScrollBar.ScrollSpeed = 0.05f;
+
+            IUiElement top = new HSplitStandard(scrollBar, new ColorRect(Color.Gold), 500);
+            _split = new VSplitStandard(top, new ColorRect(Color.Red), 500);
             //_split = new ColorRect(Color.Gold);
             base.Initialize();
         }

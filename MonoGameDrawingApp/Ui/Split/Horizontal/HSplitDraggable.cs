@@ -58,15 +58,15 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
         private void _updateSplitPosition(Vector2 position, Graphics graphics)
         {
             MouseState mouse = Mouse.GetState();
-            position = position + new Vector2(_outer.SplitPosition, 0);
+            Vector2 barPosition = position + new Vector2(_outer.SplitPosition, 0);
 
             bool left = mouse.LeftButton == ButtonState.Pressed;
 
             bool justPressed = left && !_wasPressed;
             _wasPressed = left;
 
-            bool isInVertical = mouse.Y >= position.Y && mouse.Y <= position.Y + _height;
-            bool isInHorizontal = mouse.X >= position.X && mouse.X <= position.X + HandleWidth;
+            bool isInVertical = mouse.Y >= barPosition.Y && mouse.Y <= barPosition.Y + _height;
+            bool isInHorizontal = mouse.X >= barPosition.X && mouse.X <= barPosition.X + HandleWidth;
             bool isIn = isInVertical && isInHorizontal;
 
             if (isIn || _dragOffset != -1)
@@ -82,12 +82,12 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
 
             if (justPressed && isIn)
             {
-                _dragOffset = (int)position.X - mouse.X;
+                _dragOffset = (int)barPosition.X - mouse.X;
             }
 
             if (left && _dragOffset != -1)
             {
-                SplitPosition = mouse.X + _dragOffset;
+                SplitPosition = mouse.X - (int)position.X + _dragOffset;
             }
         }
     }
