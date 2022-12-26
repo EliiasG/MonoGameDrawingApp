@@ -8,35 +8,35 @@ using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui
 {
-    public class PeekWindow : IUiElement
+    public class TextView : IUiElement
     {
-        public Vector2 Position = Vector2.Zero;
-        public IUiElement Child;
+        public SpriteFont Font;
+        public string Text;
+        public Color Color;
 
         private RenderHelper _renderHelper;
 
-        public PeekWindow(IUiElement child)
+        public TextView(SpriteFont font, string text, Color color = new Color())
         {
+            Font = font;
             _renderHelper = new RenderHelper();
-            Child = child;
+            Text = text;
+            Color = color;
         }
 
-        public int RequiredWidth => 1;
+        public int RequiredWidth => (int)Font.MeasureString(Text).X;
 
-        public int RequiredHeight => 1;
+        public int RequiredHeight => (int)Font.MeasureString(Text).Y;
 
         public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
         {
-            Texture2D childRender = Child.Render(graphics, position - Position, Math.Max(width, Child.RequiredWidth), Math.Max(height, Child.RequiredHeight));
-
             _renderHelper.Begin(graphics, width, height);
-
-            graphics.SpriteBatch.Draw(
-                texture: childRender,
-                position: -Position,
+            graphics.SpriteBatch.DrawString(
+                spriteFont: Font,
+                text: Text,
+                position: Vector2.Zero,
                 color: Color.White
             );
-
             return _renderHelper.Finish();
         }
     }

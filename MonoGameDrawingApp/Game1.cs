@@ -5,6 +5,7 @@ using MonoGameDrawingApp.Ui;
 using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Split.Vertical;
+using MonoGameDrawingApp.Ui.Tabs;
 using System.Diagnostics;
 
 namespace MonoGameDrawingApp
@@ -14,6 +15,7 @@ namespace MonoGameDrawingApp
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private IUiElement _split;
+        private SpriteFont _font;
 
         public Game1()
         {
@@ -28,18 +30,8 @@ namespace MonoGameDrawingApp
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-            
-            //crap code, just for testing
-            IUiElement test = new VSplitDraggable(new HSplitDraggable(new ColorRect(Color.Green), new ColorRect(Color.Blue), 200, 10), new ColorRect(Color.Brown), 500, 10);
-            test = new MinSize(test, 200, 1000);
 
-            ScrollWindow scrollBar = new ScrollWindow(test, true, true);
 
-            scrollBar.HScrollBar.ScrollSpeed = 0.05f;
-            scrollBar.VScrollBar.ScrollSpeed = 0.05f;
-
-            IUiElement top = new HSplitStandard(scrollBar, new ColorRect(Color.Gold), 500);
-            _split = new VSplitStandard(top, new ColorRect(Color.Red), 500);
             //_split = new ColorRect(Color.Gold);
             base.Initialize();
         }
@@ -47,7 +39,12 @@ namespace MonoGameDrawingApp
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _font = Content.Load<SpriteFont>("font");
 
+            TabBar top = new TabBar(_font);
+            top.OpenTab(new BasicTab("test"));
+            top.OpenTab(new BasicTab("test2"));
+            _split = new VSplitDraggable(top,new ScaleView(new TextView(_font, "Test Name X")), 0, 10);
             // TODO: use this.Content to load your game content here
         }
 
@@ -64,7 +61,6 @@ namespace MonoGameDrawingApp
             Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch);
             Texture2D render = _split.Render(graphics, Vector2.Zero, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             Mouse.SetCursor(graphics.Cursor);
-
             _spriteBatch.Begin();
             _spriteBatch.Draw(
                 texture: render,

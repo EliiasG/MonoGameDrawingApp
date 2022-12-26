@@ -11,7 +11,7 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
         private readonly HSplit _outer;
         private readonly HSplit _left;
         private int _dragOffset = -1;
-        private RenderHelper _renderHelper;
+        private readonly RenderHelper _renderHelper;
 
         public IUiElement Splitter;
         public bool _wasPressed = false;

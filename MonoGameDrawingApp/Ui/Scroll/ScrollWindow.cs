@@ -27,7 +27,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         private MouseState _oldMouse;
 
-        private PeekWindow _peekWindow;
+        private PeekView _peekWindow;
 
         private VSplit _outer;
         private HSplit _main;
@@ -43,7 +43,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             VScrollBar = new VScrollBar();
             HScrollBar = new HScrollBar();
 
-            _peekWindow = new PeekWindow(child);
+            _peekWindow = new PeekView(child);
             //TODO implent scrolling when hovering over window
             if (isLeft)
             {
@@ -65,9 +65,9 @@ namespace MonoGameDrawingApp.Ui.Scroll
             }
         }
 
-        public int RequiredWidth => 1;
+        public int RequiredWidth => 1 + HScrollBar.RequiredWidth;
 
-        public int RequiredHeight => 1;
+        public int RequiredHeight => 1 + VScrollBar.RequiredHeight;
 
         public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
         {
@@ -95,10 +95,10 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         private void _updateBars(int width, int height) 
         {
-            VScrollBar.Size = Math.Min(Child.RequiredHeight, height);
+            VScrollBar.Size = Math.Min(Child.RequiredHeight, height - ScrollBarSize);
             VScrollBar.End = Child.RequiredHeight;
 
-            HScrollBar.Size = Math.Min(Child.RequiredWidth, width);
+            HScrollBar.Size = Math.Min(Child.RequiredWidth, width - ScrollBarSize);
             HScrollBar.End = Child.RequiredWidth;
         }
 
@@ -110,7 +110,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
         private void _updateHoverScrolling(Vector2 position, int width, int height)
         {
             MouseState mouse = Mouse.GetState();
-            if(!new Rectangle(position.ToPoint(), new Point(width, height)).Contains(mouse.Position))
+            if(!new Rectangle(position.ToPoint(), new Point(width - ScrollBarSize, height - ScrollBarSize)).Contains(mouse.Position))
             {
                 return;
             }

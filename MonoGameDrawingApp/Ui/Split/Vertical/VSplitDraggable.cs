@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
         private readonly VSplit _outer;
         private readonly VSplit _bottom;
         private int _dragOffset = -1;
-        private RenderHelper _renderHelper;
+        private readonly RenderHelper _renderHelper;
 
         public IUiElement Splitter;
         public bool _wasPressed = false;
