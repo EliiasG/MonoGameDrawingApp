@@ -50,23 +50,21 @@ namespace MonoGameDrawingApp.Ui.Tabs
             Texture2D backgroundRender = currentBackground.Render(graphics, position, backgroundBounds.Width, height);
 
             bool isIn = backgroundBounds.Contains(mouse.Position);
-            bool justPressed = mouse.LeftButton == ButtonState.Pressed && _oldMouse.LeftButton == ButtonState.Pressed;
+            bool justPressed = mouse.LeftButton == ButtonState.Pressed && _oldMouse.LeftButton == ButtonState.Released;
 
             Vector2 closeButtonPosition = new Vector2(width - CloseButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
             Rectangle closeButtonBounds = new Rectangle((closeButtonPosition + position).ToPoint(), new Point(CloseButton.RequiredWidth, CloseButton.RequiredHeight));
             Texture2D closeButtonRender = CloseButton.Render(graphics, position + closeButtonPosition, closeButtonBounds.Width, closeButtonBounds.Height);
 
-            if (Tab.HasCloseButton)
-            {
-                bool isInCloseButton = closeButtonBounds.Contains(mouse.Position);
+            bool isInCloseButton = closeButtonBounds.Contains(mouse.Position);
 
-                if (justPressed && isInCloseButton)
-                {
-                    Tab.Close();
-                }
+            
+            if (justPressed && isInCloseButton && Tab.HasCloseButton)
+            {
+                Tab.Close();
             }
 
-            if (isIn && justPressed)
+            else if (isIn && justPressed)
             {
                 Tab.TabBar.SelectedTab = Tab;
             }

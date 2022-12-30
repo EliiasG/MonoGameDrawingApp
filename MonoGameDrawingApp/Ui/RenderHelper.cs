@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui
 {
-    public class RenderHelper : IDisposable
+    public class RenderHelper
     {
         private RenderTarget2D _renderTarget = null;
         private Graphics _graphics = null;
@@ -29,9 +30,12 @@ namespace MonoGameDrawingApp.Ui
             graphics.SpriteBatch.Begin();
         }
 
-        public void Dispose()
+        ~RenderHelper()
         {
-            _renderTarget.Dispose();
+            if (_renderTarget != null)
+            {
+                _renderTarget.Dispose();
+            }
         }
 
         public Texture2D Finish()

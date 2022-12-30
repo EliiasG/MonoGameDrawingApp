@@ -49,7 +49,7 @@ namespace MonoGameDrawingApp.Ui.Lists
             List<Texture2D> renders = new List<Texture2D>();
 
             Vector2 renderPosition = position;
-            foreach (IUiElement item in Items)
+            foreach (IUiElement item in Items.ToArray()) //using .ToArray(), since List may be modified while running loop
             {
                 renders.Add(item.Render(graphics, renderPosition, width, item.RequiredHeight));
                 renderPosition += new Vector2(0, item.RequiredHeight);

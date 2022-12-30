@@ -8,7 +8,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
 {
     public abstract class Tab
     {
-        public readonly IUiElement Child;
+        public abstract IUiElement Child { get; }
         public abstract bool HasCloseButton { get; }
         public abstract string Title { get; }
         public TabBar TabBar;

@@ -6,6 +6,7 @@ using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Split.Vertical;
 using MonoGameDrawingApp.Ui.Tabs;
+using System;
 using System.Diagnostics;
 
 namespace MonoGameDrawingApp
@@ -40,11 +41,13 @@ namespace MonoGameDrawingApp
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>("font");
-
-            TabBar top = new TabBar(_font);
-            top.OpenTab(new BasicTab("test"));
-            top.OpenTab(new BasicTab("test2"));
-            _split = new VSplitDraggable(top,new ScaleView(new TextView(_font, "Test Name X")), 0, 10);
+            Random rnd = new Random();
+            TabEnvironment env = new TabEnvironment(new ColorRect(Color.Red), _font);
+            for (int i = 0; i < 100; i++)
+            {
+                env.TabBar.OpenTab(new BasicTab("test" + i, new ColorRect(new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
+            }
+            _split = env;
             // TODO: use this.Content to load your game content here
         }
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Lists;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,10 @@ namespace MonoGameDrawingApp.Ui.Tabs
                 if (_selectedTab != null)
                 {
                     _selectedTab.IsSelected = true;
+                }
+                else if (_tabs.Count > 0)
+                {
+                    SelectedTab = _tabs[0].Tab;
                 }
             }
         }
@@ -65,7 +70,12 @@ namespace MonoGameDrawingApp.Ui.Tabs
             {
                 if (tabView.Tab == tab)
                 {
+                    tab.TabBar = null;
                     _tabs.Remove(tabView);
+                    if (tab.IsSelected)
+                    {
+                        SelectedTab = null;
+                    }
                     return;
                 }
             }

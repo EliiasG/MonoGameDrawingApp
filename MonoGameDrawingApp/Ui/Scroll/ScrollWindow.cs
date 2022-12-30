@@ -118,7 +118,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             
             int scrollDiff = _oldMouse.ScrollWheelValue - mouse.ScrollWheelValue;
 
-            if (shift)
+            if (shift || VScrollBar.Size >= VScrollBar.End)
             {
                 HScrollBar.Position += (int)(scrollDiff * HScrollBar.ScrollSpeed);
             }
