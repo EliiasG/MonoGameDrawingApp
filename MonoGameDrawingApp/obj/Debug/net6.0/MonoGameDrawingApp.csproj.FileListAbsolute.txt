@@ -24,3 +24,9 @@ C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\obj\Debug\net6.0\MonoGameD
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\obj\Debug\net6.0\MonoGameDrawingApp.genruntimeconfig.cache
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\obj\Debug\net6.0\ref\MonoGameDrawingApp.dll
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\font.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\close.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\closed.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\file.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\folder.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\open.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\sprite.xnb

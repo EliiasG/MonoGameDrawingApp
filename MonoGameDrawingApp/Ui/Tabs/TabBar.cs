@@ -14,11 +14,12 @@ namespace MonoGameDrawingApp.Ui.Tabs
     {
         //TODO finish
         public SpriteFont Font;
-        
+
+        private List<IUiElement> _test;
 
         private List<TabView> _tabs;
 
-        private HListView<TabView> _hListView;
+        private HListView<IUiElement> _hListView;
         private Tab _selectedTab;
 
         public Tab SelectedTab
@@ -46,7 +47,8 @@ namespace MonoGameDrawingApp.Ui.Tabs
         {
             Font = font;
             _tabs = new List<TabView>();
-            _hListView = new HListView<TabView>(_tabs);
+            _test = new List<IUiElement>();
+            _hListView = new HListView<IUiElement>(_test);
         }
 
         public int RequiredWidth => _hListView.RequiredWidth;
@@ -61,6 +63,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public void OpenTab(Tab tab) 
         {
             _tabs.Add(new TabView(tab, Font));
+            _test.Add(new MinSize( new ColorRect(Color.White), 100, 10));
             tab.TabBar = this;
         }
 

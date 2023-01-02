@@ -30,7 +30,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
             Spacing = spacing;
             Background = new ColorRect(Color.Gray);
             BackgroundSelected = new ColorRect(Color.LightGray);
-            CloseButton = new MinSize(new ScaleView(new TextView(Font, "X")), 12, 17);
+            CloseButton = new MinSize(new ScaleView(new SpriteView("icons/close",new Color(50, 50, 50))), 21, 21);
             //CloseButton = new TextView(Font, "X");
             ExtraSize = extraSize;
 
@@ -62,6 +62,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
             if (justPressed && isInCloseButton && Tab.HasCloseButton)
             {
                 Tab.Close();
+                GC.Collect();
             }
 
             else if (isIn && justPressed)
@@ -89,8 +90,8 @@ namespace MonoGameDrawingApp.Ui.Tabs
             graphics.SpriteBatch.DrawString(
                 spriteFont: Font,
                 text: Tab.Title,
-                position: Vector2.Zero,
-                color: Color.White
+                position: new Vector2(ExtraSize, 0),
+                color: Tab.IsSelected ? new Color(100, 100, 100) : Color.LightGray
             );
 
             _oldMouse = mouse;

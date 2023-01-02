@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Split.Vertical;
 using System;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Scroll
 {
