@@ -23,9 +23,11 @@ namespace MonoGameDrawingApp.Ui.Scroll
         private int _position = 0;
         private int _dragOffset = -1;
         private MouseState _oldMouse;
+        private bool _changed;
 
         protected BaseSplit _outer;
         protected BaseSplit _inner;
+        protected ChangeableView _innerBar;
 
         public ScrollBar()
         {
@@ -50,7 +52,9 @@ namespace MonoGameDrawingApp.Ui.Scroll
             }
         }
 
-        public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
+        public bool Changed => _outer.Changed;
+
+        public void Update(Vector2 position, int width, int height)
         {
             int maxPos = End - Size;
             int dist = Position * _outer.MaxPosition / (maxPos + Size);
@@ -69,7 +73,11 @@ namespace MonoGameDrawingApp.Ui.Scroll
             _updateBarDrag(position, width, height, dist, length);
 
             _oldMouse = Mouse.GetState();
-            return _outer.Render(graphics, position, width, height);
+        }
+
+        public Texture2D Render(Graphics graphics, int width, int height)
+        {
+            return _outer.Render(graphics, width, height);
         }
 
         private void _updateScroll(Vector2 positon, int width, int height)
@@ -96,7 +104,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
             if (hovering || _dragOffset != -1)
             {
-                _inner.First = BarHovering;
+                _innerBar.Child = BarHovering;
                 if(justClicked)
                 {
                     _dragOffset = offset - Position;
@@ -104,7 +112,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             }
             else
             {
-                _inner.First = Bar;
+                _innerBar.Child = Bar;
             }
 
             if (_dragOffset != -1) 

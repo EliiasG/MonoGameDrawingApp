@@ -5,7 +5,7 @@ namespace MonoGameDrawingApp.Ui
 {
     public class ColorRect : IUiElement
     {
-        public Color Color;
+        public readonly Color Color;
         private RenderHelper _renderHelper;
 
         public ColorRect(Color color)
@@ -18,11 +18,21 @@ namespace MonoGameDrawingApp.Ui
 
         public int RequiredHeight => 1;
 
-        public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
+        public bool Changed => false;
+
+        public Texture2D Render(Graphics graphics, int width, int height)
         {
             _renderHelper.Begin(graphics, width, height);
-            graphics.Device.Clear(Color);
-            return _renderHelper.FinishDraw();
+
+            if (_renderHelper.SizeChanged)
+            {
+                _renderHelper.BeginDraw();
+                graphics.Device.Clear(Color);
+                _renderHelper.FinishDraw();
+            }
+
+            return _renderHelper.Result;
         }
+        public void Update(Vector2 position, int width, int height) {}
     }
 }

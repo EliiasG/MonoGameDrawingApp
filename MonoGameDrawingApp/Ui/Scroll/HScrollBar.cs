@@ -8,7 +8,8 @@ namespace MonoGameDrawingApp.Ui.Scroll
     {
         public HScrollBar()
         {
-            _inner = new HSplitStandard(Bar, SecondBackground, 1);
+            _innerBar = new ChangeableView(Bar);
+            _inner = new HSplitStandard(_innerBar, SecondBackground, 1);
             _outer = new HSplitStandard(FirstBackground, _inner, 1);
         }
 

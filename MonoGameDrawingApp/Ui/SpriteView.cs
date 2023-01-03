@@ -1,17 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui
 {
     public class SpriteView : IUiElement
     {
         public readonly string Path;
-        public Color Color;
 
         private Texture2D _texture = null;
         private readonly RenderHelper _renderHelper;
@@ -21,7 +16,6 @@ namespace MonoGameDrawingApp.Ui
         public SpriteView(string path, Color color = default)
         {
             Path = path;
-            Color = color;
             _renderHelper = new RenderHelper();
             if(_sprites == null)
             {
@@ -33,8 +27,12 @@ namespace MonoGameDrawingApp.Ui
 
         public int RequiredHeight => _texture == null ? 1 : _texture.Height;
 
-        public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
+        public bool Changed => false;
+
+        public Texture2D Render(Graphics graphics, int width, int height)
         {
+            _renderHelper.Begin(graphics, width, height);
+
             if (_texture == null)
             {
                 if (!_sprites.ContainsKey(Path))
@@ -44,15 +42,24 @@ namespace MonoGameDrawingApp.Ui
                 _texture = _sprites[Path];
             }
 
-            _renderHelper.Begin(graphics, width, height);
+            if (_renderHelper.SizeChanged)
+            {
+                _renderHelper.BeginDraw();
 
-            graphics.SpriteBatch.Draw(
-                texture: _texture,
-                position: Vector2.Zero,
-                color: Color
-            );
+                graphics.SpriteBatch.Draw(
+                    texture: _texture,
+                    position: Vector2.Zero,
+                    color: Color.White
+                );
 
-            return _renderHelper.FinishDraw();
+                _renderHelper.FinishDraw();
+            }
+
+            return _renderHelper.Result;
+        }
+
+        public void Update(Vector2 position, int width, int height)
+        {
         }
     }
 }

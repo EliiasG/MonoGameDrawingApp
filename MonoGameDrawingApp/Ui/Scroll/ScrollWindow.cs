@@ -43,7 +43,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             HScrollBar = new HScrollBar();
 
             _peekWindow = new PeekView(child);
-            //TODO implent scrolling when hovering over window
+
             if (isLeft)
             {
                 _main = new HSplitStandard(VScrollBar, _peekWindow, 1);
@@ -68,16 +68,22 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         public int RequiredHeight => 1 + VScrollBar.RequiredHeight;
 
-        public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
+        public bool Changed => _outer.Changed;
+
+        public void Update(Vector2 position, int width, int height)
         {
             _updateSplits(width, height);
             _updateBars(width, height);
-            if(AllowHoverScrolling)
+            if (AllowHoverScrolling)
             {
                 _updateHoverScrolling(position, width, height);
             }
             _updatePosition();
-            return _outer.Render(graphics, position, width, height);
+        }
+
+        public Texture2D Render(Graphics graphics, int width, int height)
+        {
+            return _outer.Render(graphics, width, height);
         }
 
         private void _updateSplits(int width, int height)

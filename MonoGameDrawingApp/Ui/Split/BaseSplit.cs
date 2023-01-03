@@ -9,16 +9,16 @@ namespace MonoGameDrawingApp.Ui.Split
         public readonly IUiElement First;
         public readonly IUiElement Second;
         private int _splitPosition;
-        protected int _height;
-        protected int _width;
+        protected int _height = -1;
+        protected int _width = -1;
         protected bool _changed;
 
 
         public BaseSplit(IUiElement first, IUiElement second, int splitPosition)
         {
-            SplitPosition = splitPosition;
             First = first;
             Second = second;
+            SplitPosition = splitPosition;
         }
 
         public int SplitPosition {
@@ -35,7 +35,13 @@ namespace MonoGameDrawingApp.Ui.Split
 
         private void setSplitPositon(int splitPosition)
         {
-            int newSplitPosition = Math.Clamp(splitPosition, MinPosition, MaxPosition);
+            if(_width == -1)
+            {
+                _splitPosition = splitPosition;
+                _changed = true;
+                return;
+            }
+            int newSplitPosition = Math.Clamp(splitPosition, MinPosition, Math.Max(MaxPosition, MinPosition));
             if (newSplitPosition != _splitPosition)
             {
                 _changed = true;
@@ -55,9 +61,12 @@ namespace MonoGameDrawingApp.Ui.Split
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
+
             _height = height;
             _width = width;
-            return _render(graphics);
+            Texture2D res = _render(graphics);
+            _changed = false;
+            return res;
         }
 
         protected abstract Texture2D _render(Graphics graphics);

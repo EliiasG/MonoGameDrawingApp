@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui
 {
@@ -24,18 +19,33 @@ namespace MonoGameDrawingApp.Ui
 
         public int RequiredHeight => 1;
 
-        public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
+        public bool Changed => Child.Changed;
+
+        public Texture2D Render(Graphics graphics, int width, int height)
         {
-            Texture2D childRender = Child.Render(graphics, position, Child.RequiredWidth, Child.RequiredHeight);
             _renderHelper.Begin(graphics, width, height);
 
-            graphics.SpriteBatch.Draw(
-                texture: childRender,
-                destinationRectangle: new Rectangle(0, 0, width, height),
-                color: Color.White
-            );
+            if (Changed || _renderHelper.SizeChanged)
+            {
+                Texture2D childRender = Child.Render(graphics, Child.RequiredWidth, Child.RequiredHeight);
 
-            return _renderHelper.FinishDraw();
+                _renderHelper.BeginDraw();
+
+                graphics.SpriteBatch.Draw(
+                    texture: childRender,
+                    destinationRectangle: new Rectangle(0, 0, width, height),
+                    color: Color.White
+                );
+
+                _renderHelper.FinishDraw();
+            }
+
+            return _renderHelper.Result;
+        }
+
+        public void Update(Vector2 position, int width, int height)
+        {
+            Child.Update(position, width, height);
         }
     }
 }

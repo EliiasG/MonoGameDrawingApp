@@ -2,11 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Vertical;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Tabs
 {
@@ -16,8 +11,8 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public readonly IUiElement Background;
 
         private readonly ScrollWindow _scrollWindow;
-
         private readonly VSplitStandard _vSplit;
+        private readonly ChangeableView _changeableView;
 
         public TabEnvironment(IUiElement background, SpriteFont font)
         {
@@ -25,19 +20,28 @@ namespace MonoGameDrawingApp.Ui.Tabs
             _scrollWindow = new ScrollWindow(TabBar, false, true);
             _scrollWindow.HScrollBar.ScrollSpeed = 0.25f;
             Background = background;
-            _vSplit = new VSplitStandard(_scrollWindow, Background, 0);
+            _changeableView = new ChangeableView(Background);
+            _vSplit = new VSplitStandard(_scrollWindow, _changeableView, 0);
         }
 
         public int RequiredWidth => _vSplit.RequiredWidth;
 
         public int RequiredHeight => _vSplit.RequiredHeight;
 
-        public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
+        public bool Changed => _vSplit.Changed;
+
+        public Texture2D Render(Graphics graphics, int width, int height)
         {
             Tab selected = TabBar.SelectedTab;
-            _vSplit.Second = selected == null ? Background : selected.Child;
+            _changeableView.Child = selected == null ? Background : selected.Child;
             _vSplit.SplitPosition = TabBar.RequiredHeight + 10;
-            return _vSplit.Render(graphics, position, width, height);
+
+            return _vSplit.Render(graphics, width, height);
+        }
+
+        public void Update(Vector2 position, int width, int height)
+        {
+            _vSplit.Update(position, width, height);
         }
     }
 }

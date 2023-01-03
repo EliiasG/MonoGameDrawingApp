@@ -8,7 +8,8 @@ namespace MonoGameDrawingApp.Ui.Scroll
     {
         public VScrollBar() : base()
         {
-            _inner = new VSplitStandard(Bar, SecondBackground, 1);
+            _innerBar = new ChangeableView(Bar);
+            _inner = new VSplitStandard(_innerBar, SecondBackground, 1);
             _outer = new VSplitStandard(FirstBackground, _inner, 1);
         }
 

@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Lists;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Tabs
 {
@@ -52,9 +47,11 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
         public int RequiredHeight => _hListView.RequiredHeight;
 
-        public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
+        public bool Changed => _hListView.Changed;
+
+        public Texture2D Render(Graphics graphics, int width, int height)
         {
-            return _hListView.Render(graphics, position, width, height);
+            return _hListView.Render(graphics, width, height);
         }
 
         public void OpenTab(Tab tab) 
@@ -78,6 +75,11 @@ namespace MonoGameDrawingApp.Ui.Tabs
                     return;
                 }
             }
+        }
+
+        public void Update(Vector2 position, int width, int height)
+        {
+            _hListView.Update(position, width, height);
         }
     }
 }

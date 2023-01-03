@@ -16,7 +16,7 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
         {
             First.Update(position, width, height);
             Second.Update(position + _secondPosition, width, height);
-            _changed = First.Changed || Second.Changed;
+            _changed = _changed || First.Changed || Second.Changed;
         }
 
         protected override Texture2D _render(Graphics graphics)

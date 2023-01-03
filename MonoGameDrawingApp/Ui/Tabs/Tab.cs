@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MonoGameDrawingApp.Ui.Tabs
+﻿namespace MonoGameDrawingApp.Ui.Tabs
 {
     public abstract class Tab
     {

@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui
 {
@@ -13,7 +11,7 @@ namespace MonoGameDrawingApp.Ui
         private int _width = 0;
         private int _height = 0;
 
-        private bool _changed = false;
+        private bool _changed = true;
 
         public Texture2D Result => _renderTarget; 
 
