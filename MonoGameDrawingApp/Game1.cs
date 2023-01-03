@@ -55,6 +55,7 @@ namespace MonoGameDrawingApp
 
         protected override void Update(GameTime gameTime)
         {
+            _split.Update(Vector2.Zero, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             base.Update(gameTime);
         }
 
@@ -64,7 +65,7 @@ namespace MonoGameDrawingApp
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
             Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch, Content);
-            Texture2D render = _split.Render(graphics, Vector2.Zero, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            Texture2D render = _split.Render(graphics, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             Mouse.SetCursor(graphics.Cursor);
             GraphicsDevice.Clear(new Color(50, 50, 50));
             _spriteBatch.Begin();

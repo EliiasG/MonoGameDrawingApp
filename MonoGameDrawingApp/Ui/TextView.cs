@@ -37,7 +37,7 @@ namespace MonoGameDrawingApp.Ui
                 position: Vector2.Zero,
                 color: Color.White
             );
-            return _renderHelper.Finish();
+            return _renderHelper.FinishDraw();
         }
     }
 }

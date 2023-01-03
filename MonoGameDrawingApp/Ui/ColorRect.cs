@@ -22,7 +22,7 @@ namespace MonoGameDrawingApp.Ui
         {
             _renderHelper.Begin(graphics, width, height);
             graphics.Device.Clear(Color);
-            return _renderHelper.Finish();
+            return _renderHelper.FinishDraw();
         }
     }
 }

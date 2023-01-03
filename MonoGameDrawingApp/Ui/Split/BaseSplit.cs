@@ -6,11 +6,13 @@ namespace MonoGameDrawingApp.Ui.Split
 {
     public abstract class BaseSplit : IUiElement
     {
-        public IUiElement First;
-        public IUiElement Second;
+        public readonly IUiElement First;
+        public readonly IUiElement Second;
         private int _splitPosition;
         protected int _height;
         protected int _width;
+        protected bool _changed;
+
 
         public BaseSplit(IUiElement first, IUiElement second, int splitPosition)
         {
@@ -20,12 +22,25 @@ namespace MonoGameDrawingApp.Ui.Split
         }
 
         public int SplitPosition {
-            set => _splitPosition = value;
+            set
+            {
+                setSplitPositon(value);
+            }
             get 
             {
-                _splitPosition = Math.Clamp(_splitPosition, MinPosition, MaxPosition);
+                setSplitPositon(_splitPosition); //to update the split position, as it may been restricted since set
                 return _splitPosition;
-            } //clamping in get because Min and Max position may change between setting
+            }
+        }
+
+        private void setSplitPositon(int splitPosition)
+        {
+            int newSplitPosition = Math.Clamp(splitPosition, MinPosition, MaxPosition);
+            if (newSplitPosition != _splitPosition)
+            {
+                _changed = true;
+                _splitPosition = newSplitPosition;
+            }
         }
 
         public abstract int RequiredWidth { get; }
@@ -36,13 +51,17 @@ namespace MonoGameDrawingApp.Ui.Split
 
         public abstract int MinPosition { get; }
 
-        public Texture2D Render(Graphics graphics, Vector2 position, int width, int height)
+        public bool Changed => _changed;
+
+        public Texture2D Render(Graphics graphics, int width, int height)
         {
             _height = height;
             _width = width;
-            return _render(graphics, position);
+            return _render(graphics);
         }
 
-        protected abstract Texture2D _render(Graphics graphics, Vector2 position);
+        protected abstract Texture2D _render(Graphics graphics);
+
+        public abstract void Update(Vector2 position, int width, int height);
     }
 }

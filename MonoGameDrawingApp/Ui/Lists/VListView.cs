@@ -66,7 +66,7 @@ namespace MonoGameDrawingApp.Ui.Lists
                 renderPosition += new Vector2(0, render.Height);
             }
 
-            return _renderHelper.Finish();
+            return _renderHelper.FinishDraw();
         }
     }
 }

@@ -43,6 +43,7 @@ namespace MonoGameDrawingApp.Ui
                 }
                 _texture = _sprites[Path];
             }
+
             _renderHelper.Begin(graphics, width, height);
 
             graphics.SpriteBatch.Draw(
@@ -51,12 +52,7 @@ namespace MonoGameDrawingApp.Ui
                 color: Color
             );
 
-            return _renderHelper.Finish();
-        }
-
-        ~SpriteView() 
-        {
-            _texture.Dispose();
+            return _renderHelper.FinishDraw();
         }
     }
 }

@@ -10,12 +10,18 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
         {
             _splitHelper = new SplitStandardHelper();
         }
+        private Vector2 _secondPosition => new Vector2(0, SplitPosition);
 
-        protected override Texture2D _render(Graphics graphics, Vector2 position)
+        public override void Update(Vector2 position, int width, int height)
         {
-            Vector2 secondPosition = new Vector2(0, SplitPosition);
+            First.Update(position, width, height);
+            Second.Update(position + _secondPosition, width, height);
+            _changed = First.Changed || Second.Changed;
+        }
 
-            return _splitHelper.Render(graphics, position, _width, _height, secondPosition, First, Second);
+        protected override Texture2D _render(Graphics graphics)
+        {
+            return _splitHelper.Render(graphics, Changed, _width, _height, _secondPosition, First, Second);
         }
     }
 }

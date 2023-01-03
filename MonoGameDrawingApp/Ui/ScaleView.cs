@@ -35,7 +35,7 @@ namespace MonoGameDrawingApp.Ui
                 color: Color.White
             );
 
-            return _renderHelper.Finish();
+            return _renderHelper.FinishDraw();
         }
     }
 }

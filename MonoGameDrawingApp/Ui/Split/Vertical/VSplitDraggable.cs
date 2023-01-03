@@ -10,7 +10,6 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
         private readonly VSplit _outer;
         private readonly VSplit _bottom;
         private int _dragOffset = -1;
-        private readonly RenderHelper _renderHelper;
 
         public IUiElement Splitter;
         public bool _wasPressed = false;
@@ -29,33 +28,29 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
             _bottom = new VSplitStandard(Splitter, Second, handleHeight);
 
             _outer = new VSplitStandard(First, _bottom, splitPosition);
-
-            _renderHelper = new RenderHelper();
         }
 
-        protected override Texture2D _render(Graphics graphics, Vector2 position)
+        protected override Texture2D _render(Graphics graphics)
         {
-            Texture2D outerRender = _outer.Render(graphics, position, _width, _height);
-            _renderHelper.Begin(graphics, _width, _height);
-
-            graphics.SpriteBatch.Draw(
-                texture: outerRender,
-                position: new Vector2(0),
-                color: Color.White
-            );
-            _updateSplitPosition(position, graphics);
-            _outer.SplitPosition = SplitPosition;
-            _bottom.SplitPosition = HandleHeight;
-
-            return _renderHelper.Finish();
+            return _outer.Render(graphics, _width, _height);
         }
 
         public override int MaxPosition => base.MaxPosition - HandleHeight;
 
         public override int RequiredHeight => base.RequiredHeight + HandleHeight;
 
-        private void _updateSplitPosition(Vector2 position, Graphics graphics)
+        public override void Update(Vector2 position, int width, int height)
         {
+            _outer.SplitPosition = SplitPosition;
+            _bottom.SplitPosition = HandleHeight;
+
+            _outer.Update(position, width, height);
+
+            if (_outer.Changed)
+            {
+                _changed = true;
+            }
+
             MouseState mouse = Mouse.GetState();
             Vector2 barPosition = position + new Vector2(0, _outer.SplitPosition);
 
@@ -65,13 +60,8 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
             _wasPressed = left;
 
             bool isInVertical = mouse.Y >= barPosition.Y && mouse.Y <= barPosition.Y + HandleHeight;
-            bool isInHorizontal = mouse.X >= barPosition.X && mouse.X <= barPosition.X + _width;
+            bool isInHorizontal = mouse.X >= barPosition.X && mouse.X <= barPosition.X + width;
             bool isIn = isInVertical && isInHorizontal;
-
-            if (isIn || _dragOffset != -1)
-            {
-                graphics.Cursor = MouseCursor.SizeNS;
-            }
 
             if (!left)
             {

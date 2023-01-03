@@ -10,11 +10,30 @@ namespace MonoGameDrawingApp.Ui
         private RenderTarget2D _renderTarget = null;
         private Graphics _graphics = null;
 
+        private int _width = 0;
+        private int _height = 0;
+
+        private bool _changed = false;
+
+        public Texture2D Result => _renderTarget; 
+
+        public bool SizeChanged 
+        { 
+            get
+            {
+                _changed = _renderTarget.Width != _width || _renderTarget.Height != _height || _changed;
+                return _changed;
+            }
+        }
+
         public void Begin(Graphics graphics, int width, int height)
         {
             _graphics = graphics;
 
-            if (_renderTarget != null && (_renderTarget.Width != width || _renderTarget.Height != height))
+            _width = width;
+            _height = height;
+
+            if (_renderTarget != null && SizeChanged)
             {
                 _renderTarget.Dispose();
                 _renderTarget = null;
@@ -24,10 +43,13 @@ namespace MonoGameDrawingApp.Ui
             {
                 _renderTarget = new RenderTarget2D(graphics.Device, width, height);
             }
+        }
 
-            graphics.Device.SetRenderTarget(_renderTarget);
-            graphics.Device.Clear(Color.Transparent);
-            graphics.SpriteBatch.Begin();
+        public void BeginDraw() 
+        {
+            _graphics.Device.SetRenderTarget(_renderTarget);
+            _graphics.Device.Clear(Color.Transparent);
+            _graphics.SpriteBatch.Begin();
         }
 
         ~RenderHelper()
@@ -38,11 +60,11 @@ namespace MonoGameDrawingApp.Ui
             }
         }
 
-        public Texture2D Finish()
+        public void FinishDraw()
         {
+            _changed = false;
             _graphics.SpriteBatch.End();
             _graphics.Device.SetRenderTarget(null);
-            return _renderTarget;
         }
 
     }
