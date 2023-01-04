@@ -15,8 +15,8 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
 
         public override void Update(Vector2 position, int width, int height)
         {
-            First.Update(position, width, height);
-            Second.Update(position + _secondPosition, width, height);
+            First.Update(position, SplitPosition, height);
+            Second.Update(position + _secondPosition, width - SplitPosition, height);
             _changed = _changed || First.Changed || Second.Changed;
         }
 

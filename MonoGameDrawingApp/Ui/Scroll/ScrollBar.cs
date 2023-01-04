@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using MonoGameDrawingApp.Ui.Split;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Scroll
 {
@@ -56,6 +57,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         public void Update(Vector2 position, int width, int height)
         {
+            _outer.Update(position, width, height);
             int maxPos = End - Size;
             int dist = Position * _outer.MaxPosition / (maxPos + Size);
             if (maxPos == 0)

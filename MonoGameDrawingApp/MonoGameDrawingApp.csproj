@@ -11,11 +11,6 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Ui\Tree\**" />
-    <EmbeddedResource Remove="Ui\Tree\**" />
-    <None Remove="Ui\Tree\**" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>

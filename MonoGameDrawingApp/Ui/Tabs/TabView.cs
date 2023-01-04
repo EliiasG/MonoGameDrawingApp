@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Tabs
 {
@@ -9,12 +10,13 @@ namespace MonoGameDrawingApp.Ui.Tabs
     {
         public readonly Tab Tab;
         public readonly SpriteFont Font;
-        public readonly IUiElement Background;
-        public readonly IUiElement BackgroundSelected;
-        public readonly IUiElement CloseButton;
 
         public readonly int Spacing;
         public readonly int ExtraSize;
+
+        private readonly IUiElement Background;
+        private readonly IUiElement BackgroundSelected;
+        private readonly IUiElement CloseButton;
 
         private readonly RenderHelper _renderHelper;
         private MouseState _oldMouse;
@@ -74,11 +76,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
         private void _updateChanged()
         {
-            if (oldTile != Tab.Title)
-            {
-                _changed = true;
-            }
-            if (oldSelected != Tab.IsSelected)
+            if (oldTile != Tab.Title || oldSelected != Tab.IsSelected || CloseButton.Changed)
             {
                 _changed = true;
             }
@@ -94,6 +92,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
             if (Changed || _renderHelper.SizeChanged)
             {
                 Vector2 closeButtonPosition = new Vector2(width - CloseButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
+
                 IUiElement currentBackground = Tab.IsSelected ? BackgroundSelected : Background;
                 Texture2D backgroundRender = currentBackground.Render(graphics, width - Spacing, height);
                 Texture2D closeButtonRender = CloseButton.Render(graphics, CloseButton.RequiredWidth, CloseButton.RequiredHeight);

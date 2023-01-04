@@ -62,6 +62,7 @@ namespace MonoGameDrawingApp.Ui
 
         public void Update(Vector2 position, int width, int height)
         {
+            Child.Update(position - Position, width, height);
             if (Child.Changed)
             {
                 _changed = true;

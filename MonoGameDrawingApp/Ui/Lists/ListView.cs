@@ -35,7 +35,7 @@ namespace MonoGameDrawingApp.Ui.Lists
             {
                 for (int i = 0; i < Items.Count; i++)
                 {
-                    if (Items[i].Equals(OldItems[i]))
+                    if (!Items[i].Equals(OldItems[i]))
                     {
                         _changed = true;
                         break;

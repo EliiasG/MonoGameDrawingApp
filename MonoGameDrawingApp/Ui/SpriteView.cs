@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 
 namespace MonoGameDrawingApp.Ui
 {
@@ -12,6 +14,7 @@ namespace MonoGameDrawingApp.Ui
         private readonly RenderHelper _renderHelper;
 
         private static Dictionary<string, Texture2D> _sprites = null;
+        private bool _changed = true;
 
         public SpriteView(string path, Color color = default)
         {
@@ -21,16 +24,17 @@ namespace MonoGameDrawingApp.Ui
             {
                 _sprites = new Dictionary<string, Texture2D>();
             }
+            
         }
-
         public int RequiredWidth => _texture == null ? 1 : _texture.Width;
 
         public int RequiredHeight => _texture == null ? 1 : _texture.Height;
 
-        public bool Changed => false;
+        public bool Changed => _changed;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
+            _changed = false;
             _renderHelper.Begin(graphics, width, height);
 
             if (_texture == null)
@@ -40,8 +44,9 @@ namespace MonoGameDrawingApp.Ui
                     _sprites.Add(Path, graphics.Content.Load<Texture2D>(Path));
                 }
                 _texture = _sprites[Path];
+                _changed = true;
             }
-
+            
             if (_renderHelper.SizeChanged)
             {
                 _renderHelper.BeginDraw();

@@ -79,6 +79,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
                 _updateHoverScrolling(position, width, height);
             }
             _updatePosition();
+            _outer.Update(position, width, height);
         }
 
         public Texture2D Render(Graphics graphics, int width, int height)

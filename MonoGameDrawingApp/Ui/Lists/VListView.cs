@@ -69,6 +69,7 @@ namespace MonoGameDrawingApp.Ui.Lists
                 _renderHelper.FinishDraw();
             }
 
+            _changed = false;
             return _renderHelper.Result;
         }
 
@@ -77,7 +78,7 @@ namespace MonoGameDrawingApp.Ui.Lists
             Vector2 updatePositon = position;
             foreach (IUiElement item in Items)
             {
-                item.Update(updatePositon, width, height);
+                item.Update(updatePositon, width, item.RequiredHeight);
                 if (item.Changed)
                 {
                     _changed = true;

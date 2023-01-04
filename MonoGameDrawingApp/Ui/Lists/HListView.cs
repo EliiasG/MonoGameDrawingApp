@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Lists
 {
@@ -43,7 +44,7 @@ namespace MonoGameDrawingApp.Ui.Lists
         public override Texture2D Render(Graphics graphics, int width, int height)
         {
             _renderHelper.Begin(graphics, width, height);
-
+ 
             if (Changed || _renderHelper.SizeChanged)
             {
                 List<Texture2D> renders = new List<Texture2D>();
@@ -76,9 +77,9 @@ namespace MonoGameDrawingApp.Ui.Lists
         protected override void _updateItems(Vector2 position, int width, int height)
         {
             Vector2 updatePositon = position;
-            foreach (IUiElement item in Items)
+            foreach (IUiElement item in new List<T>(Items))
             {
-                item.Update(updatePositon, width, height);
+                item.Update(updatePositon, item.RequiredWidth, height);
                 if(item.Changed)
                 {
                     _changed = true;

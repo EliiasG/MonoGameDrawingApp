@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Vertical;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Tabs
 {
@@ -33,7 +34,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             Tab selected = TabBar.SelectedTab;
-            _changeableView.Child = selected == null ? Background : selected.Child;
+            _changeableView.Child = selected?.Child ?? Background;
             _vSplit.SplitPosition = TabBar.RequiredHeight + 10;
 
             return _vSplit.Render(graphics, width, height);
