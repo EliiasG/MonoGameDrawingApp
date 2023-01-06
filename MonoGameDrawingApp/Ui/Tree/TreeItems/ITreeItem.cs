@@ -8,6 +8,8 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems
 
         public bool IsOpen { get; set; }
 
+        public bool HasOpenButton { get; }
+
         public IUiElement Icon { get; }
 
         public void Clicked();

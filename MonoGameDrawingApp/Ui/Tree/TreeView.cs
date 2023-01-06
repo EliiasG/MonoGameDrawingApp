@@ -6,21 +6,27 @@ namespace MonoGameDrawingApp.Ui.Tree
 {
     public class TreeView : IUiElement
     {
-        //TODO
-        public bool Changed => throw new NotImplementedException();
+        private TreeItemView _treeItemView;
 
-        public int RequiredWidth => throw new NotImplementedException();
+        public TreeView(SpriteFont font, int indentationAmount, ITree tree)
+        {
+            _treeItemView = new TreeItemView(font, tree.Root, indentationAmount, tree.HideRoot);
+        }
 
-        public int RequiredHeight => throw new NotImplementedException();
+        public bool Changed => _treeItemView.Changed;
+
+        public int RequiredWidth => _treeItemView.RequiredWidth;
+
+        public int RequiredHeight => _treeItemView.RequiredHeight;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
-            throw new NotImplementedException();
+            return _treeItemView.Render(graphics, width, height);
         }
 
         public void Update(Vector2 position, int width, int height)
         {
-            throw new NotImplementedException();
+            _treeItemView.Update(position, width, height);
         }
     }
 }
