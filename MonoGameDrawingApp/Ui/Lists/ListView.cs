@@ -7,14 +7,14 @@ namespace MonoGameDrawingApp.Ui.Lists
     public abstract class ListView<T> : IUiElement where T : IUiElement
     {
         public List<T> Items;
-        private List<T> OldItems;
+        private List<T> _oldItems;
 
         protected bool _changed = true;
 
         public ListView(List<T> items) 
         {
             Items = items;
-            OldItems = new List<T>(items);
+            _oldItems = new List<T>(items);
         }
 
         public abstract int RequiredWidth { get; }
@@ -27,7 +27,7 @@ namespace MonoGameDrawingApp.Ui.Lists
 
         public void Update(Vector2 position, int width, int height)
         {
-            if (Items.Count != OldItems.Count)
+            if (Items.Count != _oldItems.Count)
             {
                 _changed = true;
             }
@@ -35,14 +35,14 @@ namespace MonoGameDrawingApp.Ui.Lists
             {
                 for (int i = 0; i < Items.Count; i++)
                 {
-                    if (!Items[i].Equals(OldItems[i]))
+                    if (!Items[i].Equals(_oldItems[i]))
                     {
                         _changed = true;
                         break;
                     }
                 }
             }
-            OldItems = new List<T>(Items);
+            _oldItems = new List<T>(Items);
             _updateItems(position, width, height);
         }
 

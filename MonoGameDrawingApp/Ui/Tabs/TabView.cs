@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Tabs
 {
@@ -14,34 +13,34 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public readonly int Spacing;
         public readonly int ExtraSize;
 
-        private readonly IUiElement Background;
-        private readonly IUiElement BackgroundSelected;
-        private readonly IUiElement CloseButton;
+        private readonly IUiElement _background;
+        private readonly IUiElement _BackgroundSelected;
+        private readonly IUiElement _closeButton;
 
         private readonly RenderHelper _renderHelper;
         private MouseState _oldMouse;
         private bool _changed;
 
-        private string oldTile = "";
-        private bool oldSelected = false;
+        private string _oldTile = "";
+        private bool _oldSelected = false;
 
         public TabView(Tab tab, SpriteFont font, int spacing = 2, int extraSize = 2)
         {
             Tab = tab;
             Font = font;
             Spacing = spacing;
-            Background = new ColorRect(Color.Gray);
-            BackgroundSelected = new ColorRect(Color.LightGray);
-            CloseButton = new MinSize(new ScaleView(new SpriteView("icons/close", new Color(50, 50, 50))), 21, 21);
+            _background = new ColorRect(Color.Gray);
+            _BackgroundSelected = new ColorRect(Color.LightGray);
+            _closeButton = new MinSize(new ScaleView(new SpriteView("icons/close", new Color(50, 50, 50))), 21, 21);
             //CloseButton = new TextView(Font, "X");
             ExtraSize = extraSize;
 
             _renderHelper = new RenderHelper();
         }
 
-        public int RequiredWidth => (int)Font.MeasureString(Tab.Title).X + ExtraSize * 2 + Spacing + (Tab.HasCloseButton ? CloseButton.RequiredWidth : 0);
+        public int RequiredWidth => (int)Font.MeasureString(Tab.Title).X + ExtraSize * 2 + Spacing + (Tab.HasCloseButton ? _closeButton.RequiredWidth : 0);
 
-        public int RequiredHeight => Math.Max((int)Font.MeasureString(Tab.Title).Y, Tab.HasCloseButton ? CloseButton.RequiredHeight : 0) + ExtraSize;
+        public int RequiredHeight => Math.Max((int)Font.MeasureString(Tab.Title).Y, Tab.HasCloseButton ? _closeButton.RequiredHeight : 0) + ExtraSize;
 
         public bool Changed => _changed;
 
@@ -55,8 +54,8 @@ namespace MonoGameDrawingApp.Ui.Tabs
             bool isIn = backgroundBounds.Contains(mouse.Position);
             bool justPressed = mouse.LeftButton == ButtonState.Pressed && _oldMouse.LeftButton == ButtonState.Released;
 
-            Vector2 closeButtonPosition = new Vector2(width - CloseButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
-            Rectangle closeButtonBounds = new Rectangle((closeButtonPosition + position).ToPoint(), new Point(CloseButton.RequiredWidth, CloseButton.RequiredHeight));
+            Vector2 closeButtonPosition = new Vector2(width - _closeButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
+            Rectangle closeButtonBounds = new Rectangle((closeButtonPosition + position).ToPoint(), new Point(_closeButton.RequiredWidth, _closeButton.RequiredHeight));
 
             bool isInCloseButton = closeButtonBounds.Contains(mouse.Position);
 
@@ -76,13 +75,13 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
         private void _updateChanged()
         {
-            if (oldTile != Tab.Title || oldSelected != Tab.IsSelected || CloseButton.Changed)
+            if (_oldTile != Tab.Title || _oldSelected != Tab.IsSelected || _closeButton.Changed)
             {
                 _changed = true;
             }
 
-            oldSelected = Tab.IsSelected;
-            oldTile = Tab.Title;
+            _oldSelected = Tab.IsSelected;
+            _oldTile = Tab.Title;
         }
 
         public Texture2D Render(Graphics graphics, int width, int height)
@@ -91,11 +90,11 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
             if (Changed || _renderHelper.SizeChanged)
             {
-                Vector2 closeButtonPosition = new Vector2(width - CloseButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
+                Vector2 closeButtonPosition = new Vector2(width - _closeButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
 
-                IUiElement currentBackground = Tab.IsSelected ? BackgroundSelected : Background;
+                IUiElement currentBackground = Tab.IsSelected ? _BackgroundSelected : _background;
                 Texture2D backgroundRender = currentBackground.Render(graphics, width - Spacing, height);
-                Texture2D closeButtonRender = CloseButton.Render(graphics, CloseButton.RequiredWidth, CloseButton.RequiredHeight);
+                Texture2D closeButtonRender = _closeButton.Render(graphics, _closeButton.RequiredWidth, _closeButton.RequiredHeight);
 
                 _renderHelper.BeginDraw();
 

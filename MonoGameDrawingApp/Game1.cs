@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui;
-using MonoGameDrawingApp.Ui.Scroll;
-using MonoGameDrawingApp.Ui.Split;
-using MonoGameDrawingApp.Ui.Split.Vertical;
 using MonoGameDrawingApp.Ui.Tabs;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MonoGameDrawingApp
@@ -17,6 +14,7 @@ namespace MonoGameDrawingApp
         private SpriteBatch _spriteBatch;
         private IUiElement _split;
         private SpriteFont _font;
+        private Random rnd = new Random();
 
         public Game1()
         {
@@ -34,23 +32,23 @@ namespace MonoGameDrawingApp
 
 
             //_split = new ColorRect(Color.Gold);
-           
+            TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>("font");
-            Random rnd = new Random();
-            
-            TabEnvironment env = new TabEnvironment(new ColorRect(Color.Red), _font);
+            IUiElement text = new CenterView(new TextView(_font, "Hello, this is a longer message"), false, true);
+            IUiElement stack = new StackView(new List<IUiElement> { text, new TextView(_font, "Hello, this is a longer message") });
+            TabEnvironment env = new TabEnvironment(new ColorModifier(stack, Color.Red), _font);
+
             for (int i = 0; i < 100; i++)
             {
                 env.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
             }
- 
+
             _split = env;
             /*
             ScrollBar scrollBar = new HScrollBar();
@@ -77,7 +75,7 @@ namespace MonoGameDrawingApp
             Texture2D render = _split.Render(graphics, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             GraphicsDevice.Clear(new Color(50, 50, 50));
             _spriteBatch.Begin();
-            Debug.WriteLine(gameTime.IsRunningSlowly);
+            //Debug.WriteLine("Framerate: {0}", 1 / gameTime.ElapsedGameTime.TotalSeconds
 
             _spriteBatch.Draw(
                 texture: render,

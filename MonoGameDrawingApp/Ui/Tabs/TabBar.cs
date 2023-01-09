@@ -7,7 +7,6 @@ namespace MonoGameDrawingApp.Ui.Tabs
 {
     public class TabBar : IUiElement
     {
-        //TODO finish
         public SpriteFont Font;
 
         private List<TabView> _tabs;

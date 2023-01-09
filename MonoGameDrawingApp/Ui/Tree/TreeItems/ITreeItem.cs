@@ -4,18 +4,20 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems
 {
     public interface ITreeItem
     {
-        public string Name { get; }
+        string Name { get; }
 
-        public bool IsOpen { get; set; }
+        bool IsOpen { get; set; }
 
-        public bool HasOpenButton { get; }
+        bool HasOpenButton { get; }
 
-        public IUiElement Icon { get; }
+        IUiElement Icon { get; }
 
-        public void Clicked();
+        ITree Tree { get; }
 
-        public void RightClicked();
+        void Clicked();
 
-        public IEnumerable<ITreeItem> Children { get; }
+        void RightClicked();
+
+        IEnumerable<ITreeItem> Children { get; }
     }
 }

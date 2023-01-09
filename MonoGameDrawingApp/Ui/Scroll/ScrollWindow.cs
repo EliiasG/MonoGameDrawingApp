@@ -116,7 +116,9 @@ namespace MonoGameDrawingApp.Ui.Scroll
         private void _updateHoverScrolling(Vector2 position, int width, int height)
         {
             MouseState mouse = Mouse.GetState();
-            if(!new Rectangle(position.ToPoint(), new Point(width - ScrollBarSize, height - ScrollBarSize)).Contains(mouse.Position))
+            Point boundsPosition = position.ToPoint() + new Point(IsLeft ? ScrollBarSize : 0, IsTop ? ScrollBarSize : 0);
+            Point boundsSize = new Point(width - ScrollBarSize, height - ScrollBarSize);
+            if (!new Rectangle(boundsPosition, boundsSize).Contains(mouse.Position))
             {
                 return;
             }

@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.Lists
 {
@@ -15,31 +14,9 @@ namespace MonoGameDrawingApp.Ui.Lists
             _renderHelper = new RenderHelper();
         }
 
-        public override int RequiredWidth
-        {
-            get
-            {
-                int result = 0;
-                foreach (IUiElement item in Items)
-                {
-                    result += item.RequiredWidth;
-                }
-                return result;
-            }
-        }
+        public override int RequiredWidth => Items.Count > 0 ? Items.Sum((T item) => item.RequiredWidth) : 1;
 
-        public override int RequiredHeight
-        {
-            get
-            {
-                int result = 0;
-                foreach (IUiElement item in Items)
-                {
-                    result = Math.Max(result, item.RequiredHeight);
-                }
-                return result;
-            }
-        }
+        public override int RequiredHeight => Items.Count > 0 ? Items.Max((T item) => item.RequiredHeight) : 3;
 
         public override Texture2D Render(Graphics graphics, int width, int height)
         {

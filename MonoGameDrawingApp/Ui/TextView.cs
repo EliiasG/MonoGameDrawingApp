@@ -21,7 +21,7 @@ namespace MonoGameDrawingApp.Ui
 
         private RenderHelper _renderHelper;
 
-        public TextView(SpriteFont font, string text, Color color = new Color())
+        public TextView(SpriteFont font, string text)
         {
             Font = font;
             _renderHelper = new RenderHelper();

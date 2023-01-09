@@ -9,7 +9,8 @@
       "MonoGameDrawingApp/1.0.0": {
         "dependencies": {
           "MonoGame.Content.Builder.Task": "3.8.1.303",
-          "MonoGame.Framework.DesktopGL": "3.8.1.303"
+          "MonoGame.Framework.DesktopGL": "3.8.1.303",
+          "System.Windows.Forms": "4.0.0.0"
         },
         "runtime": {
           "MonoGameDrawingApp.dll": {}
@@ -65,6 +66,38 @@
             "fileVersion": "0.0.0.0"
           }
         }
+      },
+      "System.Windows.Forms/4.0.0.0": {
+        "runtime": {
+          "System.Windows.Forms.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.8.9075.0"
+          }
+        }
+      },
+      "Accessibility/4.0.0.0": {
+        "runtime": {
+          "Accessibility.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.8.9032.0"
+          }
+        }
+      },
+      "System.Deployment/4.0.0.0": {
+        "runtime": {
+          "System.Deployment.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.8.9032.0"
+          }
+        }
+      },
+      "System.Runtime.Serialization.Formatters.Soap/4.0.0.0": {
+        "runtime": {
+          "System.Runtime.Serialization.Formatters.Soap.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.8.9032.0"
+          }
+        }
       }
     }
   },
@@ -87,6 +120,26 @@
       "sha512": "sha512-eGYhqn0n1olk8MNYeE9EuBmoNNECN1T18rPMaQpkzsEQ0H3nVyFPXC+uCo78v5pi5juQpJ3PSFnSkjzZJ1U58A==",
       "path": "monogame.framework.desktopgl/3.8.1.303",
       "hashPath": "monogame.framework.desktopgl.3.8.1.303.nupkg.sha512"
+    },
+    "System.Windows.Forms/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Accessibility/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Deployment/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Runtime.Serialization.Formatters.Soap/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
