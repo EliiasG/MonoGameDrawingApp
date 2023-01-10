@@ -1,7 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui;
+using MonoGameDrawingApp.Ui.Split.Vertical;
 using MonoGameDrawingApp.Ui.Tabs;
+using MonoGameDrawingApp.Ui.TextInput;
+using MonoGameDrawingApp.Ui.TextInput.Filters;
+using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,9 +45,8 @@ namespace MonoGameDrawingApp
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>("font");
-            IUiElement text = new CenterView(new TextView(_font, "Hello, this is a longer message"), false, true);
-            IUiElement stack = new StackView(new List<IUiElement> { text, new TextView(_font, "Hello, this is a longer message") });
-            TabEnvironment env = new TabEnvironment(new ColorModifier(stack, Color.Red), _font);
+            TextInputField textInputField = new TextInputField(_font, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, 10);
+            TabEnvironment env = new TabEnvironment(new CenterView(new MinSize(textInputField, 200, 40), true, true), _font);
 
             for (int i = 0; i < 100; i++)
             {

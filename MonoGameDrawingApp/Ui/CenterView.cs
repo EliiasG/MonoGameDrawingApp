@@ -26,14 +26,24 @@ namespace MonoGameDrawingApp.Ui
 
         public int RequiredHeight => Child.RequiredHeight;
 
+        private Vector2 _calculateChildPosition(int width, int height)
+        {
+            return new Vector2(CenterHorizontal ? width / 2 - Child.RequiredWidth / 2 : 0, CenterVertical ? height / 2 - Child.RequiredHeight / 2 : 0);
+        }
+
+        private Point _calculateChildSize(int width, int height)
+        {
+            return new Point(CenterHorizontal ? Child.RequiredWidth : width, CenterVertical ? Child.RequiredHeight : height);
+        }
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             _renderHelper.Begin(graphics, width, height);
 
             if (Changed || _renderHelper.SizeChanged)
             {
-                Vector2 position = new Vector2(CenterHorizontal ? width / 2 - Child.RequiredWidth / 2 : 0, CenterVertical ? height / 2 - Child.RequiredHeight / 2 : 0);
-                Point size = new Point(CenterHorizontal ? Child.RequiredWidth : width, CenterVertical ? Child.RequiredHeight : height);
+                Vector2 position = _calculateChildPosition(width, height);
+                Point size = _calculateChildSize(width, height);
 
                 Texture2D render = Child.Render(graphics, size.X, size.Y);
 
@@ -53,7 +63,9 @@ namespace MonoGameDrawingApp.Ui
 
         public void Update(Vector2 position, int width, int height)
         {
-            Child.Update(position, width, height);
+            Point size = _calculateChildSize(width, height);
+            Vector2 childPosition = _calculateChildPosition(width, height);
+            Child.Update(position + childPosition, size.X, size.Y);
         }
     }
 }
