@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.TextInput.Filters.Base
 {
     public class NumericTextInputFilter : ITextInputFilter
     {
-        public ISet<char> AllowedCharacters => "0123456789".ToHashSet();
+        private ISet<char> _allowedCharacters = "0123456789".ToHashSet();
+
+        public ISet<char> AllowedCharacters => _allowedCharacters;
 
         public ITextInputFilter[] SubFilters => null;
     }

@@ -1,14 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui;
-using MonoGameDrawingApp.Ui.Split.Vertical;
 using MonoGameDrawingApp.Ui.Tabs;
 using MonoGameDrawingApp.Ui.TextInput;
-using MonoGameDrawingApp.Ui.TextInput.Filters;
 using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MonoGameDrawingApp
@@ -45,7 +41,7 @@ namespace MonoGameDrawingApp
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>("font");
-            TextInputField textInputField = new TextInputField(_font, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, 10);
+            TextInputField textInputField = new TextInputField(_font, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, -1);
             TabEnvironment env = new TabEnvironment(new CenterView(new MinSize(textInputField, 200, 40), true, true), _font);
 
             for (int i = 0; i < 100; i++)

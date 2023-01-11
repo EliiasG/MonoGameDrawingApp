@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.TextInput.Filters.Base
 {
     public class AlphabeticUpperTextInputFilter : ITextInputFilter
     {
-        public ISet<char> AllowedCharacters => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToHashSet();
+        private ISet<char> _allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToHashSet();
+
+        public ISet<char> AllowedCharacters => _allowedCharacters;
 
         public ITextInputFilter[] SubFilters => null;
     }

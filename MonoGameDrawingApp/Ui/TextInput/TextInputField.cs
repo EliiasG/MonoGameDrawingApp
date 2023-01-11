@@ -27,6 +27,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
         private int _cursorPosition;
 
         private readonly Dictionary<Keys, char> _customKeyChars;
+        private readonly Dictionary<char, char> _customShiftVersions;
 
         private readonly IUiElement _background;
         private readonly IUiElement _backgroundSelected;
@@ -58,6 +59,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
             IsSelected = false;
 
             _customKeyChars = _createCustomKeyChars();
+            _customShiftVersions = _createCustomShiftVersions();
 
             /* 
              * Simplified Structure:
@@ -75,7 +77,6 @@ namespace MonoGameDrawingApp.Ui.TextInput
              *               _currentCursor
              *               Empty
              */
-
             _background = new ColorRect(Color.Gray);
             _backgroundSelected = new ColorRect(Color.LightGray);
             _cursorOn = new ColorRect(Color.White);
@@ -164,6 +165,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
 
             if (MaxLength != -1 && Value.Length >= MaxLength)
             {
+                _oldKeys = keys.ToHashSet();
                 return;
             }
 
@@ -174,20 +176,20 @@ namespace MonoGameDrawingApp.Ui.TextInput
                 string keyName = _customKeyChars.ContainsKey(key) ? _customKeyChars[key].ToString() : key.ToString();
                 if (keyName.Length > 1) continue;
 
-                bool isUpper = _keyboard.IsKeyDown(Keys.LeftShift) || _keyboard.CapsLock;
-                _keyPressed((isUpper ? keyName : keyName.ToLower()).First());
+                bool shift = _keyboard.IsKeyDown(Keys.LeftShift);
+                bool isUpper = shift ^ _keyboard.CapsLock;
+
+                char keyChar = (isUpper ? keyName : keyName.ToLower()).First();
+
+                keyChar = _customShiftVersions.ContainsKey(keyChar) && shift ? _customShiftVersions[keyChar] : keyChar;
+
+                if (!_checkFilters(keyChar, Filters)) continue;
+
+                _typeChar(keyChar);
 
             }
 
             _oldKeys = keys.ToHashSet();
-        }
-
-        private void _keyPressed(char key)
-        {
-            if (_checkFilters(key, Filters))
-            {
-                _typeChar(key);
-            }
         }
 
         private bool _checkFilters(char key, ITextInputFilter[] filters)
@@ -230,6 +232,25 @@ namespace MonoGameDrawingApp.Ui.TextInput
                 {Keys.D7, '7'},
                 {Keys.D8, '8'},
                 {Keys.D9, '9'},
+                {Keys.Subtract, '-'},
+                {Keys.OemMinus, '-'}
+            };
+        }
+
+        private Dictionary<char, char> _createCustomShiftVersions()
+        {
+            return new Dictionary<char, char>
+            {
+                {'0', '='},
+                {'1', '!'},
+                {'2', '"'},
+                {'3', '#'},
+                {'4', '¤'},
+                {'5', '%'},
+                {'6', '&'},
+                {'7', '/'},
+                {'8', '('},
+                {'9', ')'},
             };
         }
 
