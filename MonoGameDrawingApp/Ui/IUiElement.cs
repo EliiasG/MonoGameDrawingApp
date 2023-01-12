@@ -5,9 +5,6 @@ namespace MonoGameDrawingApp.Ui
 {
     public interface IUiElement
     {
-        Texture2D Render(Graphics graphics, int width, int height);
-
-        void Update(Vector2 position, int width, int height);
 
         bool Changed { get; }
 
@@ -15,5 +12,10 @@ namespace MonoGameDrawingApp.Ui
 
         int RequiredHeight { get; }
 
+        UiEnvironment Environment { get; }
+
+        Texture2D Render(Graphics graphics, int width, int height);
+
+        void Update(Vector2 position, int width, int height);
     }
 }

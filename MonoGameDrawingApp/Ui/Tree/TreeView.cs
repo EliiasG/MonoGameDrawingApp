@@ -5,11 +5,15 @@ namespace MonoGameDrawingApp.Ui.Tree
 {
     public class TreeView : IUiElement
     {
+
+        private readonly UiEnvironment _environment;
+
         private TreeItemView _treeItemView;
 
-        public TreeView(SpriteFont font, int indentationAmount, ITree tree)
+        public TreeView(UiEnvironment environment, int indentationAmount, ITree tree)
         {
-            _treeItemView = new TreeItemView(font, tree.Root, indentationAmount, tree.HideRoot);
+            _environment = environment;
+            _treeItemView = new TreeItemView(environment, tree.Root, indentationAmount, tree.HideRoot);
         }
 
         public bool Changed => _treeItemView.Changed;
@@ -17,6 +21,8 @@ namespace MonoGameDrawingApp.Ui.Tree
         public int RequiredWidth => _treeItemView.RequiredWidth;
 
         public int RequiredHeight => _treeItemView.RequiredHeight;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

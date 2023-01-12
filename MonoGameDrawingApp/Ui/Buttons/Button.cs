@@ -2,17 +2,19 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace MonoGameDrawingApp.Ui
+namespace MonoGameDrawingApp.Ui.Buttons
 {
     public class Button : IUiElement
     {
         public readonly IUiElement Child;
 
+        private readonly UiEnvironment _environment;
         private Rectangle _bounds = Rectangle.Empty;
         private MouseState _oldMouse;
 
-        public Button(IUiElement child)
+        public Button(UiEnvironment environment, IUiElement child)
         {
+            _environment = environment;
             Child = child;
         }
 
@@ -31,6 +33,8 @@ namespace MonoGameDrawingApp.Ui
         public bool JustLeftClicked => LeftClicked && !(_oldMouse.LeftButton == ButtonState.Pressed);
 
         public bool JustRightClicked => RightClicked && !(_oldMouse.RightButton == ButtonState.Pressed);
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

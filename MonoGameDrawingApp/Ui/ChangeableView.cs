@@ -5,12 +5,15 @@ namespace MonoGameDrawingApp.Ui
 {
     public class ChangeableView : IUiElement
     {
+        private UiEnvironment _environment;
+
         private IUiElement _child;
 
         private bool _changed;
 
-        public ChangeableView(IUiElement child)
+        public ChangeableView(UiEnvironment environment, IUiElement child)
         {
+            _environment = environment;
             _child = child;
         }
 
@@ -34,6 +37,8 @@ namespace MonoGameDrawingApp.Ui
         public int RequiredWidth => Child.RequiredWidth;
 
         public int RequiredHeight => Child.RequiredHeight;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

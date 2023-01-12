@@ -9,7 +9,7 @@ namespace MonoGameDrawingApp.Ui.Lists
     {
         private readonly RenderHelper _renderHelper;
 
-        public HListView(List<T> items) : base(items)
+        public HListView(UiEnvironment environment, List<T> items) : base(environment, items)
         {
             _renderHelper = new RenderHelper();
         }

@@ -8,9 +8,27 @@ namespace MonoGameDrawingApp.Ui
     {
         public readonly IUiElement Child;
 
+        private readonly UiEnvironment _environment;
+
         private Vector2 _position = Vector2.Zero;
         private RenderHelper _renderHelper;
         private bool _changed = true;
+
+        public PeekView(UiEnvironment environment, IUiElement child)
+        {
+            _environment = environment;
+
+            _renderHelper = new RenderHelper();
+            Child = child;
+        }
+
+        public int RequiredWidth => 1;
+
+        public int RequiredHeight => 1;
+
+        public bool Changed => _changed;
+
+        public UiEnvironment Environment => _environment;
 
         public Vector2 Position
         {
@@ -24,18 +42,6 @@ namespace MonoGameDrawingApp.Ui
                 }
             }
         }
-
-        public PeekView(IUiElement child)
-        {
-            _renderHelper = new RenderHelper();
-            Child = child;
-        }
-
-        public int RequiredWidth => 1;
-
-        public int RequiredHeight => 1;
-
-        public bool Changed => _changed;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

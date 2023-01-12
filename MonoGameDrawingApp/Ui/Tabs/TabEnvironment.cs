@@ -10,20 +10,24 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public readonly TabBar TabBar;
         public readonly IUiElement Background;
 
+        private readonly UiEnvironment _environment;
+
         private readonly ScrollWindow _scrollWindow;
         private readonly VSplit _outer;
         private readonly VSplit _inner;
         private readonly ChangeableView _changeableView;
 
-        public TabEnvironment(IUiElement background, SpriteFont font)
+        public TabEnvironment(UiEnvironment environment, IUiElement background)
         {
-            TabBar = new TabBar(font);
-            _scrollWindow = new ScrollWindow(TabBar, false, true);
+            _environment = environment;
+
+            TabBar = new TabBar(environment);
+            _scrollWindow = new ScrollWindow(environment, TabBar, false, true);
             _scrollWindow.HScrollBar.ScrollSpeed = 0.5f;
             Background = background;
-            _changeableView = new ChangeableView(Background);
-            _inner = new VSplitStandard(_scrollWindow, new ColorRect(Color.Gray), 0);
-            _outer = new VSplitStandard(_inner, _changeableView, 0);
+            _changeableView = new ChangeableView(environment, Background);
+            _inner = new VSplitStandard(environment, _scrollWindow, new ColorRect(environment, Color.Gray), 0);
+            _outer = new VSplitStandard(environment, _inner, _changeableView, 0);
         }
 
         public int RequiredWidth => _outer.RequiredWidth;
@@ -31,6 +35,8 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public int RequiredHeight => _outer.RequiredHeight;
 
         public bool Changed => _outer.Changed;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

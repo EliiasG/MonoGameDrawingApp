@@ -1,55 +1,49 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui
 {
-    public class TextView : IUiElement
+    public class StaticSize : IUiElement
     {
+        public readonly IUiElement Child;
 
         private readonly UiEnvironment _environment;
 
-        private string _text;
-        private bool _changed = true;
-
         private RenderHelper _renderHelper;
 
-        public TextView(UiEnvironment environment, string text)
+        public StaticSize(UiEnvironment environment, IUiElement child)
         {
             _environment = environment;
 
+            Child = child;
             _renderHelper = new RenderHelper();
-            Text = text;
         }
 
-        public int RequiredWidth => (int)Environment.Font.MeasureString(Text).X;
+        public bool Changed => Child.Changed;
 
-        public int RequiredHeight => (int)Environment.Font.MeasureString(Text).Y;
+        public int RequiredWidth => Child.RequiredWidth;
 
-        public bool Changed => _changed;
+        public int RequiredHeight => Child.RequiredHeight;
 
         public UiEnvironment Environment => _environment;
-
-        public string Text
-        {
-            get => _text;
-            set
-            {
-                _text = value;
-                _changed = true;
-            }
-        }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             _renderHelper.Begin(graphics, width, height);
 
-            if (Changed || _renderHelper.SizeChanged)
+            if (_renderHelper.SizeChanged || Changed)
             {
+                Texture2D render = Child.Render(graphics, Child.RequiredWidth, Child.RequiredWidth);
+
                 _renderHelper.BeginDraw();
 
-                graphics.SpriteBatch.DrawString(
-                    spriteFont: Environment.Font,
-                    text: Text,
+                graphics.SpriteBatch.Draw(
+                    texture: render,
                     position: Vector2.Zero,
                     color: Color.White
                 );
@@ -57,12 +51,12 @@ namespace MonoGameDrawingApp.Ui
                 _renderHelper.FinishDraw();
             }
 
-            _changed = false;
             return _renderHelper.Result;
         }
 
         public void Update(Vector2 position, int width, int height)
         {
+            Child.Update(position, Child.RequiredWidth, Child.RequiredHeight);
         }
     }
 }

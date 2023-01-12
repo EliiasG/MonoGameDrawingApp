@@ -7,12 +7,17 @@ namespace MonoGameDrawingApp.Ui.Lists
     public abstract class ListView<T> : IUiElement where T : IUiElement
     {
         public List<T> Items;
+
+        private readonly UiEnvironment _environment;
+
         private List<T> _oldItems;
 
         protected bool _changed = true;
 
-        public ListView(List<T> items) 
+        public ListView(UiEnvironment environment, List<T> items) 
         {
+            _environment = environment;
+
             Items = items;
             _oldItems = new List<T>(items);
         }
@@ -22,6 +27,8 @@ namespace MonoGameDrawingApp.Ui.Lists
         public abstract int RequiredHeight { get; }
 
         public bool Changed => _changed;
+
+        public UiEnvironment Environment => _environment;
 
         public abstract Texture2D Render(Graphics graphics, int width, int height);
 

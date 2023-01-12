@@ -4,7 +4,7 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
 {
     public abstract class HSplit : BaseSplit
     {
-        protected HSplit(IUiElement first, IUiElement second, int splitPosition) : base(first, second, splitPosition) { }
+        protected HSplit(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition) : base(environment, first, second, splitPosition) { }
 
         public override int RequiredHeight => Math.Max(First.RequiredHeight, Second.RequiredHeight);
 

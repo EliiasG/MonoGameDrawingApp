@@ -7,12 +7,29 @@ namespace MonoGameDrawingApp.Ui.Tabs
 {
     public class TabBar : IUiElement
     {
-        public SpriteFont Font;
+        private readonly UiEnvironment _environment;
 
         private List<TabView> _tabs;
 
         private HListView<TabView> _hListView;
         private Tab _selectedTab;
+
+        public TabBar(UiEnvironment environment)
+        {
+            _environment = environment;
+
+            _tabs = new List<TabView>();
+            _hListView = new HListView<TabView>(environment, _tabs);
+        }
+        
+
+        public int RequiredWidth => _hListView.RequiredWidth;
+
+        public int RequiredHeight => _hListView.RequiredHeight;
+
+        public bool Changed => _hListView.Changed;
+
+        public UiEnvironment Environment => _environment;
 
         public Tab SelectedTab
         {
@@ -35,19 +52,6 @@ namespace MonoGameDrawingApp.Ui.Tabs
             }
         }
 
-        public TabBar(SpriteFont font)
-        {
-            Font = font;
-            _tabs = new List<TabView>();
-            _hListView = new HListView<TabView>(_tabs);
-        }
-
-        public int RequiredWidth => _hListView.RequiredWidth;
-
-        public int RequiredHeight => _hListView.RequiredHeight;
-
-        public bool Changed => _hListView.Changed;
-
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _hListView.Render(graphics, width, height);
@@ -55,7 +59,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
         public void OpenTab(Tab tab) 
         {
-            _tabs.Add(new TabView(tab, Font));
+            _tabs.Add(new TabView(Environment, tab));
             tab.TabBar = this;
         }
 

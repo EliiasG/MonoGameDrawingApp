@@ -20,21 +20,24 @@ namespace MonoGameDrawingApp.Ui.Scroll
         public int End;
         public int Size;
 
+        private readonly UiEnvironment _environment;
+
         private int _position = 0;
         private int _dragOffset = -1;
         private MouseState _oldMouse;
-        private bool _changed;
 
         protected BaseSplit _outer;
         protected BaseSplit _inner;
         protected ChangeableView _innerBar;
 
-        public ScrollBar()
+        public ScrollBar(UiEnvironment environment)
         {
-            FirstBackground = new ColorRect(Color.Transparent);
-            SecondBackground = new ColorRect(Color.Transparent);
-            Bar = new ColorRect(Color.Gray);
-            BarHovering = new ColorRect(Color.LightGray);
+            _environment = environment;
+
+            FirstBackground = new ColorRect(environment, Color.Transparent);
+            SecondBackground = new ColorRect(environment, Color.Transparent);
+            Bar = new ColorRect(environment, Color.Gray);
+            BarHovering = new ColorRect(environment, Color.LightGray);
         }
 
         protected abstract Rectangle _getBarBounds(Vector2 position, int width, int height, int dist, int length);
@@ -53,6 +56,8 @@ namespace MonoGameDrawingApp.Ui.Scroll
         }
 
         public bool Changed => _outer.Changed;
+
+        public UiEnvironment Environment => _environment;
 
         public void Update(Vector2 position, int width, int height)
         {

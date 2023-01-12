@@ -1,17 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MonoGameDrawingApp.Ui.ContextMenu
+namespace MonoGameDrawingApp.Ui.Popup
 {
-    public class ContextMenuEnvironment : IUiElement
+    public class TextInputPopup : IUiElement
     {
-        //TODO
         public bool Changed => throw new NotImplementedException();
 
         public int RequiredWidth => throw new NotImplementedException();
 
         public int RequiredHeight => throw new NotImplementedException();
+
+        public UiEnvironment Environment => throw new NotImplementedException();
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

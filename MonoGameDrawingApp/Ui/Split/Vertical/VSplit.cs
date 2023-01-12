@@ -4,7 +4,7 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
 {
     public abstract class VSplit : BaseSplit
     {
-        protected VSplit(IUiElement first, IUiElement second, int splitPosition) : base(first, second, splitPosition) { }
+        protected VSplit(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition) : base(environment, first, second, splitPosition) { }
 
         public override int RequiredWidth => Math.Max(First.RequiredWidth, Second.RequiredWidth);
 

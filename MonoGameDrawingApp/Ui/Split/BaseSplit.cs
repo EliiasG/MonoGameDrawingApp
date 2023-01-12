@@ -8,14 +8,20 @@ namespace MonoGameDrawingApp.Ui.Split
     {
         public readonly IUiElement First;
         public readonly IUiElement Second;
+
+        private readonly UiEnvironment _environment;
+
         private int _splitPosition;
+
         protected int _height = -1;
         protected int _width = -1;
         protected bool _changed;
 
 
-        public BaseSplit(IUiElement first, IUiElement second, int splitPosition)
+        public BaseSplit(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition)
         {
+            _environment = environment;
+
             First = first;
             Second = second;
             SplitPosition = splitPosition;
@@ -58,6 +64,8 @@ namespace MonoGameDrawingApp.Ui.Split
         public abstract int MinPosition { get; }
 
         public bool Changed => _changed;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

@@ -9,14 +9,18 @@ namespace MonoGameDrawingApp.Ui
 
         public readonly IUiElement Child;
 
+        private readonly UiEnvironment _environment;
+
         private Color _color;
 
         private readonly RenderHelper _renderHelper;
 
         private bool _changed;
 
-        public ColorModifier(IUiElement child, Color color)
+        public ColorModifier(UiEnvironment environment, IUiElement child, Color color)
         {
+            _environment = environment;
+
             Color = color;
             Child = child;
             _renderHelper = new RenderHelper();
@@ -40,6 +44,8 @@ namespace MonoGameDrawingApp.Ui
         public int RequiredWidth => Child.RequiredWidth;
 
         public int RequiredHeight => Child.RequiredHeight;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

@@ -14,10 +14,10 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
         public IUiElement Splitter;
         public bool _wasPressed = false;
 
-        public VSplitDraggable(IUiElement first, IUiElement second, int splitPosition, int handleHeight) : base(first, second, splitPosition)
+        public VSplitDraggable(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition, int handleHeight) : base(environment, first, second, splitPosition)
         {
             HandleHeight = handleHeight;
-            Splitter = new ColorRect(Color.Transparent);
+            Splitter = new ColorRect(environment, Color.Transparent);
             /* layout:
             outer:
                 First
@@ -25,9 +25,9 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
                     Splitter
                     Second
             */
-            _bottom = new VSplitStandard(Splitter, Second, handleHeight);
+            _bottom = new VSplitStandard(environment, Splitter, Second, handleHeight);
 
-            _outer = new VSplitStandard(First, _bottom, splitPosition);
+            _outer = new VSplitStandard(environment, First, _bottom, splitPosition);
         }
 
         protected override Texture2D _render(Graphics graphics)

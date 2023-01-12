@@ -9,10 +9,14 @@ namespace MonoGameDrawingApp.Ui
         public readonly bool CenterVertical;
         public readonly bool CenterHorizontal;
 
+        private readonly UiEnvironment _environment;
+
         private readonly RenderHelper _renderHelper;
 
-        public CenterView(IUiElement child, bool centerHorizontal, bool centerVertical)
+        public CenterView(UiEnvironment environment, IUiElement child, bool centerHorizontal, bool centerVertical)
         {
+            _environment = environment;
+
             Child = child;
             CenterVertical = centerVertical;
             CenterHorizontal = centerHorizontal;
@@ -25,6 +29,8 @@ namespace MonoGameDrawingApp.Ui
         public int RequiredWidth => Child.RequiredWidth;
 
         public int RequiredHeight => Child.RequiredHeight;
+
+        public UiEnvironment Environment => _environment;
 
         private Vector2 _calculateChildPosition(int width, int height)
         {

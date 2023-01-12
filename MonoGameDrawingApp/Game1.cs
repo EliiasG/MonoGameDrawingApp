@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui;
+using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Tabs;
 using MonoGameDrawingApp.Ui.TextInput;
 using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
 using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace MonoGameDrawingApp
 {
@@ -24,13 +26,15 @@ namespace MonoGameDrawingApp
             IsMouseVisible = true;
             Window.AllowAltF4 = true;
             Window.AllowUserResizing = true;
+            _graphics.PreferredBackBufferWidth = 1600;
+            _graphics.PreferredBackBufferHeight = 900;
         }
 
         protected override void Initialize()
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-
+            
 
             //_split = new ColorRect(Color.Gold);
             TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
@@ -42,14 +46,18 @@ namespace MonoGameDrawingApp
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>("font");
             TextInputField textInputField = new TextInputField(_font, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, -1);
+            
+
             TabEnvironment env = new TabEnvironment(new CenterView(new MinSize(textInputField, 200, 40), true, true), _font);
+
+            PopupEnvironment pop = new PopupEnvironment(env);
 
             for (int i = 0; i < 100; i++)
             {
                 env.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
             }
 
-            _split = env;
+            _split = pop;
             /*
             ScrollBar scrollBar = new HScrollBar();
             scrollBar.Size = 100;

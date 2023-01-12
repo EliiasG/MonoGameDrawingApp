@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameDrawingApp.Ui.Buttons;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
 using System;
@@ -20,9 +21,9 @@ namespace MonoGameDrawingApp.Ui.TextInput
 
         public readonly int MaxLength;
 
-        public SpriteFont Font;
-
         public readonly ITextInputFilter[] Filters;
+
+        private readonly UiEnvironment _environment;
 
         private int _cursorPosition;
 
@@ -46,13 +47,14 @@ namespace MonoGameDrawingApp.Ui.TextInput
         private readonly HSplit _cursorInner;
         private readonly HSplit _cursorOuter;
 
-        public TextInputField(SpriteFont font, string value, ITextInputFilter[] filters, bool isSelectable = true, bool isDeselectable = true, int maxLength = -1)
+        public TextInputField(UiEnvironment environment, string value, ITextInputFilter[] filters, bool isSelectable = true, bool isDeselectable = true, int maxLength = -1)
         {
+            _environment = environment;
+
             Value = value;
             IsSelectable = isSelectable;
             IsDeselectable = isDeselectable;
             Filters = filters;
-            Font = font;
             MaxLength = maxLength;
             _oldKeys = new HashSet<Keys>();
 
@@ -77,29 +79,29 @@ namespace MonoGameDrawingApp.Ui.TextInput
              *               _currentCursor
              *               Empty
              */
-            _background = new ColorRect(Color.Gray);
-            _backgroundSelected = new ColorRect(Color.LightGray);
-            _cursorOn = new ColorRect(Color.White);
-            _cursorOff = new ColorRect(Color.Transparent);
+            _background = new ColorRect(environment, Color.Gray);
+            _backgroundSelected = new ColorRect(environment, Color.LightGray);
+            _cursorOn = new ColorRect(environment, Color.White);
+            _cursorOff = new ColorRect(environment, Color.Transparent);
 
-            _currentCursor = new ChangeableView(_cursorOn);
+            _currentCursor = new ChangeableView(environment, _cursorOn);
 
-            _cursorInner = new HSplitStandard(new MinSize(_currentCursor, 2, 1), new ColorRect(Color.Transparent), 0);
+            _cursorInner = new HSplitStandard(environment, new MinSize(environment, _currentCursor, 2, 1), new ColorRect(environment, Color.Transparent), 0);
 
-            _cursorOuter = new HSplitStandard(new ColorRect(Color.Transparent), _cursorInner, 0);
-            _textView = new TextView(Font, Value);
+            _cursorOuter = new HSplitStandard(environment, new ColorRect(environment, Color.Transparent), _cursorInner, 0);
+            _textView = new TextView(Environment, Value);
 
-            _inner = new StackView(new List<IUiElement>() { _textView, _cursorOuter });
+            _inner = new StackView(environment, new List<IUiElement>() { _textView, _cursorOuter });
 
-            _currentBrackground = new ChangeableView(_background);
+            _currentBrackground = new ChangeableView(environment, _background);
 
-            _outer = new StackView(new List<IUiElement>()
+            _outer = new StackView(environment, new List<IUiElement>()
             {
                 _currentBrackground,
-                new CenterView(new MinSize(_inner, 0, (int) Font.MeasureString("X").Y), false, true),
+                new CenterView(environment, new MinSize(environment, _inner, 0, (int) Environment.Font.MeasureString("X").Y), false, true),
             });
 
-            _button = new Button(_outer);
+            _button = new Button(environment, _outer);
         }
 
         public bool Changed => _button.Changed;
@@ -107,6 +109,8 @@ namespace MonoGameDrawingApp.Ui.TextInput
         public int RequiredWidth => _button.RequiredWidth;
 
         public int RequiredHeight => _button.RequiredHeight;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -141,7 +145,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
             _textView.Text = Value;
             _currentBrackground.Child = IsSelected ? _backgroundSelected : _background;
             _currentCursor.Child = IsSelected ? _cursorOn : _cursorOff;
-            _cursorOuter.SplitPosition = (int) Font.MeasureString(Value.Substring(0, _cursorPosition)).X;
+            _cursorOuter.SplitPosition = (int) Environment.Font.MeasureString(Value.Substring(0, _cursorPosition)).X;
             _cursorInner.SplitPosition = 0;
         }
 

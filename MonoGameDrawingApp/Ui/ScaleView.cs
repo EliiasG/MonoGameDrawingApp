@@ -7,10 +7,14 @@ namespace MonoGameDrawingApp.Ui
     {
         public IUiElement Child;
 
+        private readonly UiEnvironment _environment;
+
         private readonly RenderHelper _renderHelper;
 
-        public ScaleView(IUiElement child)
+        public ScaleView(UiEnvironment environment, IUiElement child)
         {
+            _environment = environment;
+
             Child = child;
             _renderHelper = new RenderHelper();
         }
@@ -20,6 +24,8 @@ namespace MonoGameDrawingApp.Ui
         public int RequiredHeight => 1;
 
         public bool Changed => Child.Changed;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

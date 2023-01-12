@@ -15,10 +15,10 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
         public IUiElement Splitter;
         public bool _wasPressed = false;
 
-        public HSplitDraggable(IUiElement first, IUiElement second, int splitPosition, int handleWidth) : base(first, second, splitPosition)
+        public HSplitDraggable(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition, int handleWidth) : base(environment, first, second, splitPosition)
         {
             HandleWidth = handleWidth;
-            Splitter = new ColorRect(Color.Transparent);
+            Splitter = new ColorRect(environment, Color.Transparent);
             /* layout:
             outer:
                 First
@@ -26,9 +26,9 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
                     Splitter
                     Second
             */
-            _left = new HSplitStandard(Splitter, Second, handleWidth);
+            _left = new HSplitStandard(environment, Splitter, Second, handleWidth);
 
-            _outer = new HSplitStandard(First, _left, splitPosition);
+            _outer = new HSplitStandard(environment, First, _left, splitPosition);
         }
 
         protected override Texture2D _render(Graphics graphics)

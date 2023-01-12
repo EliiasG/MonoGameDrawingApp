@@ -9,14 +9,17 @@ namespace MonoGameDrawingApp.Ui
     {
         public readonly IEnumerable<IUiElement> Children;
 
+        private readonly UiEnvironment _environment;
+
         private readonly RenderHelper _renderHelper;
 
         private List<IUiElement> _old;
 
         private bool _changed;
 
-        public StackView(IEnumerable<IUiElement> children)
+        public StackView(UiEnvironment environment, IEnumerable<IUiElement> children)
         {
+            _environment = environment;
             Children = children;
             _renderHelper = new RenderHelper();
             _old = new List<IUiElement>();
@@ -27,6 +30,8 @@ namespace MonoGameDrawingApp.Ui
         public int RequiredWidth => Children.Max((IUiElement x) => x.RequiredWidth);
 
         public int RequiredHeight => Children.Max((IUiElement x) => x.RequiredHeight);
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

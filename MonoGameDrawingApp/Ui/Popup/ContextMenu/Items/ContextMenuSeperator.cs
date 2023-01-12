@@ -3,19 +3,22 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Lists;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.ContextMenu.Items
+namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Items
 {
     public class ContextMenuSeperator : IUiElement
     {
+        private readonly UiEnvironment _environment;
+
         private IUiElement _child;
 
-        public ContextMenuSeperator()
+        public ContextMenuSeperator(UiEnvironment environment)
         {
-            _child = new VListView<IUiElement>(new List<IUiElement>
+            _environment = environment;
+            _child = new VListView<IUiElement>(environment, new List<IUiElement>
             {
-                new MinSize(new ColorRect(Color.Transparent), 0, 10),
-                new MinSize(new ColorRect(Color.DarkGray), 0, 10),
-                new MinSize(new ColorRect(Color.Transparent), 0, 10),
+                new MinSize(environment, new ColorRect(environment, Color.Transparent), 0, 10),
+                new MinSize(environment, new ColorRect(environment, Color.DarkGray), 0, 10),
+                new MinSize(environment, new ColorRect(environment, Color.Transparent), 0, 10),
             });
         }
 
@@ -24,6 +27,8 @@ namespace MonoGameDrawingApp.Ui.ContextMenu.Items
         public int RequiredWidth => _child.RequiredWidth;
 
         public int RequiredHeight => _child.RequiredHeight;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

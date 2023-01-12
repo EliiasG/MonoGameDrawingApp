@@ -17,12 +17,14 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         public Vector2 Position = Vector2.Zero;
 
-        public VScrollBar VScrollBar = new VScrollBar();
-        public HScrollBar HScrollBar = new HScrollBar();
+        public readonly VScrollBar VScrollBar;
+        public readonly HScrollBar HScrollBar;
 
         public int ScrollBarSize = 10;
 
-        public IUiElement Corner = new ColorRect(Color.Transparent);
+        public readonly IUiElement _corner;
+
+        private readonly UiEnvironment _environment;
 
         private MouseState _oldMouse;
 
@@ -32,35 +34,38 @@ namespace MonoGameDrawingApp.Ui.Scroll
         private HSplit _main;
         private HSplit _scrollBar;
 
-        public ScrollWindow(IUiElement child, bool isLeft = false, bool isTop = false, bool allowHoverScrolling = true)
+        public ScrollWindow(UiEnvironment environment, IUiElement child, bool isLeft = false, bool isTop = false, bool allowHoverScrolling = true)
         {
+            _environment = environment;
+
             IsLeft = isLeft;
             IsTop = isTop;
             AllowHoverScrolling = allowHoverScrolling;
             Child = child;
 
-            VScrollBar = new VScrollBar();
-            HScrollBar = new HScrollBar();
+            VScrollBar = new VScrollBar(environment);
+            HScrollBar = new HScrollBar(environment);
 
-            _peekWindow = new PeekView(child);
+            _peekWindow = new PeekView(environment, child);
+            _corner = new ColorRect(environment, Color.Transparent);
 
             if (isLeft)
             {
-                _main = new HSplitStandard(VScrollBar, _peekWindow, 1);
-                _scrollBar = new HSplitStandard(Corner, HScrollBar, 1);
+                _main = new HSplitStandard(environment, VScrollBar, _peekWindow, 1);
+                _scrollBar = new HSplitStandard(environment, _corner, HScrollBar, 1);
             }
             else
             {
-                _main = new HSplitStandard(_peekWindow, VScrollBar, 1);
-                _scrollBar = new HSplitStandard(HScrollBar, Corner, 1);
+                _main = new HSplitStandard(environment, _peekWindow, VScrollBar, 1);
+                _scrollBar = new HSplitStandard(environment, HScrollBar, _corner, 1);
             }
             if (isTop)
             {
-                _outer = new VSplitStandard(_scrollBar, _main, 1);
+                _outer = new VSplitStandard(environment, _scrollBar, _main, 1);
             }
             else
             {
-                _outer = new VSplitStandard(_main, _scrollBar, 1);
+                _outer = new VSplitStandard(environment, _main, _scrollBar, 1);
             }
         }
 
@@ -69,6 +74,8 @@ namespace MonoGameDrawingApp.Ui.Scroll
         public int RequiredHeight => 1 + VScrollBar.RequiredHeight;
 
         public bool Changed => _outer.Changed;
+
+        public UiEnvironment Environment => _environment;
 
         public void Update(Vector2 position, int width, int height)
         {

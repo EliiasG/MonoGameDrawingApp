@@ -6,11 +6,11 @@ namespace MonoGameDrawingApp.Ui.Scroll
 {
     public class HScrollBar : ScrollBar
     {
-        public HScrollBar()
+        public HScrollBar(UiEnvironment environment) : base(environment)
         {
-            _innerBar = new ChangeableView(Bar);
-            _inner = new HSplitStandard(_innerBar, SecondBackground, 1);
-            _outer = new HSplitStandard(FirstBackground, _inner, 1);
+            _innerBar = new ChangeableView(environment, Bar);
+            _inner = new HSplitStandard(environment, _innerBar, SecondBackground, 1);
+            _outer = new HSplitStandard(environment, FirstBackground, _inner, 1);
         }
 
         protected override Rectangle _getBarBounds(Vector2 position, int width, int height, int dist, int length)

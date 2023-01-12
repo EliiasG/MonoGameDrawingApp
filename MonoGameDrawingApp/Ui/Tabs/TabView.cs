@@ -13,6 +13,8 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public readonly int Spacing;
         public readonly int ExtraSize;
 
+        private readonly UiEnvironment _environment;
+
         private readonly IUiElement _background;
         private readonly IUiElement _BackgroundSelected;
         private readonly IUiElement _closeButton;
@@ -24,14 +26,15 @@ namespace MonoGameDrawingApp.Ui.Tabs
         private string _oldTile = "";
         private bool _oldSelected = false;
 
-        public TabView(Tab tab, SpriteFont font, int spacing = 2, int extraSize = 2)
+        public TabView(UiEnvironment environment, Tab tab, int spacing = 2, int extraSize = 2)
         {
+            _environment = environment;
+
             Tab = tab;
-            Font = font;
             Spacing = spacing;
-            _background = new ColorRect(Color.Gray);
-            _BackgroundSelected = new ColorRect(Color.LightGray);
-            _closeButton = new MinSize(new ScaleView(new SpriteView("icons/close", new Color(50, 50, 50))), 21, 21);
+            _background = new ColorRect(environment, Color.Gray);
+            _BackgroundSelected = new ColorRect(environment, Color.LightGray);
+            _closeButton = new MinSize(environment, new ScaleView(environment, new SpriteView(environment, "icons/close")), 21, 21);
             //CloseButton = new TextView(Font, "X");
             ExtraSize = extraSize;
 
@@ -43,6 +46,8 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public int RequiredHeight => Math.Max((int)Font.MeasureString(Tab.Title).Y, Tab.HasCloseButton ? _closeButton.RequiredHeight : 0) + ExtraSize;
 
         public bool Changed => _changed;
+
+        public UiEnvironment Environment => _environment;
 
         public void Update(Vector2 position, int width, int height)
         {

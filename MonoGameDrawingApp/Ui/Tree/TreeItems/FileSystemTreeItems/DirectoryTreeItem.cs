@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystemTreeItems
         private readonly string _path;
 
         private readonly List<IFileSystemTreeItem> _children;
-        private readonly IUiElement _icon;
+        private readonly string _icon;
         private readonly ITree _tree;
 
         private bool _isOpen;
@@ -18,7 +18,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystemTreeItems
         public DirectoryTreeItem(string path, ITree tree)
         {
             _path = path;
-            _icon = new SpriteView("icons/folder");
+            _icon = "icons/folder";
             _tree = tree;
             _children = new List<IFileSystemTreeItem>();
         }
@@ -39,7 +39,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystemTreeItems
 
         public bool HasOpenButton => !Directory.EnumerateFileSystemEntries(Path).Any();
 
-        public IUiElement Icon => _icon;
+        public string IconPath => _icon;
 
         public IEnumerable<ITreeItem> Children
         {

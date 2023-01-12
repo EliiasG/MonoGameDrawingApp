@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameDrawingApp.Ui.Buttons;
 using MonoGameDrawingApp.Ui.Lists;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Split.Vertical;
@@ -13,8 +14,9 @@ namespace MonoGameDrawingApp.Ui.Tree
     public class TreeItemView : IUiElement
     {
         public readonly ITreeItem TreeItem;
-        public readonly SpriteFont Font;
         public readonly bool HideSelf;
+
+        private readonly UiEnvironment _environment;
 
         private readonly int _indentation;
         private readonly HSplit _outer;
@@ -25,7 +27,6 @@ namespace MonoGameDrawingApp.Ui.Tree
         private readonly IUiElement _openButtonIcon;
         private readonly IUiElement _closedButtonIcon;
         private readonly IUiElement _defaultButtonIcon;
-        private readonly IUiElement _defaultIcon;
         private readonly ChangeableView _buttonIcon;
         private readonly Button _button;
         private readonly ChangeableView _icon;
@@ -34,13 +35,14 @@ namespace MonoGameDrawingApp.Ui.Tree
         private readonly List<TreeItemView> _children;
         private readonly List<TreeItemView> _empty;
 
-        public TreeItemView(SpriteFont font, ITreeItem treeItem, int indentation, bool hideSelf)
+        public TreeItemView(UiEnvironment environment, ITreeItem treeItem, int indentation, bool hideSelf)
         {
+            _environment = environment;
+
             TreeItem = treeItem;
-            Font = font;
             _indentation = indentation;
             HideSelf = hideSelf;
-            int size = (int)Math.Ceiling(Font.MeasureString("X").Y);
+            int size = (int)Math.Ceiling(Environment.Font.MeasureString("X").Y);
 
             /* It's a bit hard to see the structure from the code, here is a simplified version:
              * _outer:
@@ -59,20 +61,19 @@ namespace MonoGameDrawingApp.Ui.Tree
             
             _empty = new List<TreeItemView>();
             _children = new List<TreeItemView>();
-            _childrenView = new VListView<TreeItemView>(_children);
-            _textView = new TextView(Font, TreeItem.Name);
-            _openButtonIcon = new SpriteView("icons/open");
-            _closedButtonIcon = new SpriteView("icons/closed");
-            _defaultIcon = new ColorRect(Color.Transparent);
-            _defaultButtonIcon = new ColorRect(Color.Transparent);
-            _icon = new ChangeableView(_defaultIcon);
-            _textButton = new Button(_textView);
-            _title = new HSplitStandard(new MinSize(new ScaleView(_icon), size, size), _textButton, 0);
-            _buttonIcon = new ChangeableView(_defaultButtonIcon);
-            _button = new Button(_buttonIcon);
-            _inner = new HSplitStandard(_title, new MinSize(new ScaleView(_button), size, size), 0);
-            _split = new VSplitStandard(_inner, HideSelf ? new ColorRect(Color.Transparent) : _childrenView, 0);
-            _outer = new HSplitStandard(new ColorRect(Color.Transparent), _split, 0);
+            _childrenView = new VListView<TreeItemView>(environment, _children);
+            _textView = new TextView(environment, TreeItem.Name);
+            _openButtonIcon = new SpriteView(environment, "icons/open");
+            _closedButtonIcon = new SpriteView(environment, "icons/closed");
+            _defaultButtonIcon = new ColorRect(environment, Color.Transparent);
+            _icon = new ChangeableView(environment, new SpriteView(environment, treeItem.IconPath));
+            _textButton = new Button(environment, _textView);
+            _title = new HSplitStandard(environment, new MinSize(environment, new ScaleView(environment, _icon), size, size), _textButton, 0);
+            _buttonIcon = new ChangeableView(environment, _defaultButtonIcon);
+            _button = new Button(environment, _buttonIcon);
+            _inner = new HSplitStandard(environment, _title, new MinSize(environment, new ScaleView(environment, _button), size, size), 0);
+            _split = new VSplitStandard(environment, _inner, HideSelf ? new ColorRect(environment, Color.Transparent) : _childrenView, 0);
+            _outer = new HSplitStandard(environment, new ColorRect(environment, Color.Transparent), _split, 0);
         }
 
         public int Indentation 
@@ -86,6 +87,8 @@ namespace MonoGameDrawingApp.Ui.Tree
 
         public bool Changed => _outer.Changed;
 
+        public UiEnvironment Environment => _environment;
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _outer.Render(graphics, width, height);
@@ -98,7 +101,6 @@ namespace MonoGameDrawingApp.Ui.Tree
             _split.SplitPosition = 0;
             _textView.Text = TreeItem.Name;
             _buttonIcon.Child = TreeItem.HasOpenButton ? (TreeItem.IsOpen ? _openButtonIcon : _closedButtonIcon) : _defaultButtonIcon;
-            _icon.Child = TreeItem.Icon ?? _defaultIcon;
 
             if(TreeItem.IsOpen) 
             { 
@@ -114,7 +116,7 @@ namespace MonoGameDrawingApp.Ui.Tree
                 {
                     if(_children.All(item => item.TreeItem != child)) //none of the children contain the current child
                     {
-                        _children.Add(new TreeItemView(Font, child, _indentation, false)); //_indentation, because it should use the value given in the constructor
+                       _children.Add(new TreeItemView(Environment, child, _indentation, false)); //_indentation, because it should use the value given in the constructor
                     }
                 }
 

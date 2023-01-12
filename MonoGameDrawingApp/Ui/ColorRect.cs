@@ -6,10 +6,15 @@ namespace MonoGameDrawingApp.Ui
     public class ColorRect : IUiElement
     {
         public readonly Color Color;
+
+        private readonly UiEnvironment _environment;
+
         private RenderHelper _renderHelper;
 
-        public ColorRect(Color color)
+        public ColorRect(UiEnvironment environment, Color color)
         {
+            _environment = environment;
+
             Color = color;
             _renderHelper = new RenderHelper();
         }
@@ -19,6 +24,8 @@ namespace MonoGameDrawingApp.Ui
         public int RequiredHeight => 1;
 
         public bool Changed => false;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

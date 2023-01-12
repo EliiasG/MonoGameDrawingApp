@@ -8,14 +8,18 @@ namespace MonoGameDrawingApp.Ui
     {
         public readonly string Path;
 
+        private readonly UiEnvironment _environment;
+
         private Texture2D _texture = null;
+
         private readonly RenderHelper _renderHelper;
 
         private static Dictionary<string, Texture2D> _sprites = null;
         private bool _changed = true;
 
-        public SpriteView(string path, Color color = default)
+        public SpriteView(UiEnvironment environment, string path)
         {
+            _environment = environment;
             Path = path;
             _renderHelper = new RenderHelper();
             if(_sprites == null)
@@ -29,6 +33,8 @@ namespace MonoGameDrawingApp.Ui
         public int RequiredHeight => _texture == null ? 1 : _texture.Height;
 
         public bool Changed => _changed;
+
+        public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

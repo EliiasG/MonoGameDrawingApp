@@ -1,30 +1,34 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui
 {
-    public class MinSize : IUiElement
+    public class UpdateBlocker : IUiElement
     {
-        public readonly int MinWidth;
-        public readonly int MinHeight;
         public readonly IUiElement Child;
 
         private readonly UiEnvironment _environment;
 
-        public MinSize(UiEnvironment environment, IUiElement child, int width, int height)
+        public bool ShouldUpdate { get; set; }
+
+        public UpdateBlocker(UiEnvironment environment, IUiElement child)
         {
             _environment = environment;
+
             Child = child;
-            MinWidth = width;
-            MinHeight = height;
+            ShouldUpdate = true;
         }
 
-        public int RequiredWidth => Math.Max(MinWidth, Child.RequiredWidth);
-
-        public int RequiredHeight => Math.Max(MinHeight, Child.RequiredHeight);
-
         public bool Changed => Child.Changed;
+
+        public int RequiredWidth => Child.RequiredWidth;
+
+        public int RequiredHeight => Child.RequiredHeight;
 
         public UiEnvironment Environment => _environment;
 
@@ -35,7 +39,10 @@ namespace MonoGameDrawingApp.Ui
 
         public void Update(Vector2 position, int width, int height)
         {
-            Child.Update(position, width, height);
+            if (ShouldUpdate)
+            {
+                Child.Update(position, width, height);
+            }
         }
     }
 }

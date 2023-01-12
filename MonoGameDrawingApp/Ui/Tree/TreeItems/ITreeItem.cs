@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems
 
         bool HasOpenButton { get; }
 
-        IUiElement Icon { get; }
+        string IconPath { get; }
 
         ITree Tree { get; }
 
