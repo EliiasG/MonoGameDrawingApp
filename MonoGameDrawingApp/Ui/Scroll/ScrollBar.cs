@@ -11,14 +11,18 @@ namespace MonoGameDrawingApp.Ui.Scroll
         public int RequiredWidth => 2;
         public int RequiredHeight => 2;
 
-        public IUiElement FirstBackground;
-        public IUiElement SecondBackground;
-        public IUiElement Bar;
-        public IUiElement BarHovering;
-
         public float ScrollSpeed = 10;
         public int End;
         public int Size;
+
+        protected readonly IUiElement _firstBackground;
+        protected readonly IUiElement _secondBackground;
+        protected readonly IUiElement _bar;
+        protected readonly IUiElement _barHovering;
+
+        protected BaseSplit _outer;
+        protected BaseSplit _inner;
+        protected ChangeableView _innerBar;
 
         private readonly UiEnvironment _environment;
 
@@ -26,18 +30,14 @@ namespace MonoGameDrawingApp.Ui.Scroll
         private int _dragOffset = -1;
         private MouseState _oldMouse;
 
-        protected BaseSplit _outer;
-        protected BaseSplit _inner;
-        protected ChangeableView _innerBar;
-
         public ScrollBar(UiEnvironment environment)
         {
             _environment = environment;
 
-            FirstBackground = new ColorRect(environment, Color.Transparent);
-            SecondBackground = new ColorRect(environment, Color.Transparent);
-            Bar = new ColorRect(environment, Color.Gray);
-            BarHovering = new ColorRect(environment, Color.LightGray);
+            _firstBackground = new ColorRect(environment, Color.Transparent);
+            _secondBackground = new ColorRect(environment, Color.Transparent);
+            _bar = new ColorRect(environment, environment.Theme.MenuBackgorundColor);
+            _barHovering = new ColorRect(environment, environment.Theme.HoveringButtonColor);
         }
 
         protected abstract Rectangle _getBarBounds(Vector2 position, int width, int height, int dist, int length);
@@ -110,7 +110,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
             if (hovering || _dragOffset != -1)
             {
-                _innerBar.Child = BarHovering;
+                _innerBar.Child = _barHovering;
                 if(justClicked)
                 {
                     _dragOffset = offset - Position;
@@ -118,7 +118,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             }
             else
             {
-                _innerBar.Child = Bar;
+                _innerBar.Child = _bar;
             }
 
             if (_dragOffset != -1) 

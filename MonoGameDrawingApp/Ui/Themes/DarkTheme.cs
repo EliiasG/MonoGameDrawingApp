@@ -9,15 +9,15 @@ namespace MonoGameDrawingApp.Ui.Themes
 {
     public class DarkTheme : ITheme
     {
-        public Color BackgroundColor => new Color(45, 54, 64);
+        public Color BackgroundColor => new Color(57, 69, 82);
 
-        public Color MenuBackgorundColor => new Color(37, 42, 48);
+        public Color MenuBackgorundColor => new Color(30, 35, 41);
 
-        public Color DefaultTextColor => new Color(132, 146, 163);
+        public Color DefaultTextColor => new Color(208, 226, 247);
 
-        public Color HoveringTextColor => new Color(218, 222, 227);
+        public Color HoveringTextColor => new Color(156, 170, 186);
 
-        public Color ButtonColor => new Color(66, 75, 87);
+        public Color ButtonColor => new Color(88, 103, 122);
 
         public Color HoveringButtonColor => new Color(77, 89, 105);
 

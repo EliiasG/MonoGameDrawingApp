@@ -5,6 +5,7 @@ using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Tabs;
 using MonoGameDrawingApp.Ui.TextInput;
 using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
+using MonoGameDrawingApp.Ui.Themes;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -15,8 +16,7 @@ namespace MonoGameDrawingApp
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private IUiElement _split;
-        private SpriteFont _font;
+        private UiEnvironment environment;
         private Random rnd = new Random();
 
         public Game1()
@@ -44,20 +44,22 @@ namespace MonoGameDrawingApp
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _font = Content.Load<SpriteFont>("font");
-            TextInputField textInputField = new TextInputField(_font, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, -1);
+
+            Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch, Content);
+            environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"));
+
+            TextInputField textInputField = new TextInputField(environment, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, false, -1);
             
 
-            TabEnvironment env = new TabEnvironment(new CenterView(new MinSize(textInputField, 200, 40), true, true), _font);
+            TabEnvironment tabEnv = new TabEnvironment(environment, new CenterView(environment, new MinSize(environment, textInputField, 200, 40), true, true));
 
-            PopupEnvironment pop = new PopupEnvironment(env);
+            PopupEnvironment pop = new PopupEnvironment(environment, tabEnv);
 
             for (int i = 0; i < 100; i++)
             {
-                env.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
+                tabEnv.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(environment, new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
             }
 
-            _split = pop;
             /*
             ScrollBar scrollBar = new HScrollBar();
             scrollBar.Size = 100;
@@ -67,11 +69,11 @@ namespace MonoGameDrawingApp
             */
             //_split = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Red), 100, 10);
             // TODO: use this.Content to load your game content here
+            environment.Root = pop;
         }
 
         protected override void Update(GameTime gameTime)
         {
-            _split.Update(Vector2.Zero, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             base.Update(gameTime);
         }
 
@@ -79,19 +81,7 @@ namespace MonoGameDrawingApp
         {
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
-            Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch, Content);
-            Texture2D render = _split.Render(graphics, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            GraphicsDevice.Clear(new Color(50, 50, 50));
-            _spriteBatch.Begin();
-            //Debug.WriteLine("Framerate: {0}", 1 / gameTime.ElapsedGameTime.TotalSeconds
-
-            _spriteBatch.Draw(
-                texture: render,
-                position: new Vector2(0),
-                color: Color.White
-            );
-            
-            _spriteBatch.End();
+            environment.Render();
             base.Draw(gameTime);
         }
     }

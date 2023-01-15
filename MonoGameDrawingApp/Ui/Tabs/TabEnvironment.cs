@@ -26,7 +26,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
             _scrollWindow.HScrollBar.ScrollSpeed = 0.5f;
             Background = background;
             _changeableView = new ChangeableView(environment, Background);
-            _inner = new VSplitStandard(environment, _scrollWindow, new ColorRect(environment, Color.Gray), 0);
+            _inner = new VSplitStandard(environment, _scrollWindow, new ColorRect(environment, environment.Theme.ButtonColor), 0);
             _outer = new VSplitStandard(environment, _inner, _changeableView, 0);
         }
 

@@ -8,7 +8,6 @@ namespace MonoGameDrawingApp.Ui.Tabs
     public class TabView : IUiElement
     {
         public readonly Tab Tab;
-        public readonly SpriteFont Font;
 
         public readonly int Spacing;
         public readonly int ExtraSize;
@@ -32,8 +31,8 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
             Tab = tab;
             Spacing = spacing;
-            _background = new ColorRect(environment, Color.Gray);
-            _BackgroundSelected = new ColorRect(environment, Color.LightGray);
+            _background = new ColorRect(environment, environment.Theme.ButtonColor);
+            _BackgroundSelected = new ColorRect(environment, environment.Theme.SelectedButtonColor);
             _closeButton = new MinSize(environment, new ScaleView(environment, new SpriteView(environment, "icons/close")), 21, 21);
             //CloseButton = new TextView(Font, "X");
             ExtraSize = extraSize;
@@ -41,9 +40,9 @@ namespace MonoGameDrawingApp.Ui.Tabs
             _renderHelper = new RenderHelper();
         }
 
-        public int RequiredWidth => (int)Font.MeasureString(Tab.Title).X + ExtraSize * 2 + Spacing + (Tab.HasCloseButton ? _closeButton.RequiredWidth : 0);
+        public int RequiredWidth => (int)Environment.Font.MeasureString(Tab.Title).X + ExtraSize * 2 + Spacing + (Tab.HasCloseButton ? _closeButton.RequiredWidth : 0);
 
-        public int RequiredHeight => Math.Max((int)Font.MeasureString(Tab.Title).Y, Tab.HasCloseButton ? _closeButton.RequiredHeight : 0) + ExtraSize;
+        public int RequiredHeight => Math.Max((int)Environment.Font.MeasureString(Tab.Title).Y, Tab.HasCloseButton ? _closeButton.RequiredHeight : 0) + ExtraSize;
 
         public bool Changed => _changed;
 
@@ -114,15 +113,15 @@ namespace MonoGameDrawingApp.Ui.Tabs
                     graphics.SpriteBatch.Draw(
                         texture: closeButtonRender,
                         position: closeButtonPosition,
-                        color: Color.White
+                        color: Environment.Theme.DefaultTextColor
                     );
                 }
 
                 graphics.SpriteBatch.DrawString(
-                    spriteFont: Font,
+                    spriteFont: Environment.Font,
                     text: Tab.Title,
                     position: new Vector2(ExtraSize, 0),
-                    color: Tab.IsSelected ? new Color(100, 100, 100) : Color.LightGray
+                    color: Tab.IsSelected ? Environment.Theme.HoveringTextColor : Environment.Theme.DefaultTextColor
                 );
 
                 _renderHelper.FinishDraw();

@@ -11,17 +11,16 @@ namespace MonoGameDrawingApp.Ui
 {
     public class UiEnvironment
     {
-        public readonly IUiElement Root;
+        public IUiElement Root;
 
         public readonly Graphics Graphics;
 
-        public readonly ITheme Theme;
+        public ITheme Theme;
 
         public readonly SpriteFont Font;
 
-        public UiEnvironment(IUiElement root, Graphics graphics, ITheme theme, SpriteFont font)
+        public UiEnvironment(Graphics graphics, ITheme theme, SpriteFont font)
         {
-            Root = root;
             Graphics = graphics;
             Theme = theme;
             Font = font;
@@ -29,9 +28,9 @@ namespace MonoGameDrawingApp.Ui
 
         public void Render()
         {
-            Graphics.Device.Clear(Theme.BackgroundColor);
-
+            Root.Update(Vector2.Zero, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
             Texture2D render = Root.Render(Graphics, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
+            Graphics.Device.Clear(Theme.BackgroundColor);
             Graphics.SpriteBatch.Begin();
 
             Graphics.SpriteBatch.Draw(

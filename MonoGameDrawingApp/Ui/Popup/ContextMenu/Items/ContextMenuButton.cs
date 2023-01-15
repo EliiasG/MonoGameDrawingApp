@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Buttons;
+using MonoGameDrawingApp.Ui.Themes;
 using System;
 
 namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Items
@@ -23,7 +24,7 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Items
             OnClick = onClick;
 
             _textView = new TextView(environment, title);
-            _colorModifier = new ColorModifier(environment, _textView, Color.Black);
+            _colorModifier = new ColorModifier(environment, _textView, _theme.DefaultTextColor);
             _button = new Button(environment, _colorModifier);
         }
 
@@ -35,6 +36,8 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Items
 
         public UiEnvironment Environment => _environment;
 
+        private ITheme _theme => _environment.Theme;
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _button.Render(graphics, width, height);
@@ -43,7 +46,7 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Items
         public void Update(Vector2 position, int width, int height)
         {
             _button.Update(position, width, height);
-            _colorModifier.Color = Disabled ? Color.DarkGray : (_button.ContainsMouse ? Color.White : Color.Black);
+            _colorModifier.Color = Disabled ? _theme.ButtonColor : (_button.ContainsMouse ? _theme.HoveringTextColor : _theme.DefaultTextColor);
             if (_button.JustLeftClicked)
             {
                 OnClick();

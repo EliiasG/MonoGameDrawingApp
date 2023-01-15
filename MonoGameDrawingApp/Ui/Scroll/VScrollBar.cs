@@ -8,9 +8,9 @@ namespace MonoGameDrawingApp.Ui.Scroll
     {
         public VScrollBar(UiEnvironment environment) : base(environment)
         {
-            _innerBar = new ChangeableView(environment, Bar);
-            _inner = new VSplitStandard(environment, _innerBar, SecondBackground, 1);
-            _outer = new VSplitStandard(environment, FirstBackground, _inner, 1);
+            _innerBar = new ChangeableView(environment, _bar);
+            _inner = new VSplitStandard(environment, _innerBar, _secondBackground, 1);
+            _outer = new VSplitStandard(environment, _firstBackground, _inner, 1);
         }
 
         protected override Rectangle _getBarBounds(Vector2 position, int width, int height, int dist, int length)
