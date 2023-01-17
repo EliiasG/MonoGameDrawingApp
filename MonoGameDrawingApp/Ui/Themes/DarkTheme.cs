@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Themes
 {
@@ -22,5 +17,7 @@ namespace MonoGameDrawingApp.Ui.Themes
         public Color HoveringButtonColor => new Color(77, 89, 105);
 
         public Color SelectedButtonColor => new Color(52, 59, 69);
+
+        public Color SecondaryMenuBackgroundColor => new Color(58, 79, 102);
     }
 }

@@ -24,14 +24,14 @@ namespace MonoGameDrawingApp.Ui.Lists
 
             if (_changed || _renderHelper.SizeChanged)
             {
-                _renderHelper.BeginDraw();
-
                 List<Texture2D> renders = new List<Texture2D>();
 
                 foreach (IUiElement item in Items.ToArray()) //using .ToArray(), since List may be modified while running loop
                 {
                     renders.Add(item.Render(graphics, width, item.RequiredHeight));
                 }
+
+                _renderHelper.BeginDraw();
 
                 Vector2 renderPosition = Vector2.Zero;
                 foreach (Texture2D render in renders)

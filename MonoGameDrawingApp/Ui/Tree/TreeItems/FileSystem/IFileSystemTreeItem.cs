@@ -1,4 +1,4 @@
-﻿namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystemTreeItems
+﻿namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 {
     public interface IFileSystemTreeItem : ITreeItem
     {

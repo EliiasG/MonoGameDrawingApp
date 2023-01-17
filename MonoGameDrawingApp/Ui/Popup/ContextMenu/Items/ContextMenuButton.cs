@@ -47,7 +47,7 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Items
         {
             _button.Update(position, width, height);
             _colorModifier.Color = Disabled ? _theme.ButtonColor : (_button.ContainsMouse ? _theme.HoveringTextColor : _theme.DefaultTextColor);
-            if (_button.JustLeftClicked)
+            if (_button.JustLeftClicked && !Disabled)
             {
                 OnClick();
             }

@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Themes
 {
@@ -12,6 +7,7 @@ namespace MonoGameDrawingApp.Ui.Themes
         Color BackgroundColor { get; }
 
         Color MenuBackgorundColor { get; }
+        Color SecondaryMenuBackgroundColor { get; }
 
         Color DefaultTextColor { get; }
         Color HoveringTextColor { get; }

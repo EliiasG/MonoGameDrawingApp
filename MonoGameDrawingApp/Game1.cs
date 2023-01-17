@@ -8,7 +8,6 @@ using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
 using MonoGameDrawingApp.Ui.Themes;
 using System;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace MonoGameDrawingApp
 {
@@ -51,9 +50,17 @@ namespace MonoGameDrawingApp
             TextInputField textInputField = new TextInputField(environment, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, false, -1);
             
 
-            TabEnvironment tabEnv = new TabEnvironment(environment, new CenterView(environment, new MinSize(environment, textInputField, 200, 40), true, true));
+            TabEnvironment tabEnv = new TabEnvironment(environment, new ColorRect(environment, Color.Transparent));
 
             PopupEnvironment pop = new PopupEnvironment(environment, tabEnv);
+
+            pop.OpenCentered(new TextInputPopup(
+                environment: environment,
+                popupEnvironment: pop,
+                confirmed: (string s) => Debug.WriteLine("Seleted: " + s),
+                filters: new ITextInputFilter[] { new AlphanumericTextInputFilter() },
+                title: "Test Window"
+            ));
 
             for (int i = 0; i < 100; i++)
             {
