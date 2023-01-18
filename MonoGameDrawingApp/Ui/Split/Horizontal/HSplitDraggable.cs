@@ -46,6 +46,8 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
             _outer.SplitPosition = SplitPosition;
             _left.SplitPosition = HandleWidth;
 
+            _outer.Update(position, width, height);
+
             if (_outer.Changed)
             {
                 _changed = true;

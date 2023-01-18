@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Split.Vertical;
 using System;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Scroll
 {
@@ -96,6 +97,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         private void _updateSplits(int width, int height)
         {
+            Debug.WriteLine("hello?");
             int hDist = width - ScrollBarSize < Child.RequiredHeight ? ScrollBarSize : 1;
             int hPos = IsLeft ? hDist : width - hDist;
             _main.SplitPosition = hPos;

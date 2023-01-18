@@ -96,7 +96,7 @@ namespace MonoGameDrawingApp
                             5000,
                             5000
                         ),
-                        true,
+                        false,
                         true
                     ),
                     new ColorRect(environment, Color.Transparent),
