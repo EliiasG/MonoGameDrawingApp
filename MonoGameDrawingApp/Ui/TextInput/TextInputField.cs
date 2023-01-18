@@ -26,6 +26,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
         private readonly UiEnvironment _environment;
 
         private int _cursorPosition;
+        private int _counter;
 
         private readonly Dictionary<Keys, char> _customKeyChars;
         private readonly Dictionary<char, char> _customShiftVersions;
@@ -53,6 +54,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
             _environment = environment;
 
             Value = value;
+            _cursorPosition = value.Length;
             IsSelectable = isSelectable;
             IsDeselectable = isDeselectable;
             Filters = filters;
@@ -73,7 +75,8 @@ namespace MonoGameDrawingApp.Ui.TextInput
              *     CenterView:
              *       MinSize:
              *         _inner:
-             *           _textView
+             *           ColorModifier:
+             *             _textView
              *           _cursorOuter:
              *             Empty
              *             _cursorInner:
@@ -83,7 +86,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
             _background = new ColorRect(environment, environment.Theme.ButtonColor);
             _backgroundHovering = new ColorRect(environment, environment.Theme.HoveringButtonColor);
             _backgroundSelected = new ColorRect(environment, environment.Theme.SelectedButtonColor);
-            _cursorOn = new ColorRect(environment, environment.Theme.DefaultTextColor);
+            _cursorOn = new ColorRect(environment, environment.Theme.EditingTextColor);
             _cursorOff = new ColorRect(environment, Color.Transparent);
 
             _currentCursor = new ChangeableView(environment, _cursorOn);
@@ -93,7 +96,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
             _cursorOuter = new HSplitStandard(environment, new ColorRect(environment, Color.Transparent), _cursorInner, 0);
             _textView = new TextView(Environment, Value);
 
-            _inner = new StackView(environment, new List<IUiElement>() { _textView, _cursorOuter });
+            _inner = new StackView(environment, new List<IUiElement>() { new ColorModifier(Environment, _textView, Environment.Theme.EditingTextColor), _cursorOuter });
 
             _currentBrackground = new ChangeableView(environment, _background);
 
@@ -144,9 +147,10 @@ namespace MonoGameDrawingApp.Ui.TextInput
 
         private void _updateUiState()
         {
+            _counter = (_counter + 1) % 60;
             _textView.Text = Value;
             _currentBrackground.Child = IsSelected ? _backgroundSelected : _button.ContainsMouse ? _backgroundHovering : _background;
-            _currentCursor.Child = IsSelected ? _cursorOn : _cursorOff;
+            _currentCursor.Child = IsSelected && _counter < 30 ? _cursorOn : _cursorOff;
             _cursorOuter.SplitPosition = (int) Environment.Font.MeasureString(Value.Substring(0, _cursorPosition)).X;
             _cursorInner.SplitPosition = 0;
         }
@@ -159,14 +163,17 @@ namespace MonoGameDrawingApp.Ui.TextInput
             if (keys.Contains(Keys.Left) && !_oldKeys.Contains(Keys.Left))
             {
                 _cursorPosition = Math.Max(_cursorPosition - 1, 0);
+                _counter = 0;
             }
             else if (keys.Contains(Keys.Right) && !_oldKeys.Contains(Keys.Right))
             {
                 _cursorPosition = Math.Min(_cursorPosition + 1, Value.Length);
+                _counter = 0;
             }
             if (keys.Contains(Keys.Back) && !_oldKeys.Contains(Keys.Back) && _cursorPosition > 0)
             {
                 Value = Value.Remove(--_cursorPosition, 1);
+                _counter = 0;
             }
 
             if (MaxLength != -1 && Value.Length >= MaxLength)
@@ -222,6 +229,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
         {
             Value = Value.Insert(_cursorPosition, value.ToString());
             ++_cursorPosition;
+            _counter = 0;
         }
 
         private Dictionary<Keys, char> _createCustomKeyChars()

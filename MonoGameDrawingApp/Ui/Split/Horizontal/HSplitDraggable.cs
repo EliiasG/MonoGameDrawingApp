@@ -7,6 +7,7 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
     public class HSplitDraggable : HSplit
     {
         //Edited copy-paste of VSplitDraggable, maybe i should refactor it at some point
+        //Problably never gonna happen
         public readonly int HandleWidth;
         private readonly HSplit _outer;
         private readonly HSplit _left;
@@ -62,6 +63,11 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
             bool isInHorizontal = mouse.X >= barPosition.X && mouse.X <= barPosition.X + HandleWidth;
             bool isIn = isInVertical && isInHorizontal;
 
+            if(isIn || _dragOffset != -1)
+            {
+                Environment.Cursor = MouseCursor.SizeWE;
+            }
+
             if (!left)
             {
                 _dragOffset = -1;
@@ -76,6 +82,7 @@ namespace MonoGameDrawingApp.Ui.Split.Horizontal
             if (left && _dragOffset != -1)
             {
                 SplitPosition = mouse.X - (int)position.X + _dragOffset;
+                Environment.LockCursor();
             }
         }
     }

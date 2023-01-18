@@ -63,6 +63,11 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
             bool isInHorizontal = mouse.X >= barPosition.X && mouse.X <= barPosition.X + width;
             bool isIn = isInVertical && isInHorizontal;
 
+            if (isIn || _dragOffset != -1)
+            {
+                Environment.Cursor = MouseCursor.SizeNS;
+            }
+
             if (!left)
             {
                 _dragOffset = -1;
@@ -77,6 +82,7 @@ namespace MonoGameDrawingApp.Ui.Split.Vertical
             if (left && _dragOffset != -1)
             {
                 SplitPosition = mouse.Y - (int)position.Y + _dragOffset;
+                Environment.LockCursor();
             }
         }
     }

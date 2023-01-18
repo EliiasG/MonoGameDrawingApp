@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Themes;
 
 namespace MonoGameDrawingApp.Ui.Buttons
@@ -42,6 +43,12 @@ namespace MonoGameDrawingApp.Ui.Buttons
         public void Update(Vector2 position, int width, int height)
         {
             _colorModifier.Color = Button.ContainsMouse ? _theme.HoveringTextColor : _theme.DefaultTextColor;
+
+            if(Button.ContainsMouse)
+            {
+                Environment.Cursor = MouseCursor.Hand;
+            }
+
             Button.Update(position, width, height);
         }
     }

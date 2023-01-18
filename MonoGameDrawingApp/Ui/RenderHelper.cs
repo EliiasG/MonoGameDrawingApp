@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace MonoGameDrawingApp.Ui
 {
@@ -39,7 +40,7 @@ namespace MonoGameDrawingApp.Ui
 
             if (_renderTarget == null)
             {
-                _renderTarget = new RenderTarget2D(graphics.Device, width, height);
+                _renderTarget = new RenderTarget2D(graphics.Device, Math.Max(width, 1), Math.Max(height, 1));
             }
         }
 

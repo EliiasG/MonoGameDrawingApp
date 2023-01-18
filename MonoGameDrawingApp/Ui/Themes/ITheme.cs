@@ -11,6 +11,7 @@ namespace MonoGameDrawingApp.Ui.Themes
 
         Color DefaultTextColor { get; }
         Color HoveringTextColor { get; }
+        Color EditingTextColor { get; }
 
         Color ButtonColor { get; }
         Color HoveringButtonColor { get; }

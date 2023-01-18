@@ -19,5 +19,7 @@ namespace MonoGameDrawingApp.Ui.Themes
         public Color SelectedButtonColor => new Color(52, 59, 69);
 
         public Color SecondaryMenuBackgroundColor => new Color(58, 79, 102);
+
+        public Color EditingTextColor => new Color(232, 252, 239);
     }
 }

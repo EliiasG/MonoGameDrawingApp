@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MonoGameDrawingApp.Ui.Tree.Trees;
 
 namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 {
@@ -10,7 +11,6 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
         private readonly string _path;
 
         private readonly List<IFileSystemTreeItem> _children;
-        private readonly string _icon;
         private readonly ITree _tree;
 
         private bool _isOpen;
@@ -18,7 +18,6 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
         public DirectoryTreeItem(string path, ITree tree)
         {
             _path = path;
-            _icon = "icons/folder";
             _tree = tree;
             _children = new List<IFileSystemTreeItem>();
         }
@@ -37,9 +36,9 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
             set => _isOpen = value; 
         }
 
-        public bool HasOpenButton => !Directory.EnumerateFileSystemEntries(Path).Any();
+        public bool HasOpenButton => Directory.EnumerateFileSystemEntries(Path).Any();
 
-        public string IconPath => _icon;
+        public string IconPath => "icons/folder";
 
         public IEnumerable<ITreeItem> Children
         {
@@ -84,8 +83,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
         public void Clicked()
         {
-            throw new NotImplementedException();
-            //TODO
+            Tree.Selected = this;
         }
 
         public void RightClicked()

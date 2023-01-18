@@ -2,10 +2,15 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui;
 using MonoGameDrawingApp.Ui.Popup;
+using MonoGameDrawingApp.Ui.Scroll;
+using MonoGameDrawingApp.Ui.Split.Horizontal;
+using MonoGameDrawingApp.Ui.Split.Vertical;
 using MonoGameDrawingApp.Ui.Tabs;
 using MonoGameDrawingApp.Ui.TextInput;
 using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
 using MonoGameDrawingApp.Ui.Themes;
+using MonoGameDrawingApp.Ui.Tree;
+using MonoGameDrawingApp.Ui.Tree.Trees;
 using System;
 using System.Diagnostics;
 
@@ -48,23 +53,30 @@ namespace MonoGameDrawingApp
             environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"));
 
             TextInputField textInputField = new TextInputField(environment, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, false, -1);
-            
 
-            TabEnvironment tabEnv = new TabEnvironment(environment, new ColorRect(environment, Color.Transparent));
 
-            PopupEnvironment pop = new PopupEnvironment(environment, tabEnv);
+            DirectoryTree tree = new DirectoryTree("C:\\Projects");
 
+            //TabEnvironment tabEnv = new TabEnvironment(environment,
+                
+            //);
+
+            //PopupEnvironment pop = new PopupEnvironment(environment, tabEnv);
+
+            /*
             pop.OpenCentered(new TextInputPopup(
                 environment: environment,
                 popupEnvironment: pop,
                 confirmed: (string s) => Debug.WriteLine("Seleted: " + s),
                 filters: new ITextInputFilter[] { new AlphanumericTextInputFilter() },
-                title: "Test Window"
+                title: "Test Window",
+                currentValue: "RenameMe"
             ));
+            */
 
             for (int i = 0; i < 100; i++)
             {
-                tabEnv.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(environment, new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
+                //tabEnv.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(environment, new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
             }
 
             /*
@@ -76,7 +88,21 @@ namespace MonoGameDrawingApp
             */
             //_split = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Red), 100, 10);
             // TODO: use this.Content to load your game content here
-            environment.Root = pop;
+            environment.Root = new HSplitDraggable(environment,
+                    new ScrollWindow(environment,
+                        //new TreeView(environment, 50, tree)
+                        new MinSize(environment,
+                            new ColorRect(environment, Color.Red),
+                            5000,
+                            5000
+                        ),
+                        true,
+                        true
+                    ),
+                    new ColorRect(environment, Color.Transparent),
+                    500,
+                    10
+                );
         }
 
         protected override void Update(GameTime gameTime)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Themes;
 
 namespace MonoGameDrawingApp.Ui
@@ -12,7 +13,22 @@ namespace MonoGameDrawingApp.Ui
 
         public ITheme Theme;
 
+        public MouseCursor Cursor
+        {
+            set 
+            {
+                if (!_cursorLocked)
+                {
+                    _cursor = value;
+                }
+            }
+            get => _cursor; 
+        }
+
         public readonly SpriteFont Font;
+
+        private MouseCursor _cursor;
+        private bool _cursorLocked;
 
         public UiEnvironment(Graphics graphics, ITheme theme, SpriteFont font)
         {
@@ -21,10 +37,22 @@ namespace MonoGameDrawingApp.Ui
             Font = font;
         }
 
+        public void LockCursor()
+        {
+            _cursorLocked = true;
+        }
+
         public void Render()
         {
+            Cursor = MouseCursor.Arrow;
+
+            _cursorLocked = false;
+
             Root.Update(Vector2.Zero, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
             Texture2D render = Root.Render(Graphics, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
+
+            Mouse.SetCursor(Cursor);
+
             Graphics.Device.Clear(Theme.BackgroundColor);
             Graphics.SpriteBatch.Begin();
 
