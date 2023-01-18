@@ -16,5 +16,6 @@ namespace MonoGameDrawingApp.Ui.Themes
         Color ButtonColor { get; }
         Color HoveringButtonColor { get; }
         Color SelectedButtonColor { get; }
+        Color ScrollbarColor { get; }
     }
 }

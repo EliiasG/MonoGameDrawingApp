@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Tree.Trees;
 
 namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 {
     public class DirectoryTreeItem : IFileSystemTreeItem
     {
+        public readonly PopupEnvironment PopupEnvironment;
+
         private readonly string _path;
 
         private readonly List<IFileSystemTreeItem> _children;
@@ -15,28 +18,45 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
         private bool _isOpen;
 
-        public DirectoryTreeItem(string path, ITree tree)
+        public DirectoryTreeItem(string path, ITree tree, PopupEnvironment popupEnvironment)
         {
             _path = path;
             _tree = tree;
             _children = new List<IFileSystemTreeItem>();
+            PopupEnvironment = popupEnvironment;
         }
 
         public string Path => _path;
 
-        public string Name => System.IO.Path.GetFileNameWithoutExtension(Path);
+        public string Name => Path.Split("\\").Last().Length == 0 ? Path : System.IO.Path.GetFileNameWithoutExtension(Path);
 
-        public bool IsOpen 
+        public bool IsOpen
         {
             get
             {
                 _isOpen = _isOpen && HasOpenButton;
                 return _isOpen;
             }
-            set => _isOpen = value; 
+            set => _isOpen = value;
         }
 
-        public bool HasOpenButton => Directory.EnumerateFileSystemEntries(Path).Any();
+        public bool HasOpenButton
+        {
+            get 
+            {
+                return true;
+                /*
+                try
+                {
+                    return Path == "" || Directory.EnumerateFileSystemEntries(Path).Any();
+                }
+                catch
+                {
+                    return true;
+                }
+                */
+            }   
+        }
 
         public string IconPath => "icons/folder";
 
@@ -49,7 +69,17 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                     return null;
                 }
 
-                string[] items = Directory.GetFileSystemEntries(Path);
+                string[] items;
+                if (Path != "")
+                {
+
+                    items = Directory.GetFileSystemEntries(Path);
+                }
+                else
+                {
+                    items = DriveInfo.GetDrives().Select(x => x.Name).ToArray();
+                }
+                
 
                 foreach (IFileSystemTreeItem child in _children) 
                 {
@@ -65,7 +95,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                     {
                         if (Directory.Exists(item))
                         {
-                            _children.Add(new DirectoryTreeItem(item, Tree));
+                            _children.Add(new DirectoryTreeItem(item, Tree, PopupEnvironment));
                         }
                         else
                         {

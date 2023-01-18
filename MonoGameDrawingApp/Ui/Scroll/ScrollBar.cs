@@ -14,11 +14,13 @@ namespace MonoGameDrawingApp.Ui.Scroll
         public float ScrollSpeed = 10;
         public int End;
         public int Size;
+        public bool Disabled = false;
 
         protected readonly IUiElement _firstBackground;
         protected readonly IUiElement _secondBackground;
         protected readonly IUiElement _bar;
         protected readonly IUiElement _barHovering;
+        protected readonly IUiElement _barDisabled;
 
         protected BaseSplit _outer;
         protected BaseSplit _inner;
@@ -36,8 +38,9 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
             _firstBackground = new ColorRect(environment, Color.Transparent);
             _secondBackground = new ColorRect(environment, Color.Transparent);
-            _bar = new ColorRect(environment, environment.Theme.MenuBackgorundColor);
+            _bar = new ColorRect(environment, environment.Theme.ScrollbarColor);
             _barHovering = new ColorRect(environment, environment.Theme.HoveringButtonColor);
+            _barDisabled = new ColorRect(environment, Color.Transparent);
         }
 
         protected abstract Rectangle _getBarBounds(Vector2 position, int width, int height, int dist, int length);
@@ -107,6 +110,12 @@ namespace MonoGameDrawingApp.Ui.Scroll
             bool hovering = _getBarBounds(positon, width, height, dist, length).Contains(mouse.Position);
             bool clicked = mouse.LeftButton == ButtonState.Pressed;
             bool justClicked = clicked && !(_oldMouse.LeftButton == ButtonState.Pressed);
+
+            if(Disabled)
+            {
+                _innerBar.Child = _barDisabled;
+                return;
+            }
 
             if (hovering || _dragOffset != -1)
             {

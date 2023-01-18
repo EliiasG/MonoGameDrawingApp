@@ -55,13 +55,24 @@ namespace MonoGameDrawingApp
             TextInputField textInputField = new TextInputField(environment, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, false, -1);
 
 
-            DirectoryTree tree = new DirectoryTree("C:\\Projects");
+            DirectoryTree tree = new DirectoryTree("C:\\", true);
 
-            //TabEnvironment tabEnv = new TabEnvironment(environment,
-                
-            //);
+            TabEnvironment tabEnv = new TabEnvironment(environment,
+                new HSplitDraggable(environment,
+                    new StackView(environment, new IUiElement[]
+                    {
+                        new ColorRect(environment, environment.Theme.MenuBackgorundColor),
+                        new ScrollWindow(environment,
+                            new TreeView(environment, 20, tree)
+                        ),
+                    }),
+                    new ColorRect(environment, Color.Transparent),
+                    200,
+                    10
+                )
+            );
 
-            //PopupEnvironment pop = new PopupEnvironment(environment, tabEnv);
+            PopupEnvironment pop = new PopupEnvironment(environment, tabEnv);
 
             /*
             pop.OpenCentered(new TextInputPopup(
@@ -76,7 +87,7 @@ namespace MonoGameDrawingApp
 
             for (int i = 0; i < 100; i++)
             {
-                //tabEnv.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(environment, new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
+                tabEnv.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(environment, new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
             }
 
             /*
@@ -88,21 +99,7 @@ namespace MonoGameDrawingApp
             */
             //_split = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Red), 100, 10);
             // TODO: use this.Content to load your game content here
-            environment.Root = new HSplitDraggable(environment,
-                    new ScrollWindow(environment,
-                        //new TreeView(environment, 50, tree)
-                        new MinSize(environment,
-                            new ColorRect(environment, Color.Red),
-                            5000,
-                            5000
-                        ),
-                        false,
-                        true
-                    ),
-                    new ColorRect(environment, Color.Transparent),
-                    500,
-                    10
-                );
+            environment.Root = pop;
         }
 
         protected override void Update(GameTime gameTime)

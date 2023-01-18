@@ -97,15 +97,19 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         private void _updateSplits(int width, int height)
         {
-            Debug.WriteLine("hello?");
-            int hDist = width - ScrollBarSize < Child.RequiredHeight ? ScrollBarSize : 1;
+            bool hVisible = height - ScrollBarSize < Child.RequiredHeight;
+            int hDist =  hVisible ? ScrollBarSize : 1;
             int hPos = IsLeft ? hDist : width - hDist;
             _main.SplitPosition = hPos;
             _scrollBar.SplitPosition = hPos;
 
-            int vDist = height - ScrollBarSize < Child.RequiredWidth ? ScrollBarSize : 1;
+            bool vVisible = width - ScrollBarSize < Child.RequiredWidth;
+            int vDist = vVisible ? ScrollBarSize : 1;
             int vPos = IsTop ? vDist : height - vDist;
             _outer.SplitPosition = vPos;
+
+            HScrollBar.Disabled = !vVisible;
+            VScrollBar.Disabled = !hVisible;
         }
 
         private void _updateBars(int width, int height) 

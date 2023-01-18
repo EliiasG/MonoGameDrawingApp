@@ -21,5 +21,7 @@ namespace MonoGameDrawingApp.Ui.Themes
         public Color SecondaryMenuBackgroundColor => new Color(58, 79, 102);
 
         public Color EditingTextColor => new Color(232, 252, 239);
+
+        public Color ScrollbarColor => new Color(44, 51, 59);
     }
 }

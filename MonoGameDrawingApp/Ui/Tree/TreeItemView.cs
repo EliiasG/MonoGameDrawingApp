@@ -79,7 +79,7 @@ namespace MonoGameDrawingApp.Ui.Tree
                         child: new ColorModifier(
                             environment: environment, 
                             child: _buttonIcon, 
-                            color: environment.Theme.DefaultTextColor
+                            color: environment.Theme.ButtonColor
                         )
                     ),
                     width: buttonSize,
@@ -96,14 +96,13 @@ namespace MonoGameDrawingApp.Ui.Tree
                 {
                     new HListView<IUiElement>(environment, new List<IUiElement>
                     {
-                        new MinSize(environment, new ScaleView(environment, icon), buttonSize, buttonSize),
-                        //_textButton,
-                        //_button,
+                        new MinSize(environment,new ColorModifier(environment, new ScaleView(environment, icon), environment.Theme.DefaultTextColor), buttonSize, buttonSize),
+                        _textButton,
+                        _button,
                     }),
                     _childrenView,
                 }),
             });
-            Debug.WriteLine(_outer.RequiredWidth);
         }
 
         public int Indentation
@@ -173,7 +172,6 @@ namespace MonoGameDrawingApp.Ui.Tree
             if (_button.JustLeftClicked)
             {
                 TreeItem.IsOpen = !TreeItem.IsOpen;
-                Debug.WriteLine("click");
             }
 
             _outer.Update(position, width, height);
