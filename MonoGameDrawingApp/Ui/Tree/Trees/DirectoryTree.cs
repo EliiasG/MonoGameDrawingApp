@@ -1,10 +1,6 @@
-﻿using MonoGameDrawingApp.Ui.Tree.TreeItems;
+﻿using MonoGameDrawingApp.Ui.Popup;
+using MonoGameDrawingApp.Ui.Tree.TreeItems;
 using MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Tree.Trees
 {
@@ -18,9 +14,9 @@ namespace MonoGameDrawingApp.Ui.Tree.Trees
 
         private ITreeItem _selected = null;
 
-        public DirectoryTree(string path, bool canSelectDirectories = false, bool canSelectFiles = false)
+        public DirectoryTree(string path, PopupEnvironment popupEnvironment, bool canSelectDirectories = false, bool canSelectFiles = false)
         {
-            _root = new DirectoryTreeItem(path, this);
+            _root = new DirectoryTreeItem(path, this, popupEnvironment);
             CanSelectFiles = canSelectFiles;
             CanSelectDirectories = canSelectDirectories;
         }

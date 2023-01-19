@@ -4,7 +4,6 @@ using MonoGameDrawingApp.Ui;
 using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
-using MonoGameDrawingApp.Ui.Split.Vertical;
 using MonoGameDrawingApp.Ui.Tabs;
 using MonoGameDrawingApp.Ui.TextInput;
 using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
@@ -13,6 +12,7 @@ using MonoGameDrawingApp.Ui.Tree;
 using MonoGameDrawingApp.Ui.Tree.Trees;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp
 {
@@ -54,8 +54,11 @@ namespace MonoGameDrawingApp
 
             TextInputField textInputField = new TextInputField(environment, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, false, -1);
 
+            ChangeableView tabHolder = new ChangeableView(environment, null); //weird fix, the tree needs the popupenvironemt, and the popupenvironment needs the tree
 
-            DirectoryTree tree = new DirectoryTree("C:\\", true);
+            PopupEnvironment pop = new PopupEnvironment(environment, tabHolder);
+
+            DirectoryTree tree = new DirectoryTree("C:\\", pop, true);
 
             TabEnvironment tabEnv = new TabEnvironment(environment,
                 new HSplitDraggable(environment,
@@ -63,7 +66,7 @@ namespace MonoGameDrawingApp
                     {
                         new ColorRect(environment, environment.Theme.MenuBackgorundColor),
                         new ScrollWindow(environment,
-                            new TreeView(environment, 20, tree)
+                            new TreeView(environment, 20, 2, tree)
                         ),
                     }),
                     new ColorRect(environment, Color.Transparent),
@@ -72,7 +75,9 @@ namespace MonoGameDrawingApp
                 )
             );
 
-            PopupEnvironment pop = new PopupEnvironment(environment, tabEnv);
+            tabHolder.Child = tabEnv;
+
+            
 
             /*
             pop.OpenCentered(new TextInputPopup(
@@ -111,6 +116,7 @@ namespace MonoGameDrawingApp
         {
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
+            Debug.WriteLine("Framerate: " + 1 / (gameTime.ElapsedGameTime.TotalSeconds+0.000001));
             environment.Render();
             base.Draw(gameTime);
         }

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Popup;
+using MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem;
 using MonoGameDrawingApp.Ui.Tree.Trees;
 
 namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
@@ -15,8 +18,9 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
         private readonly List<IFileSystemTreeItem> _children;
         private readonly ITree _tree;
+        private readonly ISet<string> _unauthorizedChildren;
 
-        private bool _isOpen;
+        private bool _isOpen = false;
 
         public DirectoryTreeItem(string path, ITree tree, PopupEnvironment popupEnvironment)
         {
@@ -24,6 +28,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
             _tree = tree;
             _children = new List<IFileSystemTreeItem>();
             PopupEnvironment = popupEnvironment;
+            _unauthorizedChildren = new HashSet<string>();
         }
 
         public string Path => _path;
@@ -40,23 +45,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
             set => _isOpen = value;
         }
 
-        public bool HasOpenButton
-        {
-            get 
-            {
-                return true;
-                /*
-                try
-                {
-                    return Path == "" || Directory.EnumerateFileSystemEntries(Path).Any();
-                }
-                catch
-                {
-                    return true;
-                }
-                */
-            }   
-        }
+        public bool HasOpenButton => true;
 
         public string IconPath => "icons/folder";
 
@@ -64,15 +53,24 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
         {
             get
             {
+                
                 if(!IsOpen)
                 {
                     return null;
                 }
-
+                if(_children.Count() == 0)
+                {
+                    
+                    for (int i = 0; i < 50; i++)
+                    {
+                        _children.Add(new DirectoryTreeItem(Path, Tree, PopupEnvironment));
+                    }
+                    
+                }
+                /*
                 string[] items;
                 if (Path != "")
                 {
-
                     items = Directory.GetFileSystemEntries(Path);
                 }
                 else
@@ -91,20 +89,30 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
                 foreach (string item in items)
                 {
-                    if (_children.All((IFileSystemTreeItem child) => child.Path != item)) //All paths are not item == no paths are item
+                    if (!_unauthorizedChildren.Contains(item) && !_children.Any((IFileSystemTreeItem child) => child.Path == item)) //item is not unauthorized, and none of the paths are the item
                     {
+                        Debug.WriteLine("Generating: " + item);
                         if (Directory.Exists(item))
                         {
-                            _children.Add(new DirectoryTreeItem(item, Tree, PopupEnvironment));
+                            try 
+                            {
+                                Directory.EnumerateFileSystemEntries(item); //Does nothing, just to throw exeption
+                                _children.Add(new DirectoryTreeItem(item, Tree, PopupEnvironment));
+                            }
+                            catch (UnauthorizedAccessException e) 
+                            {
+                                _unauthorizedChildren.Add(item);
+                            }
                         }
                         else
                         {
                             //item must exist and is not a directory, so must be a file
                             //TODO fix
+                            _unauthorizedChildren.Add(item);
                         }
                     }
                 }
-
+                */
                 return _children;
             }
         }
@@ -118,8 +126,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
         public void RightClicked()
         {
-            throw new NotImplementedException();
-            //TODO
+            PopupEnvironment.Open(Mouse.GetState().Position, new DirectoryContextMenu(PopupEnvironment.Environment, Path));
         }
     }
 }

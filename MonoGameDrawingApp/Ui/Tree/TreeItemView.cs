@@ -2,13 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Buttons;
 using MonoGameDrawingApp.Ui.Lists;
-using MonoGameDrawingApp.Ui.Split.Horizontal;
-using MonoGameDrawingApp.Ui.Split.Vertical;
 using MonoGameDrawingApp.Ui.Tree.TreeItems;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Tree
 {
@@ -23,6 +22,7 @@ namespace MonoGameDrawingApp.Ui.Tree
         private readonly VListView<TreeItemView> _childrenView;
 
         private readonly int _indentation;
+        private readonly int _spacing;
         private readonly IUiElement _openButtonIcon;
         private readonly IUiElement _closedButtonIcon;
         private readonly IUiElement _defaultButtonIcon;
@@ -34,9 +34,10 @@ namespace MonoGameDrawingApp.Ui.Tree
         private readonly List<TreeItemView> _empty;
         private readonly ColorModifier _textColor;
 
-        public TreeItemView(UiEnvironment environment, ITreeItem treeItem, int indentation, bool hideSelf)
+        public TreeItemView(UiEnvironment environment, ITreeItem treeItem, int indentation, int spacing, bool hideSelf)
         {
             _environment = environment;
+            _spacing = spacing;
 
             TreeItem = treeItem;
             _indentation = indentation;
@@ -63,6 +64,7 @@ namespace MonoGameDrawingApp.Ui.Tree
             _empty = new List<TreeItemView>();
             _children = new List<TreeItemView>();
             _childrenView = new VListView<TreeItemView>(environment, _empty);
+            _childrenView.Spacing = spacing;
             _textView = new TextView(environment, " " + TreeItem.Name);
             _textColor = new ColorModifier(environment, _textView, environment.Theme.DefaultTextColor);
             _openButtonIcon = new SpriteView(environment, "icons/open");
@@ -123,6 +125,28 @@ namespace MonoGameDrawingApp.Ui.Tree
             return _outer.Render(graphics, width, height);
         }
 
+        private bool _childrenChanged(IEnumerable<ITreeItem> itemChildren)
+        {
+            return _children.Count() == 0;
+            /*
+            if (itemChildren.Count() != _children.Count())
+            {
+                return true;
+            }
+            int i = 0;
+            foreach (ITreeItem itemChild in itemChildren)
+            {
+                if(itemChild != _children[i].TreeItem)
+                {
+                    Debug.WriteLine(i);
+                    return true;
+                }
+                ++i;
+            }
+            return false;
+            */
+        }
+
         public void Update(Vector2 position, int width, int height)
         {
             /*
@@ -135,23 +159,29 @@ namespace MonoGameDrawingApp.Ui.Tree
             _buttonIcon.Child = TreeItem.HasOpenButton ? (TreeItem.IsOpen ? _openButtonIcon : _closedButtonIcon) : _defaultButtonIcon;
 
             if(TreeItem.IsOpen) 
-            { 
-                foreach (TreeItemView child in _children)
+            {
+                IEnumerable<ITreeItem> itemChildren = TreeItem.Children;// TreeItem.Children can be expensive
+
+                if(_childrenChanged(itemChildren))
                 {
-                    if(!TreeItem.Children.Contains(child.TreeItem))
+                    Debug.WriteLine("crap");
+                    foreach (TreeItemView child in _children)
                     {
-                        _children.Remove(child);
+                        if (!itemChildren.Contains(child.TreeItem))
+                        {
+                            _children.Remove(child);
+                        }
+                    }
+
+                    foreach (ITreeItem child in itemChildren)
+                    {
+                        if (_children.All(item => item.TreeItem != child)) //none of the children contain the current child
+                        {
+                            _children.Add(new TreeItemView(Environment, child, _indentation, _spacing, false)); //_indentation, because it should use the value given in the constructor
+                        }
                     }
                 }
-
-                foreach (ITreeItem child in TreeItem.Children)
-                {
-                    if(_children.All(item => item.TreeItem != child)) //none of the children contain the current child
-                    {
-                       _children.Add(new TreeItemView(Environment, child, _indentation, false)); //_indentation, because it should use the value given in the constructor
-                    }
-                }
-
+                
                 _childrenView.Items = _children;
             }
             else

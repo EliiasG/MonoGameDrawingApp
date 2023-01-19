@@ -8,6 +8,8 @@ namespace MonoGameDrawingApp.Ui.Lists
     {
         public List<T> Items;
 
+        public int Spacing = 0;
+
         private readonly UiEnvironment _environment;
 
         private List<T> _oldItems;

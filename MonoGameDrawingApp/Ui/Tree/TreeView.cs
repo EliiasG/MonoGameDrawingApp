@@ -11,10 +11,10 @@ namespace MonoGameDrawingApp.Ui.Tree
 
         private TreeItemView _treeItemView;
 
-        public TreeView(UiEnvironment environment, int indentationAmount, ITree tree)
+        public TreeView(UiEnvironment environment, int indentationAmount, int spacing, ITree tree)
         {
             _environment = environment;
-            _treeItemView = new TreeItemView(environment, tree.Root, indentationAmount, tree.HideRoot);
+            _treeItemView = new TreeItemView(environment, tree.Root, indentationAmount, spacing, tree.HideRoot);
         }
 
         public bool Changed => _treeItemView.Changed;

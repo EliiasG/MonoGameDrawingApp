@@ -16,7 +16,7 @@ namespace MonoGameDrawingApp.Ui.Lists
 
         public override int RequiredWidth => Items.Count > 0 ? Items.Max((T item) => item.RequiredWidth) : 3;
 
-        public override int RequiredHeight => Items.Count > 0 ? Items.Sum((T item) => item.RequiredHeight) : 1;
+        public override int RequiredHeight => Items.Count > 0 ? Items.Sum((T item) => item.RequiredHeight) + (Items.Count - 1) * Spacing : 1;
 
         public override Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -41,7 +41,7 @@ namespace MonoGameDrawingApp.Ui.Lists
                         position: renderPosition,
                         color: Color.White
                     );
-                    renderPosition += new Vector2(0, render.Height);
+                    renderPosition += new Vector2(0, render.Height + Spacing);
                 }
 
                 _renderHelper.FinishDraw();
@@ -61,7 +61,7 @@ namespace MonoGameDrawingApp.Ui.Lists
                 {
                     _changed = true;
                 }
-                updatePositon += new Vector2(0, item.RequiredHeight);
+                updatePositon += new Vector2(0, item.RequiredHeight + Spacing);
             }
         }
     }

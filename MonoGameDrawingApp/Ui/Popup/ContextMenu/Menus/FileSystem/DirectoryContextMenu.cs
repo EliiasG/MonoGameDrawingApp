@@ -5,12 +5,15 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem
 {
     public class DirectoryContextMenu : IUiElement
     {
+        public readonly string Path;
+
         private UiEnvironment _environment;
 
         private StackView _outer;
 
-        public DirectoryContextMenu(UiEnvironment environment)
+        public DirectoryContextMenu(UiEnvironment environment, string path)
         {
+            Path = path;
             _environment = environment;
             _outer = new StackView(
                 environment: environment,

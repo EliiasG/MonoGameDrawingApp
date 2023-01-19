@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Themes;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui
 {
@@ -50,7 +51,7 @@ namespace MonoGameDrawingApp.Ui
 
             Root.Update(Vector2.Zero, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
             Texture2D render = Root.Render(Graphics, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
-
+            Debug.WriteLine(Root.Changed);
             Mouse.SetCursor(Cursor);
 
             Graphics.Device.Clear(Theme.BackgroundColor);

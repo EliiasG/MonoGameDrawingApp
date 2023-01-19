@@ -14,7 +14,7 @@ namespace MonoGameDrawingApp.Ui.Lists
             _renderHelper = new RenderHelper();
         }
 
-        public override int RequiredWidth => Items.Count > 0 ? Items.Sum((T item) => item.RequiredWidth) : 1;
+        public override int RequiredWidth => Items.Count > 0 ? Items.Sum((T item) => item.RequiredWidth) + (Items.Count - 1) * Spacing : 1;
 
         public override int RequiredHeight => Items.Count > 0 ? Items.Max((T item) => item.RequiredHeight) : 3;
 
@@ -41,7 +41,7 @@ namespace MonoGameDrawingApp.Ui.Lists
                         position: renderPosition,
                         color: Color.White
                     );
-                    renderPosition += new Vector2(render.Width, 0);
+                    renderPosition += new Vector2(render.Width + Spacing, 0);
                 }
 
                 _renderHelper.FinishDraw();
@@ -61,7 +61,7 @@ namespace MonoGameDrawingApp.Ui.Lists
                 {
                     _changed = true;
                 }
-                updatePositon += new Vector2(item.RequiredWidth, 0);
+                updatePositon += new Vector2(item.RequiredWidth + Spacing , 0);
             }
         }
     }

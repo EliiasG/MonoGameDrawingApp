@@ -31,10 +31,10 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
             Tab = tab;
             Spacing = spacing;
+            int size = (int)environment.Font.MeasureString("X").Y;
             _background = new ColorRect(environment, environment.Theme.ButtonColor);
             _BackgroundSelected = new ColorRect(environment, environment.Theme.SelectedButtonColor);
-            _closeButton = new MinSize(environment, new ScaleView(environment, new SpriteView(environment, "icons/close")), 21, 21);
-            //CloseButton = new TextView(Font, "X");
+            _closeButton = new MinSize(environment, new ScaleView(environment, new SpriteView(environment, "icons/close")), size, size);
             ExtraSize = extraSize;
 
             _renderHelper = new RenderHelper();
@@ -120,7 +120,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
                 graphics.SpriteBatch.DrawString(
                     spriteFont: Environment.Font,
                     text: Tab.Title,
-                    position: new Vector2(ExtraSize, 0),
+                    position: new Vector2(ExtraSize, (height - (int) Environment.Font.MeasureString(Tab.Title).Y) / 2 + 1),
                     color: Tab.IsSelected ? Environment.Theme.HoveringTextColor : Environment.Theme.DefaultTextColor
                 );
 
