@@ -34,8 +34,11 @@ namespace MonoGameDrawingApp.Ui
             get => _text;
             set
             {
-                _text = value;
-                _changed = true;
+                if (_text != value)
+                {
+                    _text = value;
+                    _changed = true;
+                }
             }
         }
 

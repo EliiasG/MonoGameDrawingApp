@@ -154,10 +154,11 @@ namespace MonoGameDrawingApp.Ui.Tree
             _inner.SplitPosition = 10;
             _split.SplitPosition = 10;
             */
+            
             _textColor.Color = TreeItem.Tree.Selected == TreeItem ? Environment.Theme.HoveringTextColor : Environment.Theme.DefaultTextColor;
-            _textView.Text = " " + TreeItem.Name;
+            _textView.Text = TreeItem.Name;
             _buttonIcon.Child = TreeItem.HasOpenButton ? (TreeItem.IsOpen ? _openButtonIcon : _closedButtonIcon) : _defaultButtonIcon;
-
+            
             if(TreeItem.IsOpen) 
             {
                 IEnumerable<ITreeItem> itemChildren = TreeItem.Children;// TreeItem.Children can be expensive

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui;
+using MonoGameDrawingApp.Ui.Lists;
 using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
@@ -11,6 +12,7 @@ using MonoGameDrawingApp.Ui.Themes;
 using MonoGameDrawingApp.Ui.Tree;
 using MonoGameDrawingApp.Ui.Tree.Trees;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -61,6 +63,7 @@ namespace MonoGameDrawingApp
             DirectoryTree tree = new DirectoryTree("C:\\", pop, true);
 
             TabEnvironment tabEnv = new TabEnvironment(environment,
+                
                 new HSplitDraggable(environment,
                     new StackView(environment, new IUiElement[]
                     {
@@ -73,6 +76,7 @@ namespace MonoGameDrawingApp
                     200,
                     10
                 )
+                
             );
 
             tabHolder.Child = tabEnv;
