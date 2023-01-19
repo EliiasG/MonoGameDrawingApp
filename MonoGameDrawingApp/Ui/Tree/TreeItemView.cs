@@ -127,8 +127,7 @@ namespace MonoGameDrawingApp.Ui.Tree
 
         private bool _childrenChanged(IEnumerable<ITreeItem> itemChildren)
         {
-            return _children.Count() == 0;
-            /*
+
             if (itemChildren.Count() != _children.Count())
             {
                 return true;
@@ -144,7 +143,7 @@ namespace MonoGameDrawingApp.Ui.Tree
                 ++i;
             }
             return false;
-            */
+            
         }
 
         public void Update(Vector2 position, int width, int height)
@@ -156,7 +155,7 @@ namespace MonoGameDrawingApp.Ui.Tree
             */
             
             _textColor.Color = TreeItem.Tree.Selected == TreeItem ? Environment.Theme.HoveringTextColor : Environment.Theme.DefaultTextColor;
-            _textView.Text = TreeItem.Name;
+            _textView.Text = " " + TreeItem.Name;
             _buttonIcon.Child = TreeItem.HasOpenButton ? (TreeItem.IsOpen ? _openButtonIcon : _closedButtonIcon) : _defaultButtonIcon;
             
             if(TreeItem.IsOpen) 

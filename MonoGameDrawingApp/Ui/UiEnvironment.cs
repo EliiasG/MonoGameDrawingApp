@@ -50,8 +50,8 @@ namespace MonoGameDrawingApp.Ui
             _cursorLocked = false;
 
             Root.Update(Vector2.Zero, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
-            Texture2D render = Root.Render(Graphics, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
             Debug.WriteLine(Root.Changed);
+            Texture2D render = Root.Render(Graphics, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
             Mouse.SetCursor(Cursor);
 
             Graphics.Device.Clear(Theme.BackgroundColor);

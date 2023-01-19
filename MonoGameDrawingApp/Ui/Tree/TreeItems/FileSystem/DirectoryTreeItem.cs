@@ -33,7 +33,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
         public string Path => _path;
 
-        public string Name => Path.Split("\\").Last().Length == 0 ? Path : System.IO.Path.GetFileNameWithoutExtension(Path);
+        public string Name => Path.Split("\\").Last().Length == 0 ? Path : System.IO.Path.GetFileName(Path);
 
         public bool IsOpen
         {
@@ -58,16 +58,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                 {
                     return null;
                 }
-                if(_children.Count() == 0)
-                {
-                    
-                    for (int i = 0; i < 50; i++)
-                    {
-                        _children.Add(new DirectoryTreeItem(Path, Tree, PopupEnvironment));
-                    }
-                    
-                }
-                /*
+                
                 string[] items;
                 if (Path != "")
                 {
@@ -78,7 +69,6 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                     items = DriveInfo.GetDrives().Select(x => x.Name).ToArray();
                 }
                 
-
                 foreach (IFileSystemTreeItem child in _children) 
                 {
                     if (!items.Contains(child.Path))
@@ -98,6 +88,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                             {
                                 Directory.EnumerateFileSystemEntries(item); //Does nothing, just to throw exeption
                                 _children.Add(new DirectoryTreeItem(item, Tree, PopupEnvironment));
+                                return _children;//for load-in effect
                             }
                             catch (UnauthorizedAccessException e) 
                             {
@@ -112,7 +103,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                         }
                     }
                 }
-                */
+                
                 return _children;
             }
         }
