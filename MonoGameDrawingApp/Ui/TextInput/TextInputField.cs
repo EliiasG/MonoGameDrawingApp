@@ -30,6 +30,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
 
         private readonly Dictionary<Keys, char> _customKeyChars;
         private readonly Dictionary<char, char> _customShiftVersions;
+        private readonly Dictionary<char, char> _customAltVersions;
 
         private readonly IUiElement _background;
         private readonly IUiElement _backgroundHovering;
@@ -65,6 +66,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
 
             _customKeyChars = _createCustomKeyChars();
             _customShiftVersions = _createCustomShiftVersions();
+            _customAltVersions = _createCustomAltVersions();
 
             /* 
              * Simplified Structure:
@@ -195,6 +197,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
                 char keyChar = (isUpper ? keyName : keyName.ToLower()).First();
 
                 keyChar = _customShiftVersions.ContainsKey(keyChar) && shift ? _customShiftVersions[keyChar] : keyChar;
+                keyChar = _customAltVersions.ContainsKey(keyChar) && _keyboard.IsKeyDown(Keys.LeftAlt) ? _customAltVersions[keyChar] : keyChar;
 
                 if (!_checkFilters(keyChar, Filters)) continue;
 
@@ -265,6 +268,21 @@ namespace MonoGameDrawingApp.Ui.TextInput
                 {'7', '/'},
                 {'8', '('},
                 {'9', ')'},
+            };
+        }
+
+        private Dictionary<char, char> _createCustomAltVersions()
+        {
+            return new Dictionary<char, char>
+            {
+                {'0', '}'},
+                {'2', '@'},
+                {'3', '£'},
+                {'4', '$'},
+                {'5', '€'},
+                {'7', '{'},
+                {'8', '['},
+                {'9', ']'},
             };
         }
 

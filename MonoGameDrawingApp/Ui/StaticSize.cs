@@ -33,7 +33,7 @@ namespace MonoGameDrawingApp.Ui
 
             if (_renderHelper.SizeChanged || Changed)
             {
-                Texture2D render = Child.Render(graphics, Child.RequiredWidth, Child.RequiredWidth);
+                Texture2D render = Child.Render(graphics, Child.RequiredWidth, Child.RequiredHeight);
 
                 _renderHelper.BeginDraw();
 

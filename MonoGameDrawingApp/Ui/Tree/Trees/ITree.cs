@@ -8,6 +8,7 @@ namespace MonoGameDrawingApp.Ui.Tree.Trees
 
         ITreeItem Selected { get; set; }
 
-        bool HideRoot { get; }
+        void BackgroundRightClicked();
+        void BackgroundLeftClicked();
     }
 }

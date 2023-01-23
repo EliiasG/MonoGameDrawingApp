@@ -16,7 +16,8 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
         private readonly string _path;
 
-        private readonly List<IFileSystemTreeItem> _children;
+        private List<IFileSystemTreeItem> _children;
+
         private readonly ITree _tree;
         private readonly ISet<string> _unauthorizedChildren;
 
@@ -73,6 +74,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                 {
                     if (!items.Contains(child.Path))
                     {
+                        _children = new List<IFileSystemTreeItem>(_children);// setting _children to a clone, otherwise the loop will cause an error
                         _children.Remove(child);
                     }
                 }
@@ -87,7 +89,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                             try 
                             {
                                 Directory.EnumerateFileSystemEntries(item); //Does nothing, just to throw exeption
-                                _children.Add(new DirectoryTreeItem(item, Tree, PopupEnvironment));
+                                _children.Add(new DirectoryTreeItem(item, _tree, PopupEnvironment));
                                 return _children;//for load-in effect
                             }
                             catch (UnauthorizedAccessException e) 
@@ -117,7 +119,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
         public void RightClicked()
         {
-            PopupEnvironment.Open(Mouse.GetState().Position, new DirectoryContextMenu(PopupEnvironment.Environment, Path));
+            PopupEnvironment.Open(Mouse.GetState().Position, new DirectoryContextMenu(PopupEnvironment.Environment, Path, PopupEnvironment, false));
         }
     }
 }

@@ -23,6 +23,7 @@ namespace MonoGameDrawingApp.Ui.Popup
         private readonly TextInputField _textInput;
         private readonly TextButton _confirmButton;
         private readonly TextButton _cancelButton;
+        private bool _done = false;
 
         public TextInputPopup(UiEnvironment environment, PopupEnvironment popupEnvironment, Action<string> confirmed, ITextInputFilter[] filters, string title, string currentValue = "")
         {
@@ -127,14 +128,19 @@ namespace MonoGameDrawingApp.Ui.Popup
 
         public void Update(Vector2 position, int width, int height)
         {
-            if (_confirmButton.Button.JustLeftClicked)
+            if (!_done)
             {
-                Confirmed(_textInput.Value);
-                PopupEnvironment.Close();
-            }
-            else if (_cancelButton.Button.JustLeftClicked)
-            {
-                PopupEnvironment.Close();
+                if (_confirmButton.Button.JustLeftClicked || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                {
+                    PopupEnvironment.Close();
+                    Confirmed(_textInput.Value);
+                    _done = true;
+                }
+                else if (_cancelButton.Button.JustLeftClicked)
+                {
+                    PopupEnvironment.Close();
+                    _done = true;
+                }
             }
             _oldMouse = Mouse.GetState();
 

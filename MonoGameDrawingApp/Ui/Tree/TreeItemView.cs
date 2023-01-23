@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Tree
 {
@@ -15,6 +14,7 @@ namespace MonoGameDrawingApp.Ui.Tree
     {
         public readonly ITreeItem TreeItem;
         public readonly bool HideSelf;
+        public readonly TreeView TreeView;
 
         private readonly UiEnvironment _environment;
 
@@ -28,17 +28,19 @@ namespace MonoGameDrawingApp.Ui.Tree
         private readonly IUiElement _defaultButtonIcon;
         private readonly ChangeableView _buttonIcon;
         private readonly Button _button;
+        private readonly Button _whole;
         private readonly TextView _textView;
         private readonly Button _textButton;
-        private readonly List<TreeItemView> _children;
+        private List<TreeItemView> _children;
         private readonly List<TreeItemView> _empty;
         private readonly ColorModifier _textColor;
 
-        public TreeItemView(UiEnvironment environment, ITreeItem treeItem, int indentation, int spacing, bool hideSelf)
+        public TreeItemView(UiEnvironment environment, ITreeItem treeItem, int indentation, int spacing, bool hideSelf, TreeView treeView)
         {
             _environment = environment;
             _spacing = spacing;
 
+            TreeView = treeView;
             TreeItem = treeItem;
             _indentation = indentation;
             HideSelf = hideSelf;
@@ -91,17 +93,20 @@ namespace MonoGameDrawingApp.Ui.Tree
 
             IUiElement icon = treeItem.IconPath == null ? new ColorRect(Environment, Color.Transparent) : new SpriteView(environment, treeItem.IconPath);
 
+            _whole = new Button(Environment, new HListView<IUiElement>(environment, new List<IUiElement>
+            {
+                new MinSize(environment,new ColorModifier(environment, new ScaleView(environment, icon), environment.Theme.DefaultTextColor), buttonSize, buttonSize),
+                _textButton,
+                _button,
+            }));
+
             _outer = new HListView<IUiElement>(environment, new List<IUiElement>
             {
-                new MinSize(environment, new ColorRect(environment, Color.Transparent), indentation, 1),
+                new MinSize(environment, new ColorRect(environment, Color.Transparent), Indentation, 1),
                 new VListView<IUiElement>(environment, new List<IUiElement>
                 {
-                    new HListView<IUiElement>(environment, new List<IUiElement>
-                    {
-                        new MinSize(environment,new ColorModifier(environment, new ScaleView(environment, icon), environment.Theme.DefaultTextColor), buttonSize, buttonSize),
-                        _textButton,
-                        _button,
-                    }),
+                    hideSelf ? new ColorRect(environment, Color.Transparent) :
+                    _whole,
                     _childrenView,
                 }),
             });
@@ -109,7 +114,7 @@ namespace MonoGameDrawingApp.Ui.Tree
 
         public int Indentation
         {
-            get => HideSelf ? 0 : _indentation;
+            get => HideSelf ? 1 : _indentation;
         }
 
         public int RequiredWidth => _outer.RequiredWidth;
@@ -164,11 +169,11 @@ namespace MonoGameDrawingApp.Ui.Tree
 
                 if(_childrenChanged(itemChildren))
                 {
-                    Debug.WriteLine("crap");
                     foreach (TreeItemView child in _children)
                     {
                         if (!itemChildren.Contains(child.TreeItem))
                         {
+                            _children = new List<TreeItemView>(_children);// setting _children to a clone, otherwise the loop will cause an error
                             _children.Remove(child);
                         }
                     }
@@ -177,7 +182,7 @@ namespace MonoGameDrawingApp.Ui.Tree
                     {
                         if (_children.All(item => item.TreeItem != child)) //none of the children contain the current child
                         {
-                            _children.Add(new TreeItemView(Environment, child, _indentation, _spacing, false)); //_indentation, because it should use the value given in the constructor
+                            _children.Add(new TreeItemView(Environment, child, _indentation, _spacing, false, TreeView)); //_indentation, because it should use the value given in the constructor
                         }
                     }
                 }
@@ -199,7 +204,21 @@ namespace MonoGameDrawingApp.Ui.Tree
                 TreeItem.RightClicked();
             }
 
-            if (_button.JustLeftClicked)
+            if (_whole.JustLeftClicked)
+            {
+                TreeView.ItemClicked = true;
+            }
+
+            if (_whole.JustRightClicked)
+            {
+                TreeView.ItemClicked = true;
+            }
+
+            if (HideSelf)
+            {
+                TreeItem.IsOpen = true;
+            }
+            else if (_button.JustLeftClicked)
             {
                 TreeItem.IsOpen = !TreeItem.IsOpen;
             }

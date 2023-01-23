@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Themes;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui
 {
@@ -13,6 +12,8 @@ namespace MonoGameDrawingApp.Ui
         public readonly Graphics Graphics;
 
         public ITheme Theme;
+
+        public object Clipboard = null; //Maybe bad? the convention says not to create empty interfaces, and use attributes instead, but that does not seem to work for variable types
 
         public MouseCursor Cursor
         {
@@ -50,7 +51,7 @@ namespace MonoGameDrawingApp.Ui
             _cursorLocked = false;
 
             Root.Update(Vector2.Zero, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
-            Debug.WriteLine(Root.Changed);
+            //Debug.WriteLine(Root.Changed);
             Texture2D render = Root.Render(Graphics, Graphics.Device.Viewport.Width, Graphics.Device.Viewport.Height);
             Mouse.SetCursor(Cursor);
 

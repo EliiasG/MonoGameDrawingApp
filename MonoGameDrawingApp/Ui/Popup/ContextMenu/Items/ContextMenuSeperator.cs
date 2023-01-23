@@ -16,9 +16,9 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Items
             _environment = environment;
             _child = new VListView<IUiElement>(environment, new List<IUiElement>
             {
-                new MinSize(environment, new ColorRect(environment, Color.Transparent), 0, 10),
-                new MinSize(environment, new ColorRect(environment, environment.Theme.ButtonColor), 0, 10),
-                new MinSize(environment, new ColorRect(environment, Color.Transparent), 0, 10),
+                new MinSize(environment, new ColorRect(environment, Color.Transparent), 0, 5),
+                new MinSize(environment, new ColorRect(environment, environment.Theme.ButtonColor), 0, 2),
+                new MinSize(environment, new ColorRect(environment, Color.Transparent), 0, 5),
             });
         }
 

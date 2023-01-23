@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui;
-using MonoGameDrawingApp.Ui.Lists;
 using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
@@ -12,9 +11,7 @@ using MonoGameDrawingApp.Ui.Themes;
 using MonoGameDrawingApp.Ui.Tree;
 using MonoGameDrawingApp.Ui.Tree.Trees;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp
 {
@@ -60,7 +57,8 @@ namespace MonoGameDrawingApp
 
             PopupEnvironment pop = new PopupEnvironment(environment, tabHolder);
 
-            DirectoryTree tree = new DirectoryTree("C:\\", pop, true);
+            FileSystemTree tree = new FileSystemTree("C:\\Projects\\TestFolder", pop, true);
+
 
             TabEnvironment tabEnv = new TabEnvironment(environment,
                 
@@ -69,7 +67,7 @@ namespace MonoGameDrawingApp
                     {
                         new ColorRect(environment, environment.Theme.MenuBackgorundColor),
                         new ScrollWindow(environment,
-                            new TreeView(environment, 20, 2, tree)
+                            new TreeView(environment, 20, 2, tree, true)
                         ),
                     }),
                     new ColorRect(environment, Color.Transparent),
@@ -120,7 +118,7 @@ namespace MonoGameDrawingApp
         {
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
-            Debug.WriteLine("Framerate: " + 1 / (gameTime.ElapsedGameTime.TotalSeconds+0.000001));
+            //Debug.WriteLine("Framerate: " + 1 / (gameTime.ElapsedGameTime.TotalSeconds+0.000001));
             environment.Render();
             base.Draw(gameTime);
         }
