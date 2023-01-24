@@ -10,8 +10,7 @@ namespace MonoGameDrawingApp.Ui.TextInput.Filters
 
         private readonly ITextInputFilter[] _subFilters = new ITextInputFilter[]
         {
-            new AlphabeticLowerTextInputFilter(),
-            new AlphabeticUpperTextInputFilter(),
+            new AlphanumericTextInputFilter(),
         };
 
         public ISet<char> AllowedCharacters => _allowedCharacters;

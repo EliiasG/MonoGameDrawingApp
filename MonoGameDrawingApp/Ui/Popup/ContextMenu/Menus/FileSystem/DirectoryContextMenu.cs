@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Xml.Linq;
 
 namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem
 {
@@ -37,7 +38,7 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem
             ContextMenuButton delete = new ContextMenuButton(environment, "Delete", _delete);
             ContextMenuButton cut = new ContextMenuButton(environment, "Cut", _cut);
             ContextMenuButton copy = new ContextMenuButton(environment, "Copy", _copy);
-            ContextMenuButton paste = new ContextMenuButton(environment, "Paste", () => throw new NotImplementedException());
+            ContextMenuButton paste = new ContextMenuButton(environment, "Paste", _paste);
 
             rename.Disabled = isRoot;
             delete.Disabled = isRoot;
@@ -55,8 +56,11 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem
                 copy,
                 paste,
                 new ContextMenuSeperator(environment),
-                new ContextMenuButton(environment, "Add Folder", () => throw new NotImplementedException()),
+                new ContextMenuButton(environment, "Add Folder", _addFolder),
+                // TODO open window with selectable file types, like the one in Visual Studio
                 new ContextMenuButton(environment, "Add File", () => throw new NotImplementedException()),
+                new ContextMenuSeperator(environment),
+                new ContextMenuButton(environment, "Show in explorer", _openExplorer),
             });
 
             _button = new Button(environment, new CenterView(environment, _inner, true, true));
@@ -156,6 +160,58 @@ namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem
             });
 
             PopupEnvironment.OpenCentered(choicePopup);
+        }
+
+        private void _paste()
+        {
+            PopupEnvironment.Close();
+            if (Environment.Clipboard is FileSystemEntityCopyReferance clipboard)
+            {
+                try
+                {
+                    clipboard.Paste(Path);
+                }
+                catch (Exception e)
+                {
+                    MessagePopup messagePopup = new MessagePopup(Environment, e.Message, PopupEnvironment);
+                    PopupEnvironment.OpenCentered(messagePopup);
+                }
+            }
+            else
+            {
+                MessagePopup messagePopup = new MessagePopup(Environment, "Clipboard is not file / directory", PopupEnvironment);
+                PopupEnvironment.OpenCentered(messagePopup);
+            }
+        }
+
+        private void _openExplorer()
+        {
+            PopupEnvironment.Close();
+            Process.Start("explorer.exe", Path);
+        }
+
+        private void _addFolder()
+        {
+            TextInputPopup popup = new TextInputPopup(
+                environment: Environment,
+                popupEnvironment: PopupEnvironment,
+                confirmed: (string name) =>
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(System.IO.Path.Combine(Path, name));
+                    }
+                    catch (Exception e)
+                    {
+                        MessagePopup messagePopup = new MessagePopup(Environment, e.Message, PopupEnvironment);
+                        PopupEnvironment.OpenCentered(messagePopup);
+                    }
+                },
+                filters: new ITextInputFilter[] { new FileSystemTextInputFilter() },
+                title: "Add Folder:"
+            );
+
+            PopupEnvironment.OpenCentered(popup);
         }
     }
 }

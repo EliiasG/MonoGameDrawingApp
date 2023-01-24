@@ -1,4 +1,6 @@
-﻿using MonoGameDrawingApp.Ui.Popup;
+﻿using Microsoft.Xna.Framework.Input;
+using MonoGameDrawingApp.Ui.Popup;
+using MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem;
 using MonoGameDrawingApp.Ui.Tree.TreeItems;
 using MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem;
 using System.Diagnostics;
@@ -11,7 +13,7 @@ namespace MonoGameDrawingApp.Ui.Tree.Trees
 
         public readonly bool CanSelectFiles;
 
-        private readonly ITreeItem _root;
+        private readonly DirectoryTreeItem _root;
 
         private ITreeItem _selected = null;
 
@@ -47,12 +49,13 @@ namespace MonoGameDrawingApp.Ui.Tree.Trees
 
         public void BackgroundLeftClicked()
         {
-            Debug.WriteLine("Left");//TODO
+            Selected = null;
         }
 
         public void BackgroundRightClicked()
         {
-            Debug.WriteLine("Right");//TODO
+            DirectoryContextMenu contextMenu = new DirectoryContextMenu(_root.PopupEnvironment.Environment, _root.Path, _root.PopupEnvironment, true);
+            _root.PopupEnvironment.Open(Mouse.GetState().Position, contextMenu);
         }
     }
 }
