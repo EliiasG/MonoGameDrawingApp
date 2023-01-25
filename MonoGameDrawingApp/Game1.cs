@@ -64,9 +64,11 @@ namespace MonoGameDrawingApp
                     new StackView(environment, new IUiElement[]
                     {
                         new ColorRect(environment, environment.Theme.MenuBackgorundColor),
+                        
                         new ScrollWindow(environment,
-                            new TreeView(environment, 20, 2, tree, true)
+                            new PeekView(environment, new MinSize(environment, new ColorRect(environment, Color.Red), 700, 700))
                         ),
+                        
                     }),
                     new ColorRect(environment, Color.Transparent),
                     200,

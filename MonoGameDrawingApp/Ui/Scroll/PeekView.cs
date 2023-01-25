@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace MonoGameDrawingApp.Ui
+namespace MonoGameDrawingApp.Ui.Scroll
 {
-    public class PeekView : IUiElement
+    public class PeekView : IScrollableView
     {
         public readonly IUiElement Child;
 
@@ -14,6 +14,8 @@ namespace MonoGameDrawingApp.Ui
         private RenderHelper _renderHelper;
         private bool _changed = true;
 
+        private int _width = 1;
+        private int _height = 1;
         public PeekView(UiEnvironment environment, IUiElement child)
         {
             _environment = environment;
@@ -43,6 +45,14 @@ namespace MonoGameDrawingApp.Ui
             }
         }
 
+        public int Width => _width;
+
+        public int Height => _height;
+
+        public int MaxWidth => Child.RequiredWidth;
+
+        public int MaxHeight => Child.RequiredHeight;
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             _renderHelper.Begin(graphics, width, height);
@@ -68,6 +78,8 @@ namespace MonoGameDrawingApp.Ui
 
         public void Update(Vector2 position, int width, int height)
         {
+            _width = width;
+            _height = height;
             Child.Update(position - Position, width, height);
             if (Child.Changed)
             {

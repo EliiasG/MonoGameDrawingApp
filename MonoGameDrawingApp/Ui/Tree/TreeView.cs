@@ -24,7 +24,7 @@ namespace MonoGameDrawingApp.Ui.Tree
         {
             Tree = tree;
             _environment = environment;
-            _button = new Button(environment, new TreeItemView(environment, tree.Root, indentationAmount, spacing, hideRoot, this));
+            _button = new Button(environment, new TreeItemView(environment, tree.Root, indentationAmount, hideRoot, this));
         }
 
         public bool Changed => _button.Changed;
@@ -42,7 +42,7 @@ namespace MonoGameDrawingApp.Ui.Tree
 
         public void Update(Vector2 position, int width, int height)
         {
-            if(!ItemClicked && _oldJustLeft) 
+            if (!ItemClicked && _oldJustLeft)
             {
                 Tree.BackgroundLeftClicked();
             }
@@ -56,6 +56,27 @@ namespace MonoGameDrawingApp.Ui.Tree
             _oldJustRight = _button.JustRightClicked;
             _oldJustLeft = _button.JustLeftClicked;
             _button.Update(position, width, height);
+        }
+
+        internal class TreeViewInner : IUiElement
+        {
+            public bool Changed => throw new System.NotImplementedException();
+
+            public int RequiredWidth => throw new System.NotImplementedException();
+
+            public int RequiredHeight => throw new System.NotImplementedException();
+
+            public UiEnvironment Environment => throw new System.NotImplementedException();
+
+            public Texture2D Render(Graphics graphics, int width, int height)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void Update(Vector2 position, int width, int height)
+            {
+                throw new System.NotImplementedException();
+            }
         }
     }
 }

@@ -13,8 +13,6 @@ namespace MonoGameDrawingApp.Ui.Scroll
         public readonly bool IsTop;
         public readonly bool AllowHoverScrolling;
 
-        public readonly IUiElement Child;
-
         public Vector2 Position = Vector2.Zero;
 
         public readonly VScrollBar VScrollBar;
@@ -28,35 +26,35 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         private MouseState _oldMouse;
 
-        private PeekView _peekWindow;
+        private IScrollableView _child;
 
         private VSplit _outer;
         private HSplit _main;
         private HSplit _scrollBar;
 
-        public ScrollWindow(UiEnvironment environment, IUiElement child, bool isLeft = false, bool isTop = false, bool allowHoverScrolling = true)
+        public ScrollWindow(UiEnvironment environment, IScrollableView child, bool isLeft = false, bool isTop = false, bool allowHoverScrolling = true)
         {
             _environment = environment;
 
             IsLeft = isLeft;
             IsTop = isTop;
             AllowHoverScrolling = allowHoverScrolling;
-            Child = child;
+            _child = child;
 
             VScrollBar = new VScrollBar(environment);
             HScrollBar = new HScrollBar(environment);
 
-            _peekWindow = new PeekView(environment, child);
+            _child = child;
             _corner = new ColorRect(environment, Color.Transparent);
 
             if (isLeft)
             {
-                _main = new HSplitStandard(environment, VScrollBar, _peekWindow, 1);
+                _main = new HSplitStandard(environment, VScrollBar, _child, 1);
                 _scrollBar = new HSplitStandard(environment, _corner, HScrollBar, 1);
             }
             else
             {
-                _main = new HSplitStandard(environment, _peekWindow, VScrollBar, 1);
+                _main = new HSplitStandard(environment, _child, VScrollBar, 1);
                 _scrollBar = new HSplitStandard(environment, HScrollBar, _corner, 1);
             }
             if (isTop)
@@ -96,13 +94,13 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         private void _updateSplits(int width, int height)
         {
-            bool hVisible = height - ScrollBarSize < Child.RequiredHeight;
+            bool hVisible = _child.Height < _child.MaxHeight;
             int hDist =  hVisible ? ScrollBarSize : 1;
             int hPos = IsLeft ? hDist : width - hDist;
             _main.SplitPosition = hPos;
             _scrollBar.SplitPosition = hPos;
 
-            bool vVisible = width - ScrollBarSize < Child.RequiredWidth;
+            bool vVisible = _child.Width < _child.MaxWidth;
             int vDist = vVisible ? ScrollBarSize : 1;
             int vPos = IsTop ? vDist : height - vDist;
             _outer.SplitPosition = vPos;
@@ -113,16 +111,16 @@ namespace MonoGameDrawingApp.Ui.Scroll
 
         private void _updateBars(int width, int height) 
         {
-            VScrollBar.Size = Math.Min(Child.RequiredHeight, height - ScrollBarSize);
-            VScrollBar.End = Child.RequiredHeight;
+            VScrollBar.Size = Math.Min(_child.MaxHeight, _child.Height);
+            VScrollBar.End = _child.MaxHeight;
 
-            HScrollBar.Size = Math.Min(Child.RequiredWidth, width - ScrollBarSize);
-            HScrollBar.End = Child.RequiredWidth;
+            HScrollBar.Size = Math.Min(_child.MaxWidth, _child.Width);
+            HScrollBar.End = _child.MaxWidth;
         }
 
         private void _updatePosition()
         {
-            _peekWindow.Position = new Vector2(HScrollBar.Position, VScrollBar.Position);
+            _child.Position = new Vector2(HScrollBar.Position, VScrollBar.Position);
         }
 
         private void _updateHoverScrolling(Vector2 position, int width, int height)

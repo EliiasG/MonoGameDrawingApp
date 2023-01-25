@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameDrawingApp.Ui.Scroll;
 using System.Collections.Generic;
 
 namespace MonoGameDrawingApp.Ui.Popup

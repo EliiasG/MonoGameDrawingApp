@@ -22,7 +22,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
             _environment = environment;
 
             TabBar = new TabBar(environment);
-            _scrollWindow = new ScrollWindow(environment, TabBar, false, true);
+            _scrollWindow = new ScrollWindow(environment, new PeekView(environment, TabBar), false, true);
             _scrollWindow.HScrollBar.ScrollSpeed = 0.5f;
             Background = background;
             _changeableView = new ChangeableView(environment, Background);
