@@ -12,6 +12,7 @@ using MonoGameDrawingApp.Ui.Tree;
 using MonoGameDrawingApp.Ui.Tree.Trees;
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace MonoGameDrawingApp
 {
@@ -51,14 +52,11 @@ namespace MonoGameDrawingApp
             Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch, Content);
             environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"));
 
-            TextInputField textInputField = new TextInputField(environment, "test", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, true, true, false, -1);
-
             ChangeableView tabHolder = new ChangeableView(environment, null); //weird fix, the tree needs the popupenvironemt, and the popupenvironment needs the tree
 
             PopupEnvironment pop = new PopupEnvironment(environment, tabHolder);
 
-            FileSystemTree tree = new FileSystemTree("C:\\Projects\\TestFolder", pop, true);
-
+            FileSystemTree tree = new FileSystemTree("", pop, true, true);
 
             TabEnvironment tabEnv = new TabEnvironment(environment,
                 

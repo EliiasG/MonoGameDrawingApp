@@ -142,7 +142,6 @@ namespace MonoGameDrawingApp.Ui.Tree
             {
                 if(itemChild != _children[i].TreeItem)
                 {
-                    Debug.WriteLine(i);
                     return true;
                 }
                 ++i;

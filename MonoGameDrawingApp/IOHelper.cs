@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,15 @@ namespace MonoGameDrawingApp
 {
     public class IOHelper
     {
+        public static void OpenWithDefaultProgram(string path)
+        {
+            using Process fileopener = new Process();
+
+            fileopener.StartInfo.FileName = "explorer";
+            fileopener.StartInfo.Arguments = "\"" + @"C:\Projects\TestFolder\Test.txt" + "\"";
+            fileopener.Start();
+        }
+
         public static void CopyDirectory(string sourceDir, string destinationDir)
         {
             _copyDirectory(sourceDir, destinationDir, new HashSet<string>());

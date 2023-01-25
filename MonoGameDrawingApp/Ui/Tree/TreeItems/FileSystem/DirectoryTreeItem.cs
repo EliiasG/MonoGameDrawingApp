@@ -83,7 +83,6 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                 {
                     if (!_unauthorizedChildren.Contains(item) && !_children.Any((IFileSystemTreeItem child) => child.Path == item)) //item is not unauthorized, and none of the paths are the item
                     {
-                        Debug.WriteLine("Generating: " + item);
                         if (Directory.Exists(item))
                         {
                             try 
@@ -92,7 +91,7 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                                 _children.Add(new DirectoryTreeItem(item, _tree, PopupEnvironment));
                                 return _children;//for load-in effect
                             }
-                            catch (UnauthorizedAccessException e) 
+                            catch (UnauthorizedAccessException) 
                             {
                                 _unauthorizedChildren.Add(item);
                             }
@@ -100,8 +99,8 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                         else
                         {
                             //item must exist and is not a directory, so must be a file
-                            //TODO fix
-                            _unauthorizedChildren.Add(item);
+                            _children.Add(new FileTreeItem(item, _tree, PopupEnvironment));
+                            return _children;
                         }
                     }
                 }
@@ -114,6 +113,10 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 
         public void Clicked()
         {
+            if (Tree.Selected == this)
+            {
+                _isOpen = true;
+            }
             Tree.Selected = this;
         }
 

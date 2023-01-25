@@ -40,7 +40,7 @@ namespace MonoGameDrawingApp.Ui.Tree.Trees
                 {
                     _selected = value;
                 }
-                else if (value is null && CanSelectFiles) //TODO replace null with FileTreeItem
+                else if (value is FileTreeItem && CanSelectFiles)
                 {
                     _selected = value;
                 }

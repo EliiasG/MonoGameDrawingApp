@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameDrawingApp.Ui.Buttons;
 using MonoGameDrawingApp.Ui.Tree.Trees;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Tree
 {
@@ -11,47 +13,49 @@ namespace MonoGameDrawingApp.Ui.Tree
 
         public bool ItemClicked = false;
 
-        private MouseState _oldMouse;
         private readonly UiEnvironment _environment;
 
-        private TreeItemView _treeItemView;
+        private Button _button;
+
+        private bool _oldJustRight;
+        private bool _oldJustLeft;
 
         public TreeView(UiEnvironment environment, int indentationAmount, int spacing, ITree tree, bool hideRoot)
         {
             Tree = tree;
             _environment = environment;
-            _treeItemView = new TreeItemView(environment, tree.Root, indentationAmount, spacing, hideRoot, this);
+            _button = new Button(environment, new TreeItemView(environment, tree.Root, indentationAmount, spacing, hideRoot, this));
         }
 
-        public bool Changed => _treeItemView.Changed;
+        public bool Changed => _button.Changed;
 
-        public int RequiredWidth => _treeItemView.RequiredWidth;
+        public int RequiredWidth => _button.RequiredWidth;
 
-        public int RequiredHeight => _treeItemView.RequiredHeight;
+        public int RequiredHeight => _button.RequiredHeight;
 
         public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
-            return _treeItemView.Render(graphics, width, height);
+            return _button.Render(graphics, width, height);
         }
 
         public void Update(Vector2 position, int width, int height)
         {
-            MouseState mouse = Mouse.GetState();
-            ItemClicked = false;
-            _treeItemView.Update(position, width, height);
-
-            if(!ItemClicked && mouse.LeftButton == ButtonState.Pressed && _oldMouse.LeftButton != ButtonState.Pressed) 
+            if(!ItemClicked && _oldJustLeft) 
             {
                 Tree.BackgroundLeftClicked();
             }
-            if (!ItemClicked && mouse.RightButton == ButtonState.Pressed && _oldMouse.RightButton != ButtonState.Pressed)
+            if (!ItemClicked && _oldJustRight)
             {
                 Tree.BackgroundRightClicked();
             }
 
-            _oldMouse = Mouse.GetState();
+            ItemClicked = false;
+            //wonky solution, _button.Update() resets the clicks, but we must set ItemClicked first
+            _oldJustRight = _button.JustRightClicked;
+            _oldJustLeft = _button.JustLeftClicked;
+            _button.Update(position, width, height);
         }
     }
 }
