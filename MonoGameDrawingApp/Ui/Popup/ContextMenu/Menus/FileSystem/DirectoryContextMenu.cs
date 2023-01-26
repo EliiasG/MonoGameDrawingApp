@@ -2,16 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Buttons;
-using MonoGameDrawingApp.Ui.Lists;
+using MonoGameDrawingApp.Ui.List;
 using MonoGameDrawingApp.Ui.Popup.ContextMenu.Items;
 using MonoGameDrawingApp.Ui.TextInput.Filters;
 using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
-using MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Xml.Linq;
 
 namespace MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem
 {

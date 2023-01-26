@@ -7,6 +7,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
 {
     public class TabView : IUiElement
     {
+        // class is a big mess, should use exisiting elements instead of rendering by itself
         public readonly Tab Tab;
 
         public readonly int Spacing;
@@ -40,7 +41,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
             _renderHelper = new RenderHelper();
         }
 
-        public int RequiredWidth => (int)Environment.Font.MeasureString(Tab.Title).X + ExtraSize * 2 + Spacing + (Tab.HasCloseButton ? _closeButton.RequiredWidth : 0);
+        public int RequiredWidth => (int)Environment.Font.MeasureString(Tab.Title).X + ExtraSize + Spacing + (Tab.HasCloseButton ? _closeButton.RequiredWidth : 0);
 
         public int RequiredHeight => Math.Max((int)Environment.Font.MeasureString(Tab.Title).Y, Tab.HasCloseButton ? _closeButton.RequiredHeight : 0) + ExtraSize;
 
@@ -94,10 +95,10 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
             if (Changed || _renderHelper.SizeChanged)
             {
-                Vector2 closeButtonPosition = new Vector2(width - _closeButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
+                Vector2 closeButtonPosition = new Vector2(width - _closeButton.RequiredWidth - ExtraSize, ExtraSize);
 
                 IUiElement currentBackground = Tab.IsSelected ? _BackgroundSelected : _background;
-                Texture2D backgroundRender = currentBackground.Render(graphics, width - Spacing, height);
+                Texture2D backgroundRender = currentBackground.Render(graphics, width, height);
                 Texture2D closeButtonRender = _closeButton.Render(graphics, _closeButton.RequiredWidth, _closeButton.RequiredHeight);
 
                 _renderHelper.BeginDraw();
@@ -120,7 +121,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
                 graphics.SpriteBatch.DrawString(
                     spriteFont: Environment.Font,
                     text: Tab.Title,
-                    position: new Vector2(ExtraSize, (height - (int) Environment.Font.MeasureString(Tab.Title).Y) / 2 + 1),
+                    position: new Vector2(ExtraSize, (height - (int)Environment.Font.MeasureString(Tab.Title).Y) / 2 + 1),
                     color: Tab.IsSelected ? Environment.Theme.HoveringTextColor : Environment.Theme.DefaultTextColor
                 );
 

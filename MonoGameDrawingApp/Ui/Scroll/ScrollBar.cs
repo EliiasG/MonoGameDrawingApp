@@ -1,17 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using MonoGameDrawingApp.Ui.Split;
 using Microsoft.Xna.Framework.Input;
+using MonoGameDrawingApp.Ui.Split;
+using System;
 
 namespace MonoGameDrawingApp.Ui.Scroll
 {
     public abstract class ScrollBar : IUiElement
-    { 
+    {
         public int RequiredWidth => 2;
         public int RequiredHeight => 2;
 
-        public float ScrollSpeed = 10;
+        public float ScrollSpeed = 0.5f;
         public int End;
         public int Size;
         public bool Disabled = false;
@@ -66,7 +66,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
         {
             _outer.Update(position, width, height);
             int maxPos = End - Size;
-            int dist = Position * _outer.MaxPosition / (maxPos + Size);
+            int dist = Size == 0 ? 0 : Position * _outer.MaxPosition / (maxPos + Size);
             if (maxPos == 0)
             {
                 _outer.SplitPosition = 0;
@@ -75,7 +75,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             {
                 _outer.SplitPosition = dist;
             }
-            int length = Size * _outer.MaxPosition / End;
+            int length = End == 0 ? 0 : Size * _outer.MaxPosition / End;
             _inner.SplitPosition = length;
 
             _updateScroll(position, width, height);
@@ -95,9 +95,9 @@ namespace MonoGameDrawingApp.Ui.Scroll
             int scroll = mouse.ScrollWheelValue;
 
             Rectangle collider = new Rectangle(positon.ToPoint(), new Point(width, height));
-            if(collider.Contains(mouse.Position))
+            if (collider.Contains(mouse.Position))
             {
-                Position += (int) ((_oldMouse.ScrollWheelValue - scroll) * ScrollSpeed);
+                Position += (int)((_oldMouse.ScrollWheelValue - scroll) * ScrollSpeed);
             }
         }
 
@@ -111,7 +111,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             bool clicked = mouse.LeftButton == ButtonState.Pressed;
             bool justClicked = clicked && !(_oldMouse.LeftButton == ButtonState.Pressed);
 
-            if(Disabled)
+            if (Disabled)
             {
                 _innerBar.Child = _barDisabled;
                 return;
@@ -120,7 +120,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             if (hovering || _dragOffset != -1)
             {
                 _innerBar.Child = _barHovering;
-                if(justClicked)
+                if (justClicked)
                 {
                     _dragOffset = offset - Position;
                 }
@@ -130,7 +130,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
                 _innerBar.Child = _bar;
             }
 
-            if (_dragOffset != -1) 
+            if (_dragOffset != -1)
             {
                 Position = offset - _dragOffset;
             }

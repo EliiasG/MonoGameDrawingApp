@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem;
 using MonoGameDrawingApp.Ui.Tree.Trees;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 {
@@ -54,12 +53,12 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
         {
             get
             {
-                
-                if(!IsOpen)
+
+                if (!IsOpen)
                 {
                     return null;
                 }
-                
+
                 string[] items;
                 if (Path != "")
                 {
@@ -69,8 +68,8 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                 {
                     items = DriveInfo.GetDrives().Select(x => x.Name).ToArray();
                 }
-                
-                foreach (IFileSystemTreeItem child in _children) 
+
+                foreach (IFileSystemTreeItem child in _children)
                 {
                     if (!items.Contains(child.Path))
                     {
@@ -85,13 +84,13 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                     {
                         if (Directory.Exists(item))
                         {
-                            try 
+                            try
                             {
                                 Directory.EnumerateFileSystemEntries(item); //Does nothing, just to throw exeption
                                 _children.Add(new DirectoryTreeItem(item, _tree, PopupEnvironment));
-                                return _children;//for load-in effect
+                                //return _children;//for load-in effect
                             }
-                            catch (UnauthorizedAccessException) 
+                            catch (UnauthorizedAccessException)
                             {
                                 _unauthorizedChildren.Add(item);
                             }
@@ -100,11 +99,11 @@ namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
                         {
                             //item must exist and is not a directory, so must be a file
                             _children.Add(new FileTreeItem(item, _tree, PopupEnvironment));
-                            return _children;
+                            //return _children;
                         }
                     }
                 }
-                
+
                 return _children;
             }
         }

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.Lists
+namespace MonoGameDrawingApp.Ui.List
 {
     public abstract class ListView<T> : IUiElement where T : IUiElement
     {

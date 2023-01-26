@@ -1,14 +1,6 @@
-﻿using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem;
-using MonoGameDrawingApp.Ui.Popup;
+﻿using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Tree.Trees;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem
 {

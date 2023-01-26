@@ -3,7 +3,6 @@ using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Popup.ContextMenu.Menus.FileSystem;
 using MonoGameDrawingApp.Ui.Tree.TreeItems;
 using MonoGameDrawingApp.Ui.Tree.TreeItems.FileSystem;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Tree.Trees
 {

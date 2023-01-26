@@ -95,7 +95,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
         private void _updateSplits(int width, int height)
         {
             bool hVisible = _child.Height < _child.MaxHeight;
-            int hDist =  hVisible ? ScrollBarSize : 1;
+            int hDist = hVisible ? ScrollBarSize : 1;
             int hPos = IsLeft ? hDist : width - hDist;
             _main.SplitPosition = hPos;
             _scrollBar.SplitPosition = hPos;
@@ -109,7 +109,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
             VScrollBar.Disabled = !hVisible;
         }
 
-        private void _updateBars(int width, int height) 
+        private void _updateBars(int width, int height)
         {
             VScrollBar.Size = Math.Min(_child.MaxHeight, _child.Height);
             VScrollBar.End = _child.MaxHeight;
@@ -133,7 +133,7 @@ namespace MonoGameDrawingApp.Ui.Scroll
                 return;
             }
             bool shift = Keyboard.GetState().IsKeyDown(Keys.LeftShift);
-            
+
             int scrollDiff = _oldMouse.ScrollWheelValue - mouse.ScrollWheelValue;
 
             if (shift || VScrollBar.Size >= VScrollBar.End)

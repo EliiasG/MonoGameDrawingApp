@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Buttons;
-using MonoGameDrawingApp.Ui.Lists;
+using MonoGameDrawingApp.Ui.List;
 using MonoGameDrawingApp.Ui.TextInput;
 using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
 using System;

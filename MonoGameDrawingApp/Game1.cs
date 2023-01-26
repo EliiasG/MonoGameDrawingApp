@@ -5,14 +5,12 @@ using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Tabs;
-using MonoGameDrawingApp.Ui.TextInput;
-using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
 using MonoGameDrawingApp.Ui.Themes;
 using MonoGameDrawingApp.Ui.Tree;
 using MonoGameDrawingApp.Ui.Tree.Trees;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 
 namespace MonoGameDrawingApp
 {
@@ -22,6 +20,7 @@ namespace MonoGameDrawingApp
         private SpriteBatch _spriteBatch;
         private UiEnvironment environment;
         private Random rnd = new Random();
+        private TextView text;
 
         public Game1()
         {
@@ -38,7 +37,7 @@ namespace MonoGameDrawingApp
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-            
+
 
             //_split = new ColorRect(Color.Gold);
             TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
@@ -56,30 +55,34 @@ namespace MonoGameDrawingApp
 
             PopupEnvironment pop = new PopupEnvironment(environment, tabHolder);
 
-            FileSystemTree tree = new FileSystemTree("", pop, true, true);
+            FileSystemTree tree = new FileSystemTree(@"", pop, true, true);
 
             TabEnvironment tabEnv = new TabEnvironment(environment,
-                
+
                 new HSplitDraggable(environment,
                     new StackView(environment, new IUiElement[]
                     {
                         new ColorRect(environment, environment.Theme.MenuBackgorundColor),
-                        
+
                         new ScrollWindow(environment,
-                            new PeekView(environment, new MinSize(environment, new ColorRect(environment, Color.Red), 700, 700))
+                            new TreeView(environment, 20, 3, tree, true)
                         ),
-                        
+
                     }),
                     new ColorRect(environment, Color.Transparent),
                     200,
                     10
                 )
-                
+
             );
+            text = new TextView(environment, "");
+            tabHolder.Child = new StackView(environment, new List<IUiElement>
+            {
+                tabEnv,
+                text
+            }); ;
 
-            tabHolder.Child = tabEnv;
 
-            
 
             /*
             pop.OpenCentered(new TextInputPopup(
@@ -92,7 +95,7 @@ namespace MonoGameDrawingApp
             ));
             */
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
                 tabEnv.TabBar.OpenTab(new BasicTab("Test" + i, new ColorRect(environment, new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256)))));
             }
@@ -118,7 +121,7 @@ namespace MonoGameDrawingApp
         {
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
-            //Debug.WriteLine("Framerate: " + 1 / (gameTime.ElapsedGameTime.TotalSeconds+0.000001));
+            text.Text = "" + 1 / (gameTime.ElapsedGameTime.TotalSeconds + 0.000001);
             environment.Render();
             base.Draw(gameTime);
         }
