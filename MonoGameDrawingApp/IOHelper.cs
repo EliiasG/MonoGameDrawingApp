@@ -6,13 +6,14 @@ namespace MonoGameDrawingApp
 {
     public class IOHelper
     {
+        public static void OpenInExplorer(string path)
+        {
+            OpenWithDefaultProgram(Directory.Exists(path) ? path : Path.GetDirectoryName(path));
+        }
+
         public static void OpenWithDefaultProgram(string path)
         {
-            using Process fileopener = new Process();
-
-            fileopener.StartInfo.FileName = "explorer";
-            fileopener.StartInfo.Arguments = "\"" + @"C:\Projects\TestFolder\Test.txt" + "\"";
-            fileopener.Start();
+            Process.Start("explorer.exe", path);
         }
 
         public static void CopyDirectory(string sourceDir, string destinationDir)
@@ -51,13 +52,13 @@ namespace MonoGameDrawingApp
                 string targetFilePath = Path.Combine(destinationDir, file.Name);
                 file.CopyTo(targetFilePath);
             }
-            
+
             foreach (DirectoryInfo subDir in dirs)
             {
                 string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
                 _copyDirectory(subDir.FullName, newDestinationDir, createdDirectories);
             }
-            
+
         }
     }
 }
