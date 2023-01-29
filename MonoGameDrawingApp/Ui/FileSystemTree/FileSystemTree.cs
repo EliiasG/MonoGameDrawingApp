@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base.Popup.ContextMenu.Menus.FileSystem;
 using MonoGameDrawingApp.Ui.Base.Tree.TreeItems;
+using MonoGameDrawingApp.Ui.FileSystemTree;
+using MonoGameDrawingApp.Ui.FileSystemTree.ContextMenus;
 using MonoGameDrawingApp.Ui.FileSystemTree.FileSystem;
 using MonoGameDrawingApp.Ui.Popup;
 
@@ -16,9 +17,9 @@ namespace MonoGameDrawingApp.Ui.Tree.Trees
 
         private ITreeItem _selected = null;
 
-        public FileSystemTree(string path, PopupEnvironment popupEnvironment, bool canSelectDirectories = false, bool canSelectFiles = false)
+        public FileSystemTree(string path, PopupEnvironment popupEnvironment, FileTypeManager fileOpener, bool canSelectDirectories = false, bool canSelectFiles = false)
         {
-            _root = new DirectoryTreeItem(path, this, popupEnvironment);
+            _root = new DirectoryTreeItem(path, this, popupEnvironment, fileOpener);
             _root.IsOpen = true;
             CanSelectFiles = canSelectFiles;
             CanSelectDirectories = canSelectDirectories;

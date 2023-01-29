@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Themes;
@@ -11,7 +12,9 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public readonly Graphics Graphics;
 
-        public ITheme Theme;
+        public readonly ITheme Theme;
+
+        public readonly ContentManager Content;
 
         public object Clipboard = null; //Maybe bad? the convention says not to create empty interfaces, and use attributes instead, but that does not seem to work for variable types
 
@@ -32,11 +35,12 @@ namespace MonoGameDrawingApp.Ui.Base
         private MouseCursor _cursor;
         private bool _cursorLocked;
 
-        public UiEnvironment(Graphics graphics, ITheme theme, SpriteFont font)
+        public UiEnvironment(Graphics graphics, ITheme theme, SpriteFont font, ContentManager content)
         {
             Graphics = graphics;
             Theme = theme;
             Font = font;
+            Content = content;
         }
 
         public void LockCursor()

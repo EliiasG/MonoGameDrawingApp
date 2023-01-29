@@ -9,10 +9,14 @@
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/closed.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/file.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/folder.png</File>
+    <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/imagefile.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/open.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/sprite.png</File>
+    <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/textfile.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

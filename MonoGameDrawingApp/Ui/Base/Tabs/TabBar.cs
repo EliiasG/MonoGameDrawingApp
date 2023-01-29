@@ -73,10 +73,14 @@ namespace MonoGameDrawingApp.Ui.Tabs
             return _hListView.Render(graphics, width, height);
         }
 
-        public void OpenTab(Tab tab)
+        public void OpenTab(Tab tab, bool open = false)
         {
             _tabs.Add(new TabView(Environment, tab));
             tab.TabBar = this;
+            if (open)
+            {
+                SelectedTab = tab;
+            }
         }
 
         public void CloseTab(Tab tab)

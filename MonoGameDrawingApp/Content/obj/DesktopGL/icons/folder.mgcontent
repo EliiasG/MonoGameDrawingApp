@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/folder.png</SourceFile>
-  <SourceTime>2023-01-19T17:13:59.1883621+01:00</SourceTime>
+  <SourceTime>2023-01-24T21:42:56.2324597+01:00</SourceTime>
   <DestFile>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/bin/DesktopGL/icons/folder.xnb</DestFile>
-  <DestTime>2023-01-22T20:45:27.2750164+01:00</DestTime>
+  <DestTime>2023-01-28T19:37:17.9222349+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T13:44:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -6,6 +6,11 @@ namespace MonoGameDrawingApp
 {
     public class IOHelper
     {
+        public static string RemoveExtention(string path)
+        {
+            return Path.ChangeExtension(path, "×").Replace(".×", "");
+        }
+
         public static void OpenInExplorer(string path)
         {
             OpenWithDefaultProgram(Directory.Exists(path) ? path : Path.GetDirectoryName(path));

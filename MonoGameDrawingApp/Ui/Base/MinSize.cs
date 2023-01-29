@@ -7,8 +7,8 @@ namespace MonoGameDrawingApp.Ui
 {
     public class MinSize : IUiElement
     {
-        public readonly int MinWidth;
-        public readonly int MinHeight;
+        public int MinWidth;
+        public int MinHeight;
         public readonly IUiElement Child;
 
         private readonly UiEnvironment _environment;

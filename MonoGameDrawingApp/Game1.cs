@@ -3,15 +3,15 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui;
 using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
+using MonoGameDrawingApp.Ui.FileSystemTree;
+using MonoGameDrawingApp.Ui.FileSystemTree.MiscFileTypes.Png;
 using MonoGameDrawingApp.Ui.Popup;
 using MonoGameDrawingApp.Ui.Scroll;
-using MonoGameDrawingApp.Ui.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Tabs;
 using MonoGameDrawingApp.Ui.Themes;
 using MonoGameDrawingApp.Ui.Tree;
 using MonoGameDrawingApp.Ui.Tree.Trees;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MonoGameDrawingApp
@@ -43,10 +43,7 @@ namespace MonoGameDrawingApp
 
             //_split = new ColorRect(Color.Gold);
             TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
-            //IOHelper.OpenInExplorer(@"C:\Projects\TestFolder\DoesNotExist\Test.txt");
-
-
-
+            //IOHelper.OpenInExplorer(@"C:\Projects\TestFolder\DoesNotExist\Test.txt
 
             base.Initialize();
         }
@@ -55,14 +52,10 @@ namespace MonoGameDrawingApp
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch, Content);
-            environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"));
+            Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch);
+            environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"), Content);
 
-            ChangeableView tabHolder = new ChangeableView(environment, null); //weird fix, the tree needs the popupenvironemt, and the popupenvironment needs the tree
-
-            PopupEnvironment pop = new PopupEnvironment(environment, tabHolder);
-
-            FileSystemTree tree = new FileSystemTree(@"", pop, true, true);
+            ChangeableView treeHolder = new ChangeableView(environment, null); //weird fix, the tree needs the popupenvironemt, and the popupenvironment needs the tree
 
             TabEnvironment tabEnv = new TabEnvironment(environment,
 
@@ -71,9 +64,7 @@ namespace MonoGameDrawingApp
                     {
                         new ColorRect(environment, environment.Theme.MenuBackgorundColor),
 
-                        new ScrollWindow(environment,
-                            new TreeView(environment, 20, 3, tree, true)
-                        ),
+                        treeHolder
 
                     }),
                     new ColorRect(environment, Color.Transparent),
@@ -82,12 +73,23 @@ namespace MonoGameDrawingApp
                 )
 
             );
-            text = new TextView(environment, "");
-            tabHolder.Child = new StackView(environment, new List<IUiElement>
+
+            PopupEnvironment pop = new PopupEnvironment(environment, tabEnv);
+
+            FileIcon[] fileIcons = new FileIcon[]
             {
-                tabEnv,
-                text
-            }); ;
+                new FileIcon("txt", "icons/textfile"),
+                new FileIcon("png", "icons/imagefile"),
+            };
+
+            IOpenableFileType[] fileTypes = new IOpenableFileType[]
+            {
+                new PngOpenableFileType()
+            };
+
+            FileSystemTree tree = new FileSystemTree(@"", pop, new FileTypeManager(tabEnv, fileTypes, fileIcons, true), true, true);
+
+            treeHolder.Child = new ScrollWindow(environment, new TreeView(environment, 20, 3, tree, true));
 
 
 
@@ -116,7 +118,12 @@ namespace MonoGameDrawingApp
             */
             //_split = new VSplitDraggable(new ColorRect(Color.Blue), new ColorRect(Color.Red), 100, 10);
             // TODO: use this.Content to load your game content here
-            environment.Root = pop;
+            text = new TextView(environment, "0");
+            environment.Root = new StackView(environment, new IUiElement[]
+            {
+                pop,
+                text
+            });
         }
 
         protected override void Update(GameTime gameTime)
@@ -128,7 +135,7 @@ namespace MonoGameDrawingApp
         {
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
-            text.Text = "" + 1 / (gameTime.ElapsedGameTime.TotalSeconds + 0.000001);
+            text.Text = "" + 1 / (gameTime.ElapsedGameTime.TotalSeconds);
             environment.Render();
             base.Draw(gameTime);
         }

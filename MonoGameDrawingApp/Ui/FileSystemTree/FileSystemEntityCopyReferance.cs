@@ -21,14 +21,15 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree
             path = System.IO.Path.Combine(path, System.IO.Path.GetFileName(Path)); //input path is directory to paste to, we want the path to the new entity (directory/file)
 
             //if the path exists, change the name
-            if (Directory.Exists(path))
+            if (Directory.Exists(path) || File.Exists(path))
             {
-                string copyPath = path + " - Copy";
-                path = copyPath;
+                string extention = System.IO.Path.GetExtension(path);
+                string copyPath = IOHelper.RemoveExtention(path) + " - Copy";
+                path = copyPath + extention;
                 int i = 0;
-                while (Directory.Exists(path))
+                while (Directory.Exists(path) || File.Exists(path))
                 {
-                    path = copyPath + " (" + ++i + ")";
+                    path = copyPath + " (" + ++i + ")" + extention;
                 }
             }
 

@@ -46,7 +46,7 @@ namespace MonoGameDrawingApp.Ui
             {
                 if (!_sprites.ContainsKey(Path))
                 {
-                    _sprites.Add(Path, graphics.Content.Load<Texture2D>(Path));
+                    _sprites.Add(Path, Environment.Content.Load<Texture2D>(Path));
                 }
                 _texture = _sprites[Path];
                 _changed = true;
