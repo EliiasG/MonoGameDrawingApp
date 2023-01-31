@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
+using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using MonoGameDrawingApp.Ui.Buttons;
 using MonoGameDrawingApp.Ui.Split.Horizontal;
 using System;
@@ -14,6 +14,8 @@ namespace MonoGameDrawingApp.Ui.TextInput
     public class TextInputField : IUiElement
     {
         public string Value { get; set; }
+
+        public string Extention { get; set; }
 
         public bool IsSelected { get; set; }
 
@@ -106,7 +108,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
             _outer = new StackView(environment, new List<IUiElement>()
             {
                 _currentBrackground,
-                new CenterView(environment, new MinSize(environment, _inner, 0, (int) Environment.Font.MeasureString("X").Y), centerHorizontal, true),
+                new CenterView(environment, new MinSize(environment, _inner, 0, (int) Environment.FontHeight), centerHorizontal, true),
             });
 
             _button = new Button(environment, _outer);
@@ -151,7 +153,7 @@ namespace MonoGameDrawingApp.Ui.TextInput
         private void _updateUiState()
         {
             _counter = (_counter + 1) % 60;
-            _textView.Text = Value;
+            _textView.Text = Value + Extention;
             _currentBrackground.Child = IsSelected ? _backgroundSelected : _button.ContainsMouse ? _backgroundHovering : _background;
             _currentCursor.Child = IsSelected && _counter < 30 ? _cursorOn : _cursorOff;
             _cursorOuter.SplitPosition = (int)Environment.Font.MeasureString(Value.Substring(0, _cursorPosition)).X;

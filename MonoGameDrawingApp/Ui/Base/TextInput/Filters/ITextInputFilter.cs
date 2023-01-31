@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric
+namespace MonoGameDrawingApp.Ui.Base.TextInput.Filters
 {
     public interface ITextInputFilter
     {

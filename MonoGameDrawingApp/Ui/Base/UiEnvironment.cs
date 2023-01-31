@@ -14,6 +14,8 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public readonly ITheme Theme;
 
+        public readonly float FontHeight;
+
         public readonly ContentManager Content;
 
         public object Clipboard = null; //Maybe bad? the convention says not to create empty interfaces, and use attributes instead, but that does not seem to work for variable types
@@ -40,6 +42,7 @@ namespace MonoGameDrawingApp.Ui.Base
             Graphics = graphics;
             Theme = theme;
             Font = font;
+            FontHeight = font.MeasureString("X").Y;
             Content = content;
         }
 

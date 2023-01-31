@@ -27,7 +27,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
         public int RequiredWidth => 1;
 
-        public int RequiredHeight => (int)_environment.Font.MeasureString("X").Y + 4;
+        public int RequiredHeight => (int)_Environment.FontHeight + 4;
 
         public bool Changed => _hListView.Changed;
 

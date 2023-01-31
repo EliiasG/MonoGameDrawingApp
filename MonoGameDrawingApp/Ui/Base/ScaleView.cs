@@ -6,16 +6,17 @@ namespace MonoGameDrawingApp.Ui
 {
     public class ScaleView : IUiElement
     {
-        public IUiElement Child;
+        public readonly IUiElement Child;
+        public readonly bool DisableBlur;
 
         private readonly UiEnvironment _environment;
 
         private readonly RenderHelper _renderHelper;
 
-        public ScaleView(UiEnvironment environment, IUiElement child)
+        public ScaleView(UiEnvironment environment, IUiElement child, bool disableBlur = false)
         {
             _environment = environment;
-
+            DisableBlur = disableBlur;
             Child = child;
             _renderHelper = new RenderHelper();
         }
@@ -37,6 +38,12 @@ namespace MonoGameDrawingApp.Ui
                 Texture2D childRender = Child.Render(graphics, Child.RequiredWidth, Child.RequiredHeight);
 
                 _renderHelper.BeginDraw();
+                // to disable blur
+                if (DisableBlur)
+                {
+                    graphics.SpriteBatch.End();
+                    graphics.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                }
 
                 graphics.SpriteBatch.Draw(
                     texture: childRender,

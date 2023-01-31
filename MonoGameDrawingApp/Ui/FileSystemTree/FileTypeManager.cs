@@ -8,26 +8,31 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree
     {
         public readonly TabEnvironment TabEnvironment;
         public readonly Dictionary<string, IOpenableFileType> FileTypes;
-        public readonly Dictionary<string, string> FileIcons;
+        public readonly Dictionary<string, string> ExtentionIcons;
+        public readonly CreatableFileType[] CreatableFileTypes;
         public readonly bool OpenUnknownFiles;
 
         private const string DefaultIconPath = "icons/file";
 
-        public FileTypeManager(TabEnvironment tabEnvironment, IOpenableFileType[] fileTypes, FileIcon[] fileIcons, bool openUnknownFiles)
+        public FileTypeManager(TabEnvironment tabEnvironment, IOpenableFileType[] fileTypes, IExtensionIconCollection extensionIconCollection, CreatableFileType[] creatableTypes, bool openUnknownFiles)
         {
             TabEnvironment = tabEnvironment;
             FileTypes = new Dictionary<string, IOpenableFileType>();
-            FileIcons = new Dictionary<string, string>();
+            ExtentionIcons = new Dictionary<string, string>();
             OpenUnknownFiles = openUnknownFiles;
+            CreatableFileTypes = creatableTypes;
 
             foreach (IOpenableFileType fileType in fileTypes)
             {
-                FileTypes.Add(fileType.Extention, fileType);
+                foreach (string extention in fileType.Extentions)
+                {
+                    FileTypes.Add(extention, fileType);
+                }
             }
 
-            foreach (FileIcon fileIcon in fileIcons)
+            foreach (ExtensionIcon fileIcon in extensionIconCollection.ExtensionIcons)
             {
-                FileIcons.Add(fileIcon.Extention, fileIcon.IconPath);
+                ExtentionIcons.Add(fileIcon.Extention, fileIcon.IconPath);
             }
 
         }
@@ -51,7 +56,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree
         public string GetIconPath(string path)
         {
             string extention = _fixedExtention(path);
-            return FileIcons.ContainsKey(extention) ? FileIcons[extention] : DefaultIconPath;
+            return ExtentionIcons.ContainsKey(extention) ? ExtentionIcons[extention] : DefaultIconPath;
         }
     }
 }

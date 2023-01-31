@@ -33,7 +33,7 @@ namespace MonoGameDrawingApp.Ui.Tabs
 
             Tab = tab;
             Spacing = spacing;
-            int size = (int)environment.Font.MeasureString("X").Y;
+            int size = (int)Environment.FontHeight;
             _background = new ColorRect(environment, environment.Theme.ButtonColor);
             _BackgroundSelected = new ColorRect(environment, environment.Theme.SelectedButtonColor);
             _closeButton = new MinSize(environment, new ScaleView(environment, new SpriteView(environment, "icons/close")), size, size);

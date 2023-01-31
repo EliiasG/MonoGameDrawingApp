@@ -1,5 +1,5 @@
-﻿using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
-using MonoGameDrawingApp.Ui.TextInput.Filters.Base;
+﻿using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
+using MonoGameDrawingApp.Ui.TextInput.Filters.Alphanumeric;
 using System.Collections.Generic;
 using System.Linq;
 

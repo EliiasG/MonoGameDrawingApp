@@ -4,7 +4,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree
 {
     public interface IOpenableFileType
     {
-        string Extention { get; }
+        string[] Extentions { get; }
 
         void Open(string path, TabEnvironment tabEnvironment);
     }

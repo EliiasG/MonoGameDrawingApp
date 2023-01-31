@@ -62,7 +62,7 @@ namespace MonoGameDrawingApp.Ui.Tree
              *     _childrenView
             */
 
-            int buttonSize = (int)Environment.Font.MeasureString("X").Y;
+            int buttonSize = (int)Environment.FontHeight;
 
             _textView = new TextView(environment, " " + TreeItem.Name);
             _textColor = new ColorModifier(environment, _textView, environment.Theme.DefaultTextColor);
