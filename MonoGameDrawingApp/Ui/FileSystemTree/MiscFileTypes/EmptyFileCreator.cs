@@ -6,7 +6,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree.MiscFileTypes
     {
         public void CreateFile(string path)
         {
-            File.Create(path);
+            File.Create(path).Close();
         }
     }
 }

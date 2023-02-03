@@ -3,13 +3,13 @@
     public class CreatableFileType
     {
         public readonly string Name;
-        public readonly string Extention;
+        public readonly string Extension;
         public readonly IFileCreator Creator;
 
-        public CreatableFileType(IFileCreator fileCreator, string name, string extentionWithDot)
+        public CreatableFileType(IFileCreator fileCreator, string name, string extensionWithDot)
         {
             Name = name;
-            Extention = extention;
+            Extension = extensionWithDot;
             Creator = fileCreator;
         }
     }

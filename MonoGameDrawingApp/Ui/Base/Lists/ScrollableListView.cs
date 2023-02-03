@@ -119,8 +119,8 @@ namespace MonoGameDrawingApp.Ui.List
             }
 
             Rectangle _view = new Rectangle(0, 0, width, height);
-            _maxWidth = 0;
-            _maxHeight = 0;
+            _maxWidth = 1;
+            _maxHeight = 1;
 
             foreach ((Rectangle, IUiElement) item in _placedItems)
             {

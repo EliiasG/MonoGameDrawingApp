@@ -54,7 +54,7 @@ namespace MonoGameDrawingApp
             {
                 new DrawingAppRoot(environment),
                 text,
-            }); ;
+            });
         }
 
         protected override void Update(GameTime gameTime)

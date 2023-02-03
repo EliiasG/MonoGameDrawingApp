@@ -5,7 +5,10 @@ using MonoGameDrawingApp.Ui.Base.Popup.ContextMenu.Items;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using MonoGameDrawingApp.Ui.FileSystemTree.MiscFileTypes;
 using MonoGameDrawingApp.Ui.List;
+using MonoGameDrawingApp.Ui.Popup;
+using MonoGameDrawingApp.Ui.Scroll;
 using MonoGameDrawingApp.Ui.TextInput;
+using System;
 using System.Collections.Generic;
 
 namespace MonoGameDrawingApp.Ui.FileSystemTree.Popup
@@ -15,7 +18,14 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree.Popup
     {
         public readonly string Path;
 
-        public FileTypeManager _fileTypeManager;
+        public FileTypeManager FileTypeManager;
+        public PopupEnvironment PopupEnvironment;
+
+
+        private const int Spacing = 5;
+        private const int TextSpacing = 5;
+        private const int ListWidth = 200;
+        private const int ListHeight = 400;
 
         private readonly IUiElement _root;
         private readonly TextInputField _textInputField;
@@ -25,11 +35,12 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree.Popup
         private CreatableFileType _selected;
 
 
-        public FileCreatorMenu(UiEnvironment environment, FileTypeManager fileTypeManager)
+        public FileCreatorMenu(UiEnvironment environment, FileTypeManager fileTypeManager, PopupEnvironment popupEnvironment)
         {
             _environment = environment;
-            _fileTypeManager = fileTypeManager;
+            FileTypeManager = fileTypeManager;
             _selected = new CreatableFileType(new EmptyFileCreator(), "Other", "");
+            PopupEnvironment = popupEnvironment;
 
             List<IUiElement> typeButtons = new List<IUiElement>();
 
@@ -41,20 +52,32 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree.Popup
             _textInputField = new TextInputField(Environment, _selected.Name, new ITextInputFilter[] { new FileSystemTextInputFilter() }, false, false, false, 100);
 
             _textInputField.IsSelected = true;
-            _textInputField.Extention = _selected.Extention;
+            _textInputField.Extention = _selected.Extension;
 
             typeButtons.Add(_generateButton(_selected));
 
-            //TODO make layout:
-            /*
-             * ########
-             * ##LIST##
-             * ##LIST##
-             * ##LIST##
-             * ########
-             * ##NAME##
-             * #CNCL#OK
-             */
+            _root = new VListView<IUiElement>(Environment, new List<IUiElement>
+            {
+                new MinSize(Environment, new ColorRect(environment, Color.Transparent), 1, Spacing),
+                new HListView<IUiElement>(Environment, new List<IUiElement>()
+                {
+                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), Spacing, 1),
+                    new MinSize(Environment, new ScrollWindow(Environment, new VScrollableListView(Environment, typeButtons, false, 1)), ListWidth, ListHeight),
+                    new MinSize(Environment, new ColorRect(Environment  , Color.Transparent), Spacing, 1),
+                }),
+                new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
+                new CenterView(Environment, new MinSize(Environment, _textInputField, ListWidth, (int) Environment.FontHeight + TextSpacing), true, false),
+                new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
+                new CenterView(Environment, new HListView<IUiElement>(Environment, new List<IUiElement>
+                {
+                    new ContextMenuButton(Environment, "Cancel", () => PopupEnvironment.Close()),
+                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), Spacing, 1),
+                    new ContextMenuButton(Environment, "Create File", () => throw new NotImplementedException()),
+                }), true, false),
+                new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
+            }); ;
+
+            //TODO not yet tested
         }
 
         public bool Changed => _root.Changed;
@@ -78,7 +101,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTree.Popup
         private IUiElement _generateButton(CreatableFileType creatableFileType)
         {
             int size = (int)Environment.FontHeight;
-            IUiElement sprite = new SpriteView(Environment, _fileTypeManager.GetIconPath("file" + creatableFileType.Extention));
+            IUiElement sprite = new SpriteView(Environment, FileTypeManager.GetIconPath("file" + creatableFileType.Extension));
             int index = _buttons.Count;
             ContextMenuButton button = new ContextMenuButton(Environment, creatableFileType.Name, () =>
             {
