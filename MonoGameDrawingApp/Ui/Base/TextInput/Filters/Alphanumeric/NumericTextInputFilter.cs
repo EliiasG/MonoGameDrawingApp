@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MonoGameDrawingApp.Ui.TextInput.Filters.Alphanumeric
+namespace MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric
 {
     public class NumericTextInputFilter : ITextInputFilter
     {

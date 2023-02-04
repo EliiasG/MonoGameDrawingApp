@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Buttons;
-using MonoGameDrawingApp.Ui.Themes;
+using MonoGameDrawingApp.Ui.Base.Buttons;
+using MonoGameDrawingApp.Ui.Base.Themes;
 using System;
 
 namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenu.Items

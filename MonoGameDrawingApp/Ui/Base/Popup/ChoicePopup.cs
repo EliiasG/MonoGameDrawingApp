@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Lists;
 using MonoGameDrawingApp.Ui.Base.Popup.ContextMenu.Items;
-using MonoGameDrawingApp.Ui.List;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.Popup
+namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public class ChoicePopup : IUiElement
     {

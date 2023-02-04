@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
 
-namespace MonoGameDrawingApp.Ui.Buttons
+namespace MonoGameDrawingApp.Ui.Base.Buttons
 {
     public class Button : IUiElement
     {

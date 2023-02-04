@@ -2,9 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Split;
-using MonoGameDrawingApp.Ui.Base.Split.Vertical;
 
-namespace MonoGameDrawingApp.Ui.Split.Vertical
+namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 {
     internal class VSplitStandard : VSplit
     {

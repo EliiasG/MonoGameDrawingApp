@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace MonoGameDrawingApp.Ui
+namespace MonoGameDrawingApp.Ui.Base
 {
     public class RenderHelper
     {
@@ -14,10 +14,10 @@ namespace MonoGameDrawingApp.Ui
 
         private bool _changed = true;
 
-        public Texture2D Result => _renderTarget; 
+        public Texture2D Result => _renderTarget;
 
-        public bool SizeChanged 
-        { 
+        public bool SizeChanged
+        {
             get
             {
                 _changed = _renderTarget.Width != _width || _renderTarget.Height != _height || _changed;
@@ -44,7 +44,7 @@ namespace MonoGameDrawingApp.Ui
             }
         }
 
-        public void BeginDraw() 
+        public void BeginDraw()
         {
             _graphics.Device.SetRenderTarget(_renderTarget);
             _graphics.Device.Clear(Color.Transparent);

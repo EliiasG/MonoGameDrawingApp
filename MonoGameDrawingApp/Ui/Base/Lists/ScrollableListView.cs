@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Scroll;
+using MonoGameDrawingApp.Ui.Base.Scroll;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MonoGameDrawingApp.Ui.List
+namespace MonoGameDrawingApp.Ui.Base.Lists
 {
     public abstract class ScrollableListView : IScrollableView
     {
@@ -34,6 +33,7 @@ namespace MonoGameDrawingApp.Ui.List
             UpdateOutOfView = updateOutOfView;
             Spacing = spacing;
             _renderHelper = new RenderHelper();
+            _placedItems = new (Rectangle, IUiElement)[0];
         }
 
         public Vector2 Position

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Split.Horizontal;
 
 namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
 {

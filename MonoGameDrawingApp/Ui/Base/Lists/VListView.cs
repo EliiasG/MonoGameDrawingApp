@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MonoGameDrawingApp.Ui.List
+namespace MonoGameDrawingApp.Ui.Base.Lists
 {
     public class VListView<T> : ListView<T> where T : IUiElement
     {
@@ -15,9 +14,9 @@ namespace MonoGameDrawingApp.Ui.List
             _renderHelper = new RenderHelper();
         }
 
-        public override int RequiredWidth => Items.Count > 0 ? Items.Max((T item) => item.RequiredWidth) : 3;
+        public override int RequiredWidth => Items.Count > 0 ? Items.Max((item) => item.RequiredWidth) : 3;
 
-        public override int RequiredHeight => Items.Count > 0 ? Items.Sum((T item) => item.RequiredHeight) + (Items.Count - 1) * Spacing : 1;
+        public override int RequiredHeight => Items.Count > 0 ? Items.Sum((item) => item.RequiredHeight) + (Items.Count - 1) * Spacing : 1;
 
         public override Texture2D Render(Graphics graphics, int width, int height)
         {

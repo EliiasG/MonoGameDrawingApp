@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
 using System;
 
-namespace MonoGameDrawingApp.Ui.Tabs
+namespace MonoGameDrawingApp.Ui.Base.Tabs
 {
     public class TabView : IUiElement
     {

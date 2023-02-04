@@ -1,13 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Base.Split.Vertical;
-using MonoGameDrawingApp.Ui.Split.Horizontal;
-using MonoGameDrawingApp.Ui.Split.Vertical;
 using System;
 
-namespace MonoGameDrawingApp.Ui.Scroll
+namespace MonoGameDrawingApp.Ui.Base.Scroll
 {
     public class ScrollWindow : IUiElement
     {

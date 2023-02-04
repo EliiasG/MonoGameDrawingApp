@@ -1,7 +1,7 @@
 ﻿using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.TextInput.Filters.Alphanumeric
+namespace MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric
 {
     public class AlphabeticTextInputFilter : ITextInputFilter
     {

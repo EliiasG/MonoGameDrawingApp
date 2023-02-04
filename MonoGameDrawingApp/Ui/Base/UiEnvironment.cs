@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Themes;
+using MonoGameDrawingApp.Ui.Base.Themes;
 
 namespace MonoGameDrawingApp.Ui.Base
 {

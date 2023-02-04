@@ -1,14 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Buttons;
+using MonoGameDrawingApp.Ui.Base.Lists;
 using MonoGameDrawingApp.Ui.Base.Tree.TreeItems;
-using MonoGameDrawingApp.Ui.Buttons;
-using MonoGameDrawingApp.Ui.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MonoGameDrawingApp.Ui.Tree
+namespace MonoGameDrawingApp.Ui.Base.Tree
 {
     public class TreeItemView : IUiElement
     {
@@ -156,7 +156,7 @@ namespace MonoGameDrawingApp.Ui.Tree
 
             _textColor.Color = TreeItem.Tree.Selected == TreeItem ? Environment.Theme.HoveringTextColor : Environment.Theme.DefaultTextColor;
             _textView.Text = " " + TreeItem.Name;
-            _buttonIcon.Child = TreeItem.HasOpenButton ? (TreeItem.IsOpen ? _openButtonIcon : _closedButtonIcon) : _defaultButtonIcon;
+            _buttonIcon.Child = TreeItem.HasOpenButton ? TreeItem.IsOpen ? _openButtonIcon : _closedButtonIcon : _defaultButtonIcon;
 
             if (_textButton.JustLeftClicked)
             {
@@ -196,7 +196,7 @@ namespace MonoGameDrawingApp.Ui.Tree
                 {
                     foreach (TreeItemView child in new List<TreeItemView>(_children)) // loop may modify _children
                     {
-                        if (!itemChildren.Any((ITreeItem item) => child.TreeItem == item)) // none of the children of the treeitem contain the current child
+                        if (!itemChildren.Any((item) => child.TreeItem == item)) // none of the children of the treeitem contain the current child
                         {
                             _children.Remove(child);
                         }
@@ -204,7 +204,7 @@ namespace MonoGameDrawingApp.Ui.Tree
 
                     foreach (ITreeItem treeItem in itemChildren)
                     {
-                        if (!_children.Any((TreeItemView child) => child.TreeItem == treeItem)) // none of the children are assigned to the current item
+                        if (!_children.Any((child) => child.TreeItem == treeItem)) // none of the children are assigned to the current item
                         {
                             _children.Add(new TreeItemView(Environment, treeItem, IndentChildren ? Indentation + TreeView.IndentationAmount : Indentation, TreeView, true));
                         }
@@ -226,7 +226,7 @@ namespace MonoGameDrawingApp.Ui.Tree
                 _childrenChanged = true;
             }
 
-            _childrenChanged = _childrenChanged || Children.Any((TreeItemView item) => item.ChildrenChanged);
+            _childrenChanged = _childrenChanged || Children.Any((item) => item.ChildrenChanged);
         }
     }
 }

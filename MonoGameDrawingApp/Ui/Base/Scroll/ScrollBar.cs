@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Split;
+using MonoGameDrawingApp.Ui.Base.Split;
 using System;
 
-namespace MonoGameDrawingApp.Ui.Scroll
+namespace MonoGameDrawingApp.Ui.Base.Scroll
 {
     public abstract class ScrollBar : IUiElement
     {

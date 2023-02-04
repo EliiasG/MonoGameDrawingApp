@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGameDrawingApp.Ui.Base;
 using System;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.List
+namespace MonoGameDrawingApp.Ui.Base.Lists
 {
     public class VScrollableListView : ScrollableListView
     {

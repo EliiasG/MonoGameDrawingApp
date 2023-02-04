@@ -1,5 +1,4 @@
-﻿using MonoGameDrawingApp.Ui.Split;
-using System;
+﻿using System;
 
 namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 {

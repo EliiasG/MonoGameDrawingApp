@@ -1,24 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Lists;
+using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Popup.ContextMenu.Items;
-using MonoGameDrawingApp.Ui.List;
-using MonoGameDrawingApp.Ui.Popup;
-using MonoGameDrawingApp.Ui.Scroll;
-using MonoGameDrawingApp.Ui.Split.Vertical;
-using MonoGameDrawingApp.Ui.Tabs;
-using System;
+using MonoGameDrawingApp.Ui.Base.Scroll;
+using MonoGameDrawingApp.Ui.Base.Split.Vertical;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp
 {
     public class DrawingAppStart : IUiElement
     {
 
-        public readonly TabEnvironment TabEnvironment;
-        public readonly PopupEnvironment PopupEnvironment;
+        public readonly DrawingAppRoot Root;
 
         private static readonly string ProjectsPath = Path.Join(System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "VectorDrawingApp", "projects.txt");
 
@@ -26,23 +26,22 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
         private readonly VScrollableListView _scrollableListView;
         private readonly IUiElement _root;
 
-        public DrawingAppStart(UiEnvironment environment, PopupEnvironment popupEnvironment, TabEnvironment tabEnvironment)
+        public DrawingAppStart(UiEnvironment environment, DrawingAppRoot root)
         {
             _environment = environment;
-            TabEnvironment = tabEnvironment;
-            PopupEnvironment = popupEnvironment;
+            Root = root;
             _scrollableListView = new VScrollableListView(environment, new IUiElement[0], false, 2);
             ReloadProjects();
             Debug.WriteLine(ProjectsPath);
             _root = new VSplitStandard(
-                environment: environment,
+                environment: Environment,
                 first: new VListView<IUiElement>(Environment, new List<IUiElement>()
                 {
                     new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, 5),
-                    new ContextMenuButton(Environment, "Import/Create Project", () => throw new NotImplementedException()),
+                    new ContextMenuButton(Environment, "Import/Create Project", _import),
                     new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, 5),
                 }),
-                second: new StackView(environment, new List<IUiElement>() {
+                second: new StackView(Environment, new List<IUiElement>() {
                     new ColorRect(Environment, Environment.Theme.MenuBackgorundColor),
                     new ScrollWindow(Environment, _scrollableListView),
                 }),
@@ -84,10 +83,46 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             _scrollableListView.Items = items;
         }
 
+        public void Remove(string path)
+        {
+            List<string> lines = File.ReadLines(ProjectsPath).ToList();
+            while (lines.Remove(path)) ;
+            File.WriteAllLines(ProjectsPath, lines.ToArray());
+            ReloadProjects();
+        }
+
+        public void SetFirst(string path)
+        {
+            List<string> lines = File.ReadLines(ProjectsPath).ToList();
+            while (lines.Remove(path)) ;
+            lines.Insert(0, path);
+            File.WriteAllLines(ProjectsPath, lines.ToArray());
+            ReloadProjects();
+        }
+
         private IUiElement _generateButton(string path)
         {
             //TODO
-            return new ContextMenuButton(Environment, path, () => Debug.WriteLine("TODO: open, " + path));
+            return new ContextMenuButton(Environment, path, () =>
+            {
+                Root.PopupEnvironment.OpenCentered(new ChoicePopup(Environment, path, Root.PopupEnvironment, new ChoicePopupOption[]
+                {
+                    new ChoicePopupOption("Open", () => _open(path)),
+                    new ChoicePopupOption("Remove From List", () => Remove(path)),
+                    new ChoicePopupOption("Cancel", () => Root.PopupEnvironment.Close()),
+                }));
+            });
+        }
+
+        private void _import()
+        {
+            Root.TabEnvironment.TabBar.OpenTab(new ProjectImporterTab(this), true);
+        }
+
+        private void _open(string path)
+        {
+            SetFirst(path);
+            Root.TabEnvironment.TabBar.OpenTab(new ProjectTab(Root, path), true);
         }
     }
 }

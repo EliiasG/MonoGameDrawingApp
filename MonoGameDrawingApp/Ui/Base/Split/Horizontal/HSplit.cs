@@ -1,7 +1,6 @@
-﻿using MonoGameDrawingApp.Ui.Base;
-using System;
+﻿using System;
 
-namespace MonoGameDrawingApp.Ui.Split.Horizontal
+namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
 {
     public abstract class HSplit : BaseSplit
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MonoGameDrawingApp.Ui.Popup
+namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public struct ChoicePopupOption
     {

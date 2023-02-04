@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
 
-namespace MonoGameDrawingApp.Ui
+namespace MonoGameDrawingApp.Ui.Base
 {
     public class StaticSize : IUiElement
     {

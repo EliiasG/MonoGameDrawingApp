@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace MonoGameDrawingApp.Ui.Scroll
+namespace MonoGameDrawingApp.Ui.Base.Scroll
 {
     public interface IScrollableView : IUiElement
     {

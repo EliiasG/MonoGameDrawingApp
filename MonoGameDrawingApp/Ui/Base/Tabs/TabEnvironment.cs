@@ -1,11 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Scroll;
 using MonoGameDrawingApp.Ui.Base.Split.Vertical;
-using MonoGameDrawingApp.Ui.Scroll;
-using MonoGameDrawingApp.Ui.Split.Vertical;
 
-namespace MonoGameDrawingApp.Ui.Tabs
+namespace MonoGameDrawingApp.Ui.Base.Tabs
 {
     public class TabEnvironment : IUiElement
     {

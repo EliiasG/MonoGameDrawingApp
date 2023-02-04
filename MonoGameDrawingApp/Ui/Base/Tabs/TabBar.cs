@@ -1,19 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.List;
-using MonoGameDrawingApp.Ui.Scroll;
+using MonoGameDrawingApp.Ui.Base.Lists;
+using MonoGameDrawingApp.Ui.Base.Scroll;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.Tabs
+namespace MonoGameDrawingApp.Ui.Base.Tabs
 {
     public class TabBar : IScrollableView
     {
         private readonly UiEnvironment _environment;
 
-        private List<TabView> _tabs;
+        private readonly List<TabView> _tabs;
 
-        private HScrollableListView _hListView;
+        private readonly HScrollableListView _hListView;
         private Tab _selectedTab;
 
         public TabBar(UiEnvironment environment)
@@ -73,11 +72,11 @@ namespace MonoGameDrawingApp.Ui.Tabs
             return _hListView.Render(graphics, width, height);
         }
 
-        public void OpenTab(Tab tab, bool open = false)
+        public void OpenTab(Tab tab, bool select = false)
         {
             _tabs.Add(new TabView(Environment, tab));
             tab.TabBar = this;
-            if (open)
+            if (select)
             {
                 SelectedTab = tab;
             }
@@ -103,6 +102,11 @@ namespace MonoGameDrawingApp.Ui.Tabs
         public void Update(Vector2 position, int width, int height)
         {
             _hListView.Update(position, width, height);
+        }
+
+        public IEnumerable<Type> GetTabsOfType<Type>() where Type : Tab
+        {
+            return _tabs.FindAll((TabView v) => v.Tab is Type).ConvertAll((TabView v) => (Type)v.Tab);
         }
     }
 }

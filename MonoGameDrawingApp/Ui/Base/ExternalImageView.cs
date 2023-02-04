@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.IO;
 
 namespace MonoGameDrawingApp.Ui.Base
 {
@@ -22,6 +21,7 @@ namespace MonoGameDrawingApp.Ui.Base
             Path = path;
             _renderHelper = new RenderHelper();
         }
+
         public int RequiredWidth => _texture == null ? 1 : _texture.Width;
 
         public int RequiredHeight => _texture == null ? 1 : _texture.Height;
@@ -37,9 +37,14 @@ namespace MonoGameDrawingApp.Ui.Base
 
             if (_texture == null)
             {
-                FileStream fileStream = new FileStream(Path, FileMode.Open);
-                _texture = Texture2D.FromStream(graphics.Device, fileStream);
-                fileStream.Dispose();
+                try
+                {
+                    _texture = Texture2D.FromFile(graphics.Device, Path);
+                }
+                catch
+                {
+                    _texture = new ColorRect(Environment, Color.Transparent).Render(graphics, 1, 1);
+                }
                 _changed = true;
             }
 

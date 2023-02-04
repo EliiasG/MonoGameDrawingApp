@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Scroll;
+using MonoGameDrawingApp.Ui.Base.Scroll;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.Popup
+namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public class PopupEnvironment : IUiElement
     {

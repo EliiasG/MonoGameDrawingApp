@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace MonoGameDrawingApp.Ui.Themes
+namespace MonoGameDrawingApp.Ui.Base.Themes
 {
     public interface ITheme
     {

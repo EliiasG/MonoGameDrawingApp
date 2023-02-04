@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
 using System;
 
-namespace MonoGameDrawingApp.Ui.Split
+namespace MonoGameDrawingApp.Ui.Base.Split
 {
     public abstract class BaseSplit : IUiElement
     {

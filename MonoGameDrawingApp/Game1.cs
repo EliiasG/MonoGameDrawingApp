@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui;
 using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Themes;
 using MonoGameDrawingApp.Ui.DrawingApp;
-using MonoGameDrawingApp.Ui.Themes;
 using System;
 using System.Diagnostics;
 

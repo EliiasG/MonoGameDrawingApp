@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Split;
 
-namespace MonoGameDrawingApp.Ui.Split.Horizontal
+namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
 {
     public class HSplitStandard : HSplit
     {

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Buttons;
-using MonoGameDrawingApp.Ui.List;
-using MonoGameDrawingApp.Ui.Scroll;
-using MonoGameDrawingApp.Ui.Tree.Trees;
+using MonoGameDrawingApp.Ui.Base.Buttons;
+using MonoGameDrawingApp.Ui.Base.Lists;
+using MonoGameDrawingApp.Ui.Base.Scroll;
+using MonoGameDrawingApp.Ui.Base.Tree.Trees;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.Tree
+namespace MonoGameDrawingApp.Ui.Base.Tree
 {
     public class TreeView : IScrollableView
     {

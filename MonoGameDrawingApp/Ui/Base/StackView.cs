@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MonoGameDrawingApp.Ui
+namespace MonoGameDrawingApp.Ui.Base
 {
     public class StackView : IUiElement
     {
@@ -28,9 +27,9 @@ namespace MonoGameDrawingApp.Ui
 
         public bool Changed => _changed;
 
-        public int RequiredWidth => Children.Max((IUiElement x) => x.RequiredWidth);
+        public int RequiredWidth => Children.Max((x) => x.RequiredWidth);
 
-        public int RequiredHeight => Children.Max((IUiElement x) => x.RequiredHeight);
+        public int RequiredHeight => Children.Max((x) => x.RequiredHeight);
 
         public UiEnvironment Environment => _environment;
 
@@ -78,7 +77,7 @@ namespace MonoGameDrawingApp.Ui
         {
             if (_changed) return;
 
-            if (Children.Any((IUiElement x) => x.Changed))
+            if (Children.Any((x) => x.Changed))
             {
                 _changed = true;
                 return;

@@ -1,15 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Buttons;
+using MonoGameDrawingApp.Ui.Base.Lists;
+using MonoGameDrawingApp.Ui.Base.TextInput;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
-using MonoGameDrawingApp.Ui.Buttons;
-using MonoGameDrawingApp.Ui.List;
-using MonoGameDrawingApp.Ui.TextInput;
 using System;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui.Popup
+namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public class TextInputPopup : IUiElement
     {

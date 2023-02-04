@@ -1,6 +1,6 @@
 ﻿using MonoGameDrawingApp.Ui.Base.Tree.TreeItems;
 
-namespace MonoGameDrawingApp.Ui.Tree.Trees
+namespace MonoGameDrawingApp.Ui.Base.Tree.Trees
 {
     public interface ITree
     {

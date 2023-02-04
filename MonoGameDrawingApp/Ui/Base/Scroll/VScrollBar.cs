@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Split.Vertical;
+using MonoGameDrawingApp.Ui.Base.Split.Vertical;
 
-namespace MonoGameDrawingApp.Ui.Scroll
+namespace MonoGameDrawingApp.Ui.Base.Scroll
 {
     public class VScrollBar : ScrollBar
     {

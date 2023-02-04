@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
 using System.Collections.Generic;
 
-namespace MonoGameDrawingApp.Ui
+namespace MonoGameDrawingApp.Ui.Base
 {
     public class SpriteView : IUiElement
     {

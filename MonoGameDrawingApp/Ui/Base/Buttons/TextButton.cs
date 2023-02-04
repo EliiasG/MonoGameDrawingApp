@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Themes;
+using MonoGameDrawingApp.Ui.Base.Themes;
 
-namespace MonoGameDrawingApp.Ui.Buttons
+namespace MonoGameDrawingApp.Ui.Base.Buttons
 {
     public class TextButton : IUiElement
     {

@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Base.Split.Vertical;
 
-namespace MonoGameDrawingApp.Ui.Split.Vertical
+namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 {
     public class VSplitDraggable : VSplit
     {

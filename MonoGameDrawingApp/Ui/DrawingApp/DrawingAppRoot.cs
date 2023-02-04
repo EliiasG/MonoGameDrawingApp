@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Popup;
-using MonoGameDrawingApp.Ui.Tabs;
+using MonoGameDrawingApp.Ui.Base.Popup;
+using MonoGameDrawingApp.Ui.Base.Tabs;
+using MonoGameDrawingApp.Ui.FileSystemTrees;
+using MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes;
+using MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp
 {
@@ -10,14 +13,31 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
     {
         public readonly TabEnvironment TabEnvironment;
         public readonly PopupEnvironment PopupEnvironment;
+        public readonly FileTypeManager FileTypeManager;
 
         private UiEnvironment _environment;
 
         public DrawingAppRoot(UiEnvironment environment)
         {
             _environment = environment;
-            TabEnvironment = new TabEnvironment(Environment, new DrawingAppStart(Environment, PopupEnvironment, TabEnvironment));
+            TabEnvironment = new TabEnvironment(Environment, new DrawingAppStart(Environment, this));
             PopupEnvironment = new PopupEnvironment(Environment, TabEnvironment);
+            FileTypeManager = new FileTypeManager(
+                tabEnvironment: TabEnvironment,
+                fileTypes: new IOpenableFileType[]
+                {
+                    new PixelImageOpenableFileType(),
+                },
+                extensionIconCollections: new IExtensionIconCollection[]
+                {
+                    new DefaultExtensionIconCollection()
+                },
+                creatableTypes: new CreatableFileType[]
+                {
+                    new CreatableFileType(new EmptyFileCreator(), "Text File", ".txt"),
+                },
+                openUnknownFiles: true
+            );
         }
 
         public bool Changed => PopupEnvironment.Changed;

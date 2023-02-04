@@ -1,15 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Buttons;
+using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
-using MonoGameDrawingApp.Ui.Buttons;
-using MonoGameDrawingApp.Ui.Split.Horizontal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MonoGameDrawingApp.Ui.TextInput
+namespace MonoGameDrawingApp.Ui.Base.TextInput
 {
     public class TextInputField : IUiElement
     {
@@ -253,7 +252,9 @@ namespace MonoGameDrawingApp.Ui.TextInput
                 {Keys.D8, '8'},
                 {Keys.D9, '9'},
                 {Keys.Subtract, '-'},
-                {Keys.OemMinus, '-'}
+                {Keys.OemMinus, '-'},
+                {Keys.Space, ' '},
+                {Keys.OemPeriod, '.'}
             };
         }
 
