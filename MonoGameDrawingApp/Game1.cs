@@ -13,7 +13,6 @@ namespace MonoGameDrawingApp
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private UiEnvironment environment;
-        private Random rnd = new Random();
         private TextView text;
 
         public Game1()
@@ -65,7 +64,7 @@ namespace MonoGameDrawingApp
         {
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
-            text.Text = "" + 1 / (gameTime.ElapsedGameTime.TotalSeconds);
+            text.Text = (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString();
             environment.Render();
             base.Draw(gameTime);
         }
