@@ -1,3 +1,3 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/imagefile.png","C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/bin/DesktopGL/icons/imagefile.xnb","TextureProcessor","Texture2DContent",488,6485,0,0916534
-"C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/textfile.png","C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/bin/DesktopGL/icons/textfile.xnb","TextureProcessor","Texture2DContent",512,6485,0,0014604
+"C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/sprite.png","C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/bin/DesktopGL/icons/sprite.xnb","TextureProcessor","Texture2DContent",711,6485,0,0964859
+"C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/spriteitem.png","C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/bin/DesktopGL/icons/spriteitem.xnb","TextureProcessor","Texture2DContent",318,6485,0,0020494

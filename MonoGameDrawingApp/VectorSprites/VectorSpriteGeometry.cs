@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Numerics;
 
 namespace MonoGameDrawingApp.VectorSprites
@@ -14,6 +15,8 @@ namespace MonoGameDrawingApp.VectorSprites
         {
             _points = new List<Vector2>(points);
         }
+
+        public Color Color { get; set; }
 
         public IEnumerable<Vector2> Points
         {

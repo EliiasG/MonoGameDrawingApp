@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Tabs;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites;
 using MonoGameDrawingApp.Ui.FileSystemTrees;
 using MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes;
 using MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image;
@@ -27,10 +28,12 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                 fileTypes: new IOpenableFileType[]
                 {
                     new PixelImageOpenableFileType(),
+                    new VectorSpriteOpenableFileType(PopupEnvironment)
                 },
                 extensionIconCollections: new IExtensionIconCollection[]
                 {
-                    new DefaultExtensionIconCollection()
+                    new DefaultExtensionIconCollection(),
+                    new DrawingAppIconCollection(),
                 },
                 creatableTypes: new CreatableFileType[]
                 {

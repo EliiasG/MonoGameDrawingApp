@@ -4,14 +4,14 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image
 {
     public class ImageTab : FileTab
     {
-        private ImageTabView _pngTabView;
+        private ImageTabView _imageTabView;
 
         public ImageTab(UiEnvironment environment, string path) : base(path)
         {
-            _pngTabView = new ImageTabView(environment, path);
+            _imageTabView = new ImageTabView(environment, path);
         }
 
-        public override IUiElement Child => _pngTabView;
+        public override IUiElement Child => _imageTabView;
 
         public override bool HasCloseButton => true;
 

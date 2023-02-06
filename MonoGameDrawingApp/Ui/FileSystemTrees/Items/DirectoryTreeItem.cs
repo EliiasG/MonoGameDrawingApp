@@ -14,7 +14,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
     {
         private readonly PopupEnvironment _popupEnvironment;
 
-        private readonly FileTypeManager _fileOpener;
+        private readonly FileTypeManager _fileTypeManager;
 
         private readonly string _path;
 
@@ -25,14 +25,14 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
 
         private bool _isOpen = false;
 
-        public DirectoryTreeItem(string path, ITree tree, PopupEnvironment popupEnvironment, FileTypeManager fileOpener)
+        public DirectoryTreeItem(string path, ITree tree, PopupEnvironment popupEnvironment, FileTypeManager fileTypeManager)
         {
             _path = path;
             _tree = tree;
             _children = new List<IFileSystemTreeItem>();
             _popupEnvironment = popupEnvironment;
             _unauthorizedChildren = new HashSet<string>();
-            _fileOpener = fileOpener;
+            _fileTypeManager = fileTypeManager;
         }
 
         public string Path => _path;
@@ -116,7 +116,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
 
         public PopupEnvironment PopupEnvironment => _popupEnvironment;
 
-        public FileTypeManager FileTypeManager => _fileOpener;
+        public FileTypeManager FileTypeManager => _fileTypeManager;
 
         public void Clicked()
         {

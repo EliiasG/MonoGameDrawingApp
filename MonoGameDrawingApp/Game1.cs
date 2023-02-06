@@ -47,7 +47,7 @@ namespace MonoGameDrawingApp
             environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"), Content);
 
             // TODO: use this.Content to load your game content here
-            text = new TextView(environment, "0");
+            text = new TextView(environment, "");
             environment.Root = new StackView(environment, new IUiElement[]
             {
                 new DrawingAppRoot(environment),

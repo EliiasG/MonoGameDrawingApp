@@ -163,6 +163,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 {
                     goto FoundChange;
                 }
+                ++i;
             }
 
             return false;
