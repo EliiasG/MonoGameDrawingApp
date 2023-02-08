@@ -1,8 +1,8 @@
-﻿using MonoGameDrawingApp.Ui.Base.Popup;
+﻿using Microsoft.Xna.Framework.Input;
+using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Tree.TreeItems;
 using MonoGameDrawingApp.Ui.Base.Tree.Trees;
 using MonoGameDrawingApp.VectorSprites;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -70,7 +70,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
         public void RightClicked()
         {
             //TODO open contextmenu
-            throw new NotImplementedException();
+            VectorSpriteItemContextMenu contextMenu = new VectorSpriteItemContextMenu(PopupEnvironment.Environment, Item, PopupEnvironment);
+
+            PopupEnvironment.Open(Mouse.GetState().Position, contextMenu);
         }
     }
 }

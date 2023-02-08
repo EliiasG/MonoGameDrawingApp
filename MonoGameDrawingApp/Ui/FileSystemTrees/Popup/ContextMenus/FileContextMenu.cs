@@ -84,7 +84,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
                     }
                     try
                     {
-                        Directory.Move(Path, Path.Substring(0, Math.Max(Path.LastIndexOf("/"), Path.LastIndexOf("\\")) + 1) + newName);
+                        Directory.Move(Path, string.Concat(Path.AsSpan(0, Math.Max(Path.LastIndexOf("/"), Path.LastIndexOf("\\")) + 1), newName));
                         return;
                     }
                     catch (Exception e)

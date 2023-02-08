@@ -38,7 +38,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
             cut.Disabled = isRoot;
             copy.Disabled = isRoot;
 
-            paste.Disabled = !(environment.Clipboard is FileSystemEntityCopyReferance);
+            paste.Disabled = environment.Clipboard is not FileSystemEntityCopyReferance;
 
             _root = new ContextMenu(Environment, new IUiElement[]
             {

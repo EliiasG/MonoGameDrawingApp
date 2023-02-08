@@ -16,6 +16,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
         public readonly bool IndentChildren;
 
         private bool _childrenChanged = true;
+        private bool _wasOpen = false;
 
         private readonly UiEnvironment _environment;
 
@@ -127,8 +128,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 
         private bool _calculateChildrenChanged(IEnumerable<ITreeItem> itemChildren)
         {
-
-            if (itemChildren.Count() != _children.Count())
+            if (itemChildren.Count() != _children.Count)
             {
                 return true;
             }
@@ -216,7 +216,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
             }
             else
             {
-                _childrenChanged = false;
+                _childrenChanged = _wasOpen;
             }
 
             if (_button.JustLeftClicked)
@@ -226,6 +226,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
             }
 
             _childrenChanged = _childrenChanged || Children.Any((item) => item.ChildrenChanged);
+            _wasOpen = TreeItem.IsOpen;
         }
     }
 }
