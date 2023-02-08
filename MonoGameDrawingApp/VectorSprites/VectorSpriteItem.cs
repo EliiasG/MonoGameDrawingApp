@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace MonoGameDrawingApp.VectorSprites
 {
@@ -9,7 +10,7 @@ namespace MonoGameDrawingApp.VectorSprites
         private readonly List<IVectorSpriteItemModifier> _modifiers;
         private readonly Dictionary<Type, IVectorSpriteItemAttachment> _attchments;
 
-        public VectorSpriteItem(string name, VectorSprite sprite, VectorSpriteGeometry geometry)
+        public VectorSpriteItem(string name, VectorSprite sprite, VectorSpriteGeometry geometry, Vector2 position)
         {
             _children = new List<VectorSpriteItem>();
             _modifiers = new List<IVectorSpriteItemModifier>();
@@ -18,13 +19,16 @@ namespace MonoGameDrawingApp.VectorSprites
             Name = name;
             Sprite.ApplyAttachments(this);
             Geometry = geometry;
+            Position = position;
         }
 
-        public VectorSpriteItem(string name, VectorSprite sprite) : this(name, sprite, new VectorSpriteGeometry())
+        public VectorSpriteItem(string name, VectorSprite sprite) : this(name, sprite, new VectorSpriteGeometry(), Vector2.Zero)
         {
         }
 
         public string Name { get; set; }
+
+        public Vector2 Position { get; set; }
 
         public VectorSprite Sprite { get; init; }
 

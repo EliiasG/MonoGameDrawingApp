@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Base.Buttons;
-using MonoGameDrawingApp.Ui.Base.Lists;
 using MonoGameDrawingApp.Ui.Base.Popup;
-using MonoGameDrawingApp.Ui.Base.Popup.ContextMenu.Items;
+using MonoGameDrawingApp.Ui.Base.Popup.ContextMenus;
+using MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
@@ -21,11 +18,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
 
         private readonly UiEnvironment _environment;
 
-        private MouseState _oldMouse;
-
-        private readonly StackView _outer;
-        private readonly IUiElement _inner;
-        private readonly Button _button;
+        private readonly IUiElement _root;
 
         public DirectoryContextMenu(UiEnvironment environment, string path, PopupEnvironment popupEnvironment, bool isRoot, FileTypeManager fileTypeManager)
         {
@@ -47,7 +40,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
 
             paste.Disabled = !(environment.Clipboard is FileSystemEntityCopyReferance);
 
-            _inner = new VListView<IUiElement>(environment, new List<IUiElement>
+            _root = new ContextMenu(Environment, new IUiElement[]
             {
                 rename,
                 delete,
@@ -60,44 +53,25 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
                 new ContextMenuButton(environment, "Add File", _addFile),
                 new ContextMenuSeperator(environment),
                 new ContextMenuButton(environment, "Show in explorer", _openExplorer),
-            });
-
-            _button = new Button(environment, new CenterView(environment, _inner, true, true));
-
-            _outer = new StackView(environment, new IUiElement[]
-                {
-                    new ColorRect(environment, environment.Theme.SecondaryMenuBackgroundColor),
-                    _button,
-                }
-            );
-
-            _oldMouse = Mouse.GetState();
+            }, popupEnvironment);
         }
 
-        public bool Changed => _outer.Changed;
+        public bool Changed => _root.Changed;
 
-        public int RequiredWidth => _inner.RequiredWidth + 8;
+        public int RequiredWidth => _root.RequiredWidth;
 
-        public int RequiredHeight => _inner.RequiredHeight + 8;
+        public int RequiredHeight => _root.RequiredHeight;
 
         public UiEnvironment Environment => _environment;
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
-            return _outer.Render(graphics, width, height);
+            return _root.Render(graphics, width, height);
         }
 
         public void Update(Vector2 position, int width, int height)
         {
-            MouseState mouse = Mouse.GetState();
-            bool justPressedLeft = mouse.LeftButton == ButtonState.Pressed && _oldMouse.LeftButton != ButtonState.Pressed;
-            bool justPressedRight = mouse.RightButton == ButtonState.Pressed && _oldMouse.RightButton != ButtonState.Pressed;
-            if (!_button.ContainsMouse && (justPressedLeft || justPressedRight))
-            {
-                PopupEnvironment.Close();
-            }
-            _outer.Update(position, width, height);
-            _oldMouse = mouse;
+            _root.Update(position, width, height);
         }
 
         private void _rename()

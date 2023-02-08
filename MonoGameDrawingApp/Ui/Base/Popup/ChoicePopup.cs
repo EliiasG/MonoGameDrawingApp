@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base.Lists;
-using MonoGameDrawingApp.Ui.Base.Popup.ContextMenu.Items;
+using MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items;
 using System.Collections.Generic;
 
 namespace MonoGameDrawingApp.Ui.Base.Popup

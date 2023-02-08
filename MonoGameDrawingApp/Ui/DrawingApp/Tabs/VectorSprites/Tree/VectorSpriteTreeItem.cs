@@ -53,7 +53,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
             }
         }
 
-
         public void Attach(VectorSpriteItem item)
         {
             VectorSpriteTreeItem newItem = new(_tree, PopupEnvironment)
