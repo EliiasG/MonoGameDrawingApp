@@ -10,6 +10,9 @@ namespace MonoGameDrawingApp.VectorSprites
         private readonly List<IVectorSpriteItemModifier> _modifiers;
         private readonly Dictionary<Type, IVectorSpriteItemAttachment> _attchments;
 
+        private string _name;
+        private Vector2 _position;
+
         public VectorSpriteItem(string name, VectorSprite sprite, VectorSpriteGeometry geometry, Vector2 position)
         {
             _children = new List<VectorSpriteItem>();
@@ -19,6 +22,7 @@ namespace MonoGameDrawingApp.VectorSprites
             Name = name;
             Sprite.ApplyAttachments(this);
             Geometry = geometry;
+            Geometry.VectorSpriteItem = this;
             Position = position;
         }
 
@@ -26,9 +30,31 @@ namespace MonoGameDrawingApp.VectorSprites
         {
         }
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                _dataChanged();
+            }
+        }
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position
+        {
+            get
+            {
+                return _position;
+            }
+            set
+            {
+                _position = value;
+                _dataChanged();
+            }
+        }
 
         public VectorSprite Sprite { get; init; }
 
@@ -54,6 +80,7 @@ namespace MonoGameDrawingApp.VectorSprites
         {
             _children.Remove(child);
             child.Parent = null;
+            _childrenChanged();
         }
 
         public void AddChild(VectorSpriteItem child)
@@ -61,16 +88,19 @@ namespace MonoGameDrawingApp.VectorSprites
             child.Parent?.RemoveChild(child);
             _children.Add(child);
             child.Parent = this;
+            _childrenChanged();
         }
 
         public void AddModifier(IVectorSpriteItemModifier modifier)
         {
             _modifiers.Add(modifier);
+            _dataChanged();
         }
 
         public void RemoveModifier(IVectorSpriteItemModifier modifier)
         {
             _modifiers.Remove(modifier);
+            _dataChanged();
         }
 
         public void MoveUp()
@@ -81,6 +111,7 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 children.RemoveAt(index);
                 children.Insert(index - 1, this);
+                Parent._childrenChanged();
             }
         }
 
@@ -92,6 +123,23 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 children.RemoveAt(index);
                 children.Insert(index + 1, this);
+                Parent._childrenChanged();
+            }
+        }
+
+        internal void _childrenChanged()
+        {
+            foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
+            {
+                attachment.ChildrenChanged();
+            }
+        }
+
+        private void _dataChanged()
+        {
+            foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
+            {
+                attachment.DataChanged();
             }
         }
     }

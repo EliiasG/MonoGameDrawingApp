@@ -30,6 +30,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             Sprite = new VectorSprite();
             Sprite.Root = new VectorSpriteItem("Root", Sprite);
             Sprite.Root.AddChild(new VectorSpriteItem("Child", Sprite));
+            Path = path;
 
             VectorSpriteTree tree = new(Sprite, popupEnvironment);
 
@@ -69,6 +70,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
         }
 
         public VectorSprite Sprite { get; init; }
+
+        public string Path { get; init; }
 
         public bool Changed => _root.Changed;
 

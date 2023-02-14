@@ -24,10 +24,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
             _root = new ContextMenu(Environment, new IUiElement[]
             {
-                new ContextMenuButton(Environment, "Rename", _rename)
-                {
-                    Disabled = item.Parent == null,
-                },
+                new ContextMenuButton(Environment, "Rename", _rename),
                 new ContextMenuButton(Environment, "Delete", _delete)
                 {
                     Disabled = item.Parent == null,
