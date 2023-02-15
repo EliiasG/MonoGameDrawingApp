@@ -66,7 +66,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
                 string[] items;
                 if (Path != "")
                 {
-                    items = Directory.GetDirectories(Path).Concat(Directory.GetFiles(Path)).ToArray();
+                    items = Directory.EnumerateDirectories(Path).Concat(Directory.EnumerateFiles(Path)).ToArray();
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
 
                 foreach (IFileSystemTreeItem child in _children)
                 {
-                    if (!items.Contains(child.Path))
+                    if (!Directory.Exists(child.Path) && !File.Exists(child.Path))
                     {
                         _children = new List<IFileSystemTreeItem>(_children);// setting _children to a clone, otherwise the loop will cause an error
                         _children.Remove(child);
@@ -86,12 +86,14 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
                 {
                     if (!_unauthorizedChildren.Contains(item) && !_children.Any((child) => child.Path == item)) //item is not unauthorized, and none of the paths are the item
                     {
+                        int index = Array.IndexOf(items, item);
+
                         if (Directory.Exists(item))
                         {
                             try
                             {
                                 Directory.EnumerateFileSystemEntries(item); //Does nothing, just to throw exeption
-                                _children.Add(new DirectoryTreeItem(item, _tree, PopupEnvironment, FileTypeManager));
+                                _children.Insert(index, new DirectoryTreeItem(item, _tree, PopupEnvironment, FileTypeManager));
                                 //  return _children;//for load-in effect
                             }
                             catch (UnauthorizedAccessException)
@@ -102,7 +104,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
                         else
                         {
                             //item must exist and is not a directory, so must be a file
-                            _children.Add(new FileTreeItem(item, Tree, PopupEnvironment, FileTypeManager));
+                            _children.Insert(index, new FileTreeItem(item, Tree, PopupEnvironment, FileTypeManager));
                             //return _children;
                         }
                     }

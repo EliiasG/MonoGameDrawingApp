@@ -7,7 +7,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public class PopupEnvironment : IUiElement
     {
-        public IUiElement Child;
+        public readonly IUiElement Child;
 
         private readonly UpdateBlocker _updateBlocker;
         private readonly StackView _outer;
@@ -45,6 +45,20 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
         public void Update(Vector2 position, int width, int height)
         {
             _outer.Update(position, width, height);
+            Vector2 peekPos = -_peekView.Position;
+
+            if (peekPos.X > width - _popup.Child.RequiredWidth)
+            {
+                peekPos = new Vector2(width - _popup.Child.RequiredWidth, peekPos.Y);
+            }
+
+            if (peekPos.Y > height - _popup.Child.RequiredHeight)
+            {
+                peekPos = new Vector2(peekPos.X, height - _popup.Child.RequiredHeight);
+            }
+
+            _peekView.Position = -peekPos;
+
             _updateBlocker.ShouldUpdate = _popup.Child == _empty;
         }
 

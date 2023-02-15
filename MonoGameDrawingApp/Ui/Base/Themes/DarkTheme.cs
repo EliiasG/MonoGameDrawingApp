@@ -4,24 +4,24 @@ namespace MonoGameDrawingApp.Ui.Base.Themes
 {
     public class DarkTheme : ITheme
     {
-        public Color BackgroundColor => new Color(57, 69, 82);
+        public Color BackgroundColor => new(57, 69, 82);
 
-        public Color MenuBackgorundColor => new Color(30, 35, 41);
+        public Color MenuBackgorundColor => new(30, 35, 41);
 
-        public Color DefaultTextColor => new Color(208, 226, 247);
+        public Color DefaultTextColor => new(208, 226, 247);
 
-        public Color HoveringTextColor => new Color(156, 170, 186);
+        public Color HoveringTextColor => new(156, 170, 186);
 
-        public Color ButtonColor => new Color(88, 103, 122);
+        public Color ButtonColor => new(88, 103, 122);
 
-        public Color HoveringButtonColor => new Color(77, 89, 105);
+        public Color HoveringButtonColor => new(77, 89, 105);
 
-        public Color SelectedButtonColor => new Color(52, 59, 69);
+        public Color SelectedButtonColor => new(52, 59, 69);
 
-        public Color SecondaryMenuBackgroundColor => new Color(58, 79, 102);
+        public Color SecondaryMenuBackgroundColor => new(58, 79, 102);
 
-        public Color EditingTextColor => new Color(232, 252, 239);
+        public Color EditingTextColor => new(232, 252, 239);
 
-        public Color ScrollbarColor => new Color(44, 51, 59);
+        public Color ScrollbarColor => new(44, 51, 59);
     }
 }

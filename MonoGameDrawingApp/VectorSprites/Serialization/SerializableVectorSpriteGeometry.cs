@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using System.Numerics;
 
 namespace MonoGameDrawingApp.VectorSprites.Serialization
@@ -8,19 +7,19 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
     {
         public SerializableVectorSpriteGeometry(VectorSpriteGeometry geometry)
         {
-            Points = geometry.Points.ToArray();
-            Color = geometry.Color;
+            Points = geometry.Points.ToArray().Select((Vector2 v) => new SerializablleVector2(v)).ToArray();
+            Color = new SerializableColor(geometry.Color);
         }
 
-        public Vector2[] Points { get; set; }
+        public SerializablleVector2[] Points { get; set; }
 
-        public Color Color { get; set; }
+        public SerializableColor Color { get; set; }
 
         public VectorSpriteGeometry ToGeometry()
         {
-            return new VectorSpriteGeometry(Points)
+            return new VectorSpriteGeometry(Points.Select((SerializablleVector2 v) => v.ToVector()))
             {
-                Color = Color
+                Color = Color.ToColor()
             };
         }
     }

@@ -39,7 +39,7 @@ namespace MonoGameDrawingApp.Ui.Base
 
             if (_renderHelper.SizeChanged || _changed)
             {
-                List<Texture2D> renders = new List<Texture2D>();
+                List<Texture2D> renders = new();
                 foreach (IUiElement child in Children)
                 {
                     renders.Add(child.Render(graphics, width, height));

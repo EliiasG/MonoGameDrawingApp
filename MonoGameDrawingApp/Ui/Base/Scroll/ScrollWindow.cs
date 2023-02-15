@@ -127,7 +127,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
         {
             MouseState mouse = Mouse.GetState();
             Point boundsPosition = position.ToPoint() + new Point(IsLeft ? ScrollBarSize : 0, IsTop ? ScrollBarSize : 0);
-            Point boundsSize = new Point(width - ScrollBarSize, height - ScrollBarSize);
+            Point boundsSize = new(width - ScrollBarSize, height - ScrollBarSize);
             if (!new Rectangle(boundsPosition, boundsSize).Contains(mouse.Position))
             {
                 return;

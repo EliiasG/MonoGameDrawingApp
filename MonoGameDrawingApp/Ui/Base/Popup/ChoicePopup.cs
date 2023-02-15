@@ -24,7 +24,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
             _environment = environment;
             _popupEnvironment = popupEnvironment;
 
-            List<IUiElement> buttons = new List<IUiElement>();
+            List<IUiElement> buttons = new();
 
             foreach (ChoicePopupOption option in options)
             {
@@ -35,7 +35,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
                 }));
             }
 
-            HListView<IUiElement> buttonView = new HListView<IUiElement>(environment, buttons);
+            HListView<IUiElement> buttonView = new(environment, buttons);
             buttonView.Spacing = ButtonSpacing;
 
             _outer = new StackView(environment, new List<IUiElement>()

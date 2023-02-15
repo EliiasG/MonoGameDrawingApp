@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Base.Tabs
 {
@@ -54,13 +55,13 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
             _updateChanged();
             MouseState mouse = Mouse.GetState();
 
-            Rectangle backgroundBounds = new Rectangle(position.ToPoint(), new Point(width - Spacing, height));
+            Rectangle backgroundBounds = new(position.ToPoint(), new Point(width - Spacing, height));
 
             bool isIn = backgroundBounds.Contains(mouse.Position);
             bool justPressed = mouse.LeftButton == ButtonState.Pressed && _oldMouse.LeftButton == ButtonState.Released;
 
-            Vector2 closeButtonPosition = new Vector2(width - _closeButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
-            Rectangle closeButtonBounds = new Rectangle((closeButtonPosition + position).ToPoint(), new Point(_closeButton.RequiredWidth, _closeButton.RequiredHeight));
+            Vector2 closeButtonPosition = new(width - _closeButton.RequiredWidth - ExtraSize - Spacing, ExtraSize);
+            Rectangle closeButtonBounds = new((closeButtonPosition + position).ToPoint(), new Point(_closeButton.RequiredWidth, _closeButton.RequiredHeight));
 
             bool isInCloseButton = closeButtonBounds.Contains(mouse.Position);
 
@@ -83,6 +84,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
             if (_oldTile != Tab.Title || _oldSelected != Tab.IsSelected || _closeButton.Changed)
             {
                 _changed = true;
+                Debug.WriteLine(Tab.Title + " changed");
             }
 
             _oldSelected = Tab.IsSelected;
@@ -95,7 +97,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 
             if (Changed || _renderHelper.SizeChanged)
             {
-                Vector2 closeButtonPosition = new Vector2(width - _closeButton.RequiredWidth - ExtraSize, ExtraSize);
+                Vector2 closeButtonPosition = new(width - _closeButton.RequiredWidth - ExtraSize, ExtraSize);
 
                 IUiElement currentBackground = Tab.IsSelected ? _BackgroundSelected : _background;
                 Texture2D backgroundRender = currentBackground.Render(graphics, width, height);

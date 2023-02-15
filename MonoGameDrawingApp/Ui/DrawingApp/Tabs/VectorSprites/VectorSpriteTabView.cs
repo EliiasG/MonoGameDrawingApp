@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Scroll;
@@ -7,21 +8,25 @@ using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Base.Tree;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree;
 using MonoGameDrawingApp.VectorSprites;
+using MonoGameDrawingApp.VectorSprites.Attachments;
+using MonoGameDrawingApp.VectorSprites.Serialization.Json;
 using System.Collections.Generic;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 {
     public class VectorSpriteTabView : IUiElement
     {
-
         private readonly IUiElement _root;
-
         private readonly HSplit _inner;
         private readonly HSplit _outer;
+        private readonly VectorSpriteJsonSaver _jsonSaver;
+
+        private bool _pressedSave;
 
         private static int s_innerSplit = 200;
         private static int s_outerSplit = 1000;
 
+        private KeyboardState _oldKeyboard;
 
         public VectorSpriteTabView(UiEnvironment environment, string path, PopupEnvironment popupEnvironment)
         {
@@ -30,7 +35,10 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             Sprite = new VectorSprite();
             Sprite.Root = new VectorSpriteItem("Root", Sprite);
             Sprite.Root.AddChild(new VectorSpriteItem("Child", Sprite));
+            Sprite.AddAttachment(new ChangeListenerVectorSpriteAttachment(() => _pressedSave = false));
+            _jsonSaver = new VectorSpriteJsonSaver(Sprite);
             Path = path;
+            _pressedSave = true;
 
             VectorSpriteTree tree = new(Sprite, popupEnvironment);
 
@@ -71,6 +79,10 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
         public VectorSprite Sprite { get; init; }
 
+        public bool IsSaved => _pressedSave && !_jsonSaver.CurrentlySaving;
+
+        public bool IsSaving => _jsonSaver.CurrentlySaving;
+
         public string Path { get; init; }
 
         public bool Changed => _root.Changed;
@@ -88,13 +100,28 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
         public void Update(Vector2 position, int width, int height)
         {
+            KeyboardState keyboard = Keyboard.GetState();
+
             _inner.SplitPosition = s_innerSplit;
             _outer.SplitPosition = s_outerSplit;
+
+            if (keyboard.IsKeyDown(Keys.LeftControl) && keyboard.IsKeyDown(Keys.S) && !_oldKeyboard.IsKeyDown(Keys.S))
+            {
+                Save();
+            }
 
             _root.Update(position, width, height);
 
             s_innerSplit = _inner.SplitPosition;
             s_outerSplit = _outer.SplitPosition;
+
+            _oldKeyboard = Keyboard.GetState();
+        }
+
+        public void Save()
+        {
+            _jsonSaver.StartSaving(Path);
+            _pressedSave = true;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MonoGameDrawingApp.VectorSprites.Attachments;
 
 namespace MonoGameDrawingApp.VectorSprites
 {

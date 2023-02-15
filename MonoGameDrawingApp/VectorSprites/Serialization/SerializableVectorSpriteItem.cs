@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Numerics;
 
 namespace MonoGameDrawingApp.VectorSprites.Serialization
 {
@@ -8,7 +7,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
         public SerializableVectorSpriteItem(VectorSpriteItem item)
         {
             Name = item.Name;
-            Position = item.Position;
+            Position = new SerializablleVector2(item.Position);
             Geometry = new SerializableVectorSpriteGeometry(item.Geometry);
 
             Children = new SerializableVectorSpriteItem[item.Children.Count()];
@@ -23,7 +22,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 
         public string Name { get; set; }
 
-        public Vector2 Position { get; set; }
+        public SerializablleVector2 Position { get; set; }
 
         public SerializableVectorSpriteGeometry Geometry { get; set; }
 
@@ -33,7 +32,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 
         public VectorSpriteItem ToSpriteItem(VectorSprite sprite)
         {
-            VectorSpriteItem res = new(Name, sprite, Geometry.ToGeometry(), Position);
+            VectorSpriteItem res = new(Name, sprite, Geometry.ToGeometry(), Position.ToVector());
             foreach (SerializableVectorSpriteItem child in Children)
             {
                 res.AddChild(child.ToSpriteItem(sprite));

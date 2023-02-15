@@ -5,7 +5,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split
 {
     internal class SplitStandardHelper
     {
-        private readonly RenderHelper _renderHelper = new RenderHelper();
+        private readonly RenderHelper _renderHelper = new();
         public SplitStandardHelper()
         {
             _renderHelper = new RenderHelper();

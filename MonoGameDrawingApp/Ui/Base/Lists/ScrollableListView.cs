@@ -72,7 +72,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
         {
             _renderHelper.Begin(graphics, width, height);
 
-            Rectangle _view = new Rectangle(0, 0, width, height);
+            Rectangle _view = new(0, 0, width, height);
 
             if (_changed || _renderHelper.SizeChanged)
             {
@@ -81,7 +81,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 foreach ((Rectangle, IUiElement) item in _placedItems)
                 {
                     Rectangle itemRect = item.Item1;
-                    Rectangle movedRect = new Rectangle(itemRect.Location - _position.ToPoint(), itemRect.Size);
+                    Rectangle movedRect = new(itemRect.Location - _position.ToPoint(), itemRect.Size);
 
                     if (_view.Intersects(movedRect))
                     {
@@ -103,7 +103,6 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 
                 _renderHelper.FinishDraw();
             }
-
             _changed = false;
             return _renderHelper.Result;
         }
@@ -118,7 +117,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 _placedItems = _positionItems();
             }
 
-            Rectangle _view = new Rectangle(0, 0, width, height);
+            Rectangle _view = new(0, 0, width, height);
             _maxWidth = 1;
             _maxHeight = 1;
 
@@ -132,7 +131,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 _maxHeight = Math.Max(outer.Y, _maxHeight);
                 _maxWidth = Math.Max(outer.X, _maxWidth);
 
-                Rectangle movedRect = new Rectangle(itemRect.Location - _position.ToPoint(), itemRect.Size);
+                Rectangle movedRect = new(itemRect.Location - _position.ToPoint(), itemRect.Size);
                 bool intersects = _view.Intersects(movedRect);
 
                 if (intersects)
@@ -159,7 +158,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
             // foreach with index variable, becauase you cannot index in IEnumerable
             foreach (IUiElement item in Items)
             {
-                if (item != _oldItems[i])
+                if (item != _oldItems[i] || item.Changed)
                 {
                     goto FoundChange;
                 }

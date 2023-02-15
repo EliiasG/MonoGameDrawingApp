@@ -7,9 +7,11 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
     public class VectorSpriteTab : FileTab
     {
         private VectorSpriteTabView _spriteTabView;
+        private PopupEnvironment _popupEnvironment;
 
         public VectorSpriteTab(UiEnvironment environment, string path, PopupEnvironment popupEnvironment) : base(path)
         {
+            _popupEnvironment = popupEnvironment;
             _spriteTabView = new VectorSpriteTabView(environment, path, popupEnvironment);
         }
 
@@ -17,11 +19,31 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
         public override bool HasCloseButton => true;
 
-        public override string Title => System.IO.Path.GetFileName(Path);
+        public override string Title => System.IO.Path.GetFileName(Path) + (_spriteTabView.IsSaving ? "..." : (_spriteTabView.IsSaved ? "" : "*"));
 
         protected override void _close()
         {
-            ForceClose();
+            if (_spriteTabView.IsSaved)
+            {
+                ForceClose();
+            }
+            else
+            {
+                string message = "Close '" + Title + "'?";
+                ChoicePopup popup = new(_spriteTabView.Environment, message, _popupEnvironment, new ChoicePopupOption[]
+                {
+                    new ChoicePopupOption("Save", () =>
+                    {
+                        _spriteTabView.Save();
+                        ForceClose();
+                    }),
+                    new ChoicePopupOption("Don't save", () => {
+                        ForceClose();
+                    }),
+                    new ChoicePopupOption("Cancel", () => { }),
+                });
+                _popupEnvironment.OpenCentered(popup);
+            }
         }
     }
 }

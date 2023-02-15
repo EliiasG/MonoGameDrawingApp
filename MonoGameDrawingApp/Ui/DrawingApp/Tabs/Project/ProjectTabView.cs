@@ -18,7 +18,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project
             Environment = environment;
             Path = path;
 
-            FileSystemTree tree = new FileSystemTree(Path, root.PopupEnvironment, root.FileTypeManager, true, true);
+            FileSystemTree tree = new(Path, root.PopupEnvironment, root.FileTypeManager, true, true);
 
             _root = new StackView(environment, new IUiElement[]
             {

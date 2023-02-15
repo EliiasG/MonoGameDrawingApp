@@ -94,7 +94,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
             MouseState mouse = Mouse.GetState();
             int scroll = mouse.ScrollWheelValue;
 
-            Rectangle collider = new Rectangle(positon.ToPoint(), new Point(width, height));
+            Rectangle collider = new(positon.ToPoint(), new Point(width, height));
             if (collider.Contains(mouse.Position))
             {
                 Position += (int)((_oldMouse.ScrollWheelValue - scroll) * ScrollSpeed);

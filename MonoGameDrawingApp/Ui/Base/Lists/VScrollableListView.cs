@@ -12,12 +12,12 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 
         protected override IEnumerable<(Rectangle, IUiElement)> _positionItems()
         {
-            List<(Rectangle, IUiElement)> result = new List<(Rectangle, IUiElement)>();
+            List<(Rectangle, IUiElement)> result = new();
             Point currentPosition = Point.Zero;
 
             foreach (IUiElement item in Items)
             {
-                Point size = new Point(Math.Max(Width, item.RequiredWidth), item.RequiredHeight);
+                Point size = new(Math.Max(Width, item.RequiredWidth), item.RequiredHeight);
                 result.Add((new Rectangle(currentPosition, size), item));
 
                 currentPosition += new Point(0, item.RequiredHeight + Spacing);

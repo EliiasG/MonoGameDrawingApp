@@ -43,7 +43,7 @@ namespace MonoGameDrawingApp
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Graphics graphics = new Graphics(GraphicsDevice, _spriteBatch);
+            Graphics graphics = new(GraphicsDevice, _spriteBatch);
             environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"), Content);
 
             // TODO: use this.Content to load your game content here

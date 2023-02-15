@@ -151,6 +151,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
 
         private void _updateUiState()
         {
+            _cursorPosition = Math.Min(_cursorPosition, Value.Length);
             _counter = (_counter + 1) % 60;
             _textView.Text = Value + Extention;
             _currentBrackground.Child = IsSelected ? _backgroundSelected : _button.ContainsMouse ? _backgroundHovering : _background;

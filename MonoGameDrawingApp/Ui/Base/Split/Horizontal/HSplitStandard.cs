@@ -12,7 +12,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
             _splitHelper = new SplitStandardHelper();
         }
 
-        private Vector2 _secondPosition => new Vector2(SplitPosition, 0);
+        private Vector2 _secondPosition => new(SplitPosition, 0);
 
         public override void Update(Vector2 position, int width, int height)
         {

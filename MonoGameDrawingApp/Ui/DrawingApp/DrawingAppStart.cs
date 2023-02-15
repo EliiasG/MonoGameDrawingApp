@@ -69,7 +69,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         public void ReloadProjects()
         {
-            List<IUiElement> items = new List<IUiElement>();
+            List<IUiElement> items = new();
             if (!File.Exists(ProjectsPath))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(ProjectsPath));

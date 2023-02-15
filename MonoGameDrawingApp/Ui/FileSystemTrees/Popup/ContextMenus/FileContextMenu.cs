@@ -72,7 +72,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
         {
             string name = System.IO.Path.GetFileName(Path);
 
-            TextInputPopup popup = new TextInputPopup(
+            TextInputPopup popup = new(
                 environment: Environment,
                 popupEnvironment: PopupEnvironment,
                 confirmed: (newName) =>
@@ -91,7 +91,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
                     {
                         message = e.Message;
                     }
-                    MessagePopup messagePopup = new MessagePopup(Environment, message, PopupEnvironment);
+                    MessagePopup messagePopup = new(Environment, message, PopupEnvironment);
                     PopupEnvironment.OpenCentered(messagePopup);
                 },
                 filters: new ITextInputFilter[] { new FileSystemTextInputFilter() },
@@ -116,7 +116,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
 
         private void _delete()
         {
-            ChoicePopup choicePopup = new ChoicePopup(Environment, "Delete '" + System.IO.Path.GetFileName(Path) + "'?", PopupEnvironment, new ChoicePopupOption[]
+            ChoicePopup choicePopup = new(Environment, "Delete '" + System.IO.Path.GetFileName(Path) + "'?", PopupEnvironment, new ChoicePopupOption[]
             {
                 new ChoicePopupOption("Cancel", () => {}),
                 new ChoicePopupOption("Confirm", () => File.Delete(Path)),

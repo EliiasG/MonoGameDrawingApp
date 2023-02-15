@@ -44,7 +44,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
             PopupEnvironment = popupEnvironment;
             Path = path;
 
-            List<IUiElement> typeButtons = new List<IUiElement>();
+            List<IUiElement> typeButtons = new();
 
             foreach (CreatableFileType creatableFileType in fileTypeManager.CreatableFileTypes)
             {
@@ -110,7 +110,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
             IUiElement sprite = new SpriteView(Environment, FileTypeManager.GetIconPath("file" + creatableFileType.Extension));
             int index = _buttons.Count;
             string name = creatableFileType.Name + (creatableFileType.Extension == "" ? "" : (" (" + creatableFileType.Extension + ")"));
-            ContextMenuButton button = new ContextMenuButton(Environment, name, () =>
+            ContextMenuButton button = new(Environment, name, () =>
             {
                 foreach (ContextMenuButton b in _buttons)
                 {

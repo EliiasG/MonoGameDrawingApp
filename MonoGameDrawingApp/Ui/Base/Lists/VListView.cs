@@ -24,7 +24,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 
             if (_changed || _renderHelper.SizeChanged)
             {
-                List<Texture2D> renders = new List<Texture2D>();
+                List<Texture2D> renders = new();
 
                 foreach (IUiElement item in Items.ToArray()) //using .ToArray(), since List may be modified while running loop
                 {

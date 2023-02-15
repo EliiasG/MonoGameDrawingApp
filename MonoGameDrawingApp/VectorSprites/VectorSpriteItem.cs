@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonoGameDrawingApp.VectorSprites.Attachments;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -26,7 +27,7 @@ namespace MonoGameDrawingApp.VectorSprites
             Position = position;
         }
 
-        public VectorSpriteItem(string name, VectorSprite sprite) : this(name, sprite, new VectorSpriteGeometry(), Vector2.Zero)
+        public VectorSpriteItem(string name, VectorSprite sprite) : this(name, sprite, new VectorSpriteGeometry(new Vector2[] { Vector2.Zero, Vector2.Zero }), Vector2.Zero)
         {
         }
 
@@ -38,8 +39,11 @@ namespace MonoGameDrawingApp.VectorSprites
             }
             set
             {
-                _name = value;
-                _dataChanged();
+                if (_name != value)
+                {
+                    _name = value;
+                    _dataChanged();
+                }
             }
         }
 
@@ -51,8 +55,11 @@ namespace MonoGameDrawingApp.VectorSprites
             }
             set
             {
-                _position = value;
-                _dataChanged();
+                if (_position != value)
+                {
+                    _position = value;
+                    _dataChanged();
+                }
             }
         }
 
@@ -127,7 +134,7 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        internal void _childrenChanged()
+        private void _childrenChanged()
         {
             foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
             {
@@ -135,7 +142,7 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        private void _dataChanged()
+        internal void _dataChanged()
         {
             foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
             {
