@@ -4,6 +4,8 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 {
     public class SerializablleVector2
     {
+        public SerializablleVector2() { }
+
         public SerializablleVector2(Vector2 vector)
         {
             X = vector.X;

@@ -38,6 +38,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                 creatableTypes: new CreatableFileType[]
                 {
                     new CreatableFileType(new EmptyFileCreator(), "Text File", ".txt"),
+                    new CreatableFileType(new VectorSpriteFileCreator(), "Vector Sptite", ".vecspr")
                 },
                 openUnknownFiles: true
             );

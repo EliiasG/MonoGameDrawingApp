@@ -1,18 +1,21 @@
 ﻿using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Popup;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements;
 using MonoGameDrawingApp.Ui.FileSystemTrees;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 {
     public class VectorSpriteTab : FileTab
     {
-        private VectorSpriteTabView _spriteTabView;
+        private VectorSpriteTabRoot _spriteTabView;
         private PopupEnvironment _popupEnvironment;
 
         public VectorSpriteTab(UiEnvironment environment, string path, PopupEnvironment popupEnvironment) : base(path)
         {
             _popupEnvironment = popupEnvironment;
-            _spriteTabView = new VectorSpriteTabView(environment, path, popupEnvironment);
+
+
+            _spriteTabView = new VectorSpriteTabRoot(environment, path, popupEnvironment);
         }
 
         public override IUiElement Child => _spriteTabView;

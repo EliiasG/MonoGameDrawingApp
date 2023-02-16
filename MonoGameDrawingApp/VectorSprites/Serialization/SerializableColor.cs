@@ -4,6 +4,8 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 {
     public class SerializableColor
     {
+        public SerializableColor() { }
+
         public SerializableColor(Color color)
         {
             R = color.R;

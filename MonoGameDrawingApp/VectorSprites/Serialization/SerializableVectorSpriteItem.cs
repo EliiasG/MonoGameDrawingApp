@@ -4,6 +4,8 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 {
     public class SerializableVectorSpriteItem
     {
+        public SerializableVectorSpriteItem() { }
+
         public SerializableVectorSpriteItem(VectorSpriteItem item)
         {
             Name = item.Name;

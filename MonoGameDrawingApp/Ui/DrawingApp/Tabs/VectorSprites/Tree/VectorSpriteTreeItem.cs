@@ -2,6 +2,7 @@
 using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Tree.TreeItems;
 using MonoGameDrawingApp.Ui.Base.Tree.Trees;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements;
 using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Attachments;
 using System.Collections.Generic;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
 using System;
 
 namespace MonoGameDrawingApp.Ui.Base.Split
@@ -13,6 +12,9 @@ namespace MonoGameDrawingApp.Ui.Base.Split
         private readonly UiEnvironment _environment;
 
         private int _splitPosition;
+
+        private bool _stickToSide;
+        private bool _stickToLast;
 
         protected int _height = -1;
         protected int _width = -1;
@@ -32,10 +34,16 @@ namespace MonoGameDrawingApp.Ui.Base.Split
         {
             set
             {
+                _stickToSide = value < 0;
+                _stickToLast = value == -2;
                 setSplitPositon(value);
             }
             get
             {
+                if (_stickToSide)
+                {
+                    _splitPosition = _stickToLast ? Math.Max(_width, _height) : 0;
+                }
                 setSplitPositon(_splitPosition); //to update the split position, as it may been restricted since set
                 return _splitPosition;
             }

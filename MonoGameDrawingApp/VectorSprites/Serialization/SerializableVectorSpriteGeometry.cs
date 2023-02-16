@@ -5,6 +5,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 {
     public class SerializableVectorSpriteGeometry
     {
+        public SerializableVectorSpriteGeometry() { }
         public SerializableVectorSpriteGeometry(VectorSpriteGeometry geometry)
         {
             Points = geometry.Points.ToArray().Select((Vector2 v) => new SerializablleVector2(v)).ToArray();

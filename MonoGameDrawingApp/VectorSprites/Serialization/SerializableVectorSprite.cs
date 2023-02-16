@@ -2,6 +2,8 @@
 {
     public class SerializableVectorSprite
     {
+        public SerializableVectorSprite() { }
+
         public SerializableVectorSprite(VectorSprite sprite)
         {
             Root = new SerializableVectorSpriteItem(sprite.Root);

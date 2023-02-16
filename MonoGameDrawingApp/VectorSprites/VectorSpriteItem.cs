@@ -27,7 +27,7 @@ namespace MonoGameDrawingApp.VectorSprites
             Position = position;
         }
 
-        public VectorSpriteItem(string name, VectorSprite sprite) : this(name, sprite, new VectorSpriteGeometry(new Vector2[] { Vector2.Zero, Vector2.Zero }), Vector2.Zero)
+        public VectorSpriteItem(string name, VectorSprite sprite) : this(name, sprite, new VectorSpriteGeometry(), Vector2.Zero)
         {
         }
 

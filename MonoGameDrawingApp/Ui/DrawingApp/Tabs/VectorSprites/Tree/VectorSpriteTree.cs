@@ -21,12 +21,11 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
 
         public void BackgroundLeftClicked()
         {
-            Root.Clicked();
+            Selected = null;
         }
 
         public void BackgroundRightClicked()
         {
-            Root.RightClicked();
         }
     }
 }
