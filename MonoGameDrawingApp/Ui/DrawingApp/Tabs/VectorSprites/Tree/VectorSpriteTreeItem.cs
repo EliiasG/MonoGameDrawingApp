@@ -16,15 +16,16 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
 
         private bool _isOpen = false;
 
-        public VectorSpriteTreeItem(VectorSpriteTree tree, PopupEnvironment popupEnvironment)
+        public VectorSpriteTreeItem(VectorSpriteTree tree, PopupEnvironment popupEnvironment, VectorSpriteItem item)
         {
             _tree = tree;
+            Item = item;
             PopupEnvironment = popupEnvironment;
         }
 
         public PopupEnvironment PopupEnvironment { get; init; }
 
-        public VectorSpriteItem Item { get; private set; }
+        public VectorSpriteItem Item { get; init; }
 
         public string Name => Item.Name;
 
@@ -53,15 +54,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
             {
                 return Item.Children.Select((VectorSpriteItem item) => item.GetAttachment<VectorSpriteTreeItem>());
             }
-        }
-
-        public void Attach(VectorSpriteItem item)
-        {
-            VectorSpriteTreeItem newItem = new(_tree, PopupEnvironment)
-            {
-                Item = item
-            };
-            item.AddAttachment(newItem);
         }
 
         public void Clicked()

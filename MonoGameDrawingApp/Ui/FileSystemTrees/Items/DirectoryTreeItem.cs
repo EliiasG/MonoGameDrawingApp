@@ -20,12 +20,12 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
 
         private List<IFileSystemTreeItem> _children;
 
-        private readonly ITree _tree;
+        private readonly FileSystemTree _tree;
         private readonly ISet<string> _unauthorizedChildren;
 
         private bool _isOpen = false;
 
-        public DirectoryTreeItem(string path, ITree tree, PopupEnvironment popupEnvironment, FileTypeManager fileTypeManager)
+        public DirectoryTreeItem(string path, FileSystemTree tree, PopupEnvironment popupEnvironment, FileTypeManager fileTypeManager)
         {
             _path = path;
             _tree = tree;

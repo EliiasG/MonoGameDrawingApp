@@ -41,6 +41,7 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 if (_name != value)
                 {
+                    _dataChanging();
                     _name = value;
                     _dataChanged();
                 }
@@ -57,6 +58,7 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 if (_position != value)
                 {
+                    _dataChanging();
                     _position = value;
                     _dataChanged();
                 }
@@ -85,6 +87,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void RemoveChild(VectorSpriteItem child)
         {
+            _childrenChanging();
             _children.Remove(child);
             child.Parent = null;
             _childrenChanged();
@@ -92,6 +95,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void AddChild(VectorSpriteItem child)
         {
+            _childrenChanging();
             child.Parent?.RemoveChild(child);
             _children.Add(child);
             child.Parent = this;
@@ -100,12 +104,14 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void AddModifier(IVectorSpriteItemModifier modifier)
         {
+            _dataChanging();
             _modifiers.Add(modifier);
             _dataChanged();
         }
 
         public void RemoveModifier(IVectorSpriteItemModifier modifier)
         {
+            _dataChanging();
             _modifiers.Remove(modifier);
             _dataChanged();
         }
@@ -116,6 +122,7 @@ namespace MonoGameDrawingApp.VectorSprites
             int index = children.IndexOf(this);
             if (index > 0)
             {
+                Parent._childrenChanging();
                 children.RemoveAt(index);
                 children.Insert(index - 1, this);
                 Parent._childrenChanged();
@@ -128,6 +135,7 @@ namespace MonoGameDrawingApp.VectorSprites
             int index = children.IndexOf(this);
             if (index < children.Count - 1)
             {
+                Parent._childrenChanging();
                 children.RemoveAt(index);
                 children.Insert(index + 1, this);
                 Parent._childrenChanged();
@@ -143,6 +151,22 @@ namespace MonoGameDrawingApp.VectorSprites
         }
 
         internal void _dataChanged()
+        {
+            foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
+            {
+                attachment.DataChanged();
+            }
+        }
+
+        private void _childrenChanging()
+        {
+            foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
+            {
+                attachment.ChildrenChanging();
+            }
+        }
+
+        internal void _dataChanging()
         {
             foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
             {

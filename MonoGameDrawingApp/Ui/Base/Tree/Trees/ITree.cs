@@ -9,6 +9,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree.Trees
         ITreeItem Selected { get; set; }
 
         void BackgroundRightClicked();
+
         void BackgroundLeftClicked();
     }
 }

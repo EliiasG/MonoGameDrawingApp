@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
         public VectorSpriteTree(VectorSprite sprite, PopupEnvironment popupEnvironment)
         {
             Sprite = sprite;
-            sprite.AddAttachment(new VectorSpriteTreeItem(this, popupEnvironment));
+            sprite.AddAttachment(new VectorSpriteTreeAttachment(this, popupEnvironment));
         }
 
         public VectorSprite Sprite { get; init; }

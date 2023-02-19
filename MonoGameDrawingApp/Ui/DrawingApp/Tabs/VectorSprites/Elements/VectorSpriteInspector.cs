@@ -1,34 +1,61 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Lists;
+using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Base.Split.Vertical;
+using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
+using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Properties;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree;
+using MonoGameDrawingApp.VectorSprites;
+using System.Collections.Generic;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 {
     public class VectorSpriteInspector : IUiElement
     {
+
         private readonly IUiElement _root;
         private readonly IUiElement _inspector;
         private readonly IUiElement _deselected;
 
         private readonly ChangeableView _changeableView;
 
-        private readonly TextView _title;
-        private UiEnvironment environment;
-        private VectorSpriteTabView vectorSpriteTabView;
+        private readonly VectorSpriteTabView _vectorSpriteTabView;
+        private readonly StringInspectorProperty _nameField;
 
         public VectorSpriteInspector(UiEnvironment environment, VectorSpriteTabView vectorSpriteTabView)
         {
             Environment = environment;
             _deselected = new ColorRect(Environment, Color.Transparent);
-            _changeableView = new ChangeableView(Environment, _deselected);
+            _vectorSpriteTabView = vectorSpriteTabView;
 
-            _title = new TextView(environment, "Inspector");
+            IUiElement title = new ColorModifier(Environment, new TextView(environment, "Inspector"), Environment.Theme.DefaultTextColor);
 
-            _root = new VSplitStandard(Environment, new CenterView(Environment, new ColorModifier(Environment, _title, Environment.Theme.DefaultTextColor), true, false), new StackView(Environment, new IUiElement[]
+            _nameField = new StringInspectorProperty(Environment, "Name:", "", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, () =>
+            {
+                if (_vectorSpriteTabView.Tree.Selected != null)
+                {
+                    _selected.Name = _nameField.Value;
+                }
+            });
+
+
+            _inspector = new VListView<IUiElement>(
+                environment: Environment,
+                items: new List<IUiElement>()
+                {
+                    _nameField,
+                }
+            );
+
+            _changeableView = new ChangeableView(Environment, _inspector);
+
+            _root = new VSplitStandard(Environment, new CenterView(Environment, title, true, false), new StackView(Environment, new IUiElement[]
             {
                 new ColorRect(Environment, Environment.Theme.MenuBackgorundColor),
-                _changeableView,
+                new HSplitStandard(Environment, new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 5, 1), _changeableView, -1),
             }), -1);
         }
 
@@ -40,6 +67,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         public UiEnvironment Environment { get; init; }
 
+        private VectorSpriteItem _selected => (_vectorSpriteTabView.Tree.Selected as VectorSpriteTreeItem)?.Item;
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _root.Render(graphics, width, height);
@@ -47,6 +76,15 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         public void Update(Vector2 position, int width, int height)
         {
+            _changeableView.Child = _selected == null ? _deselected : _inspector;
+
+            string name = _selected?.Name ?? "";
+
+            if (_nameField.Value != name)
+            {
+                _nameField.Value = name;
+            }
+
             _root.Update(position, width, height);
         }
     }

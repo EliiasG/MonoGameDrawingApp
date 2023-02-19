@@ -6,7 +6,7 @@ using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree;
 using MonoGameDrawingApp.VectorSprites;
-using MonoGameDrawingApp.VectorSprites.Attachments;
+using MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener;
 using MonoGameDrawingApp.VectorSprites.Serialization.Json;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements

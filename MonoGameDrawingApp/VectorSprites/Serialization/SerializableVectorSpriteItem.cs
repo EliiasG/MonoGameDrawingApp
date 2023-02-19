@@ -13,7 +13,6 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
             Geometry = new SerializableVectorSpriteGeometry(item.Geometry);
 
             Children = new SerializableVectorSpriteItem[item.Children.Count()];
-
             int index = 0;
             foreach (VectorSpriteItem child in item.Children)
             {

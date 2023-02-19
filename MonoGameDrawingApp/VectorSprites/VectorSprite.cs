@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
-using MonoGameDrawingApp.VectorSprites.Attachments;
+﻿using MonoGameDrawingApp.VectorSprites.Attachments;
+using System.Collections.Generic;
 
 namespace MonoGameDrawingApp.VectorSprites
 {
     public class VectorSprite
     {
-        private readonly List<IVectorSpriteItemAttachment> _attachmentList;
+        private readonly List<IVectorSpriteAttachment> _attachmentList;
 
         public VectorSprite()
         {
-            _attachmentList = new List<IVectorSpriteItemAttachment>();
+            _attachmentList = new List<IVectorSpriteAttachment>();
         }
 
         public VectorSpriteItem Root { get; set; }
 
-        public void AddAttachment(IVectorSpriteItemAttachment attachment)
+        public void AddAttachment(IVectorSpriteAttachment attachment)
         {
             _attachmentList.Add(attachment);
             ApplyAttachments(Root);
@@ -22,7 +22,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void ApplyAttachments(VectorSpriteItem item)
         {
-            foreach (IVectorSpriteItemAttachment attachment in _attachmentList)
+            foreach (IVectorSpriteAttachment attachment in _attachmentList)
             {
                 attachment.Attach(item);
             }
