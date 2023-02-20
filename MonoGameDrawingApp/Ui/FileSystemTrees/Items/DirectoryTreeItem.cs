@@ -82,19 +82,18 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
                     }
                 }
 
+                int index = 0;
+
                 foreach (string item in items)
                 {
                     if (!_unauthorizedChildren.Contains(item) && !_children.Any((child) => child.Path == item)) //item is not unauthorized, and none of the paths are the item
                     {
-                        int index = Array.IndexOf(items, item);
-
                         if (Directory.Exists(item))
                         {
                             try
                             {
                                 Directory.EnumerateFileSystemEntries(item); //Does nothing, just to throw exeption
                                 _children.Insert(index, new DirectoryTreeItem(item, _tree, PopupEnvironment, FileTypeManager));
-                                //  return _children;//for load-in effect
                             }
                             catch (UnauthorizedAccessException)
                             {
@@ -105,8 +104,11 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
                         {
                             //item must exist and is not a directory, so must be a file
                             _children.Insert(index, new FileTreeItem(item, Tree, PopupEnvironment, FileTypeManager));
-                            //return _children;
                         }
+                    }
+                    if (!_unauthorizedChildren.Contains(item))
+                    {
+                        ++index;
                     }
                 }
 

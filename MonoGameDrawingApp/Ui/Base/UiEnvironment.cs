@@ -3,21 +3,19 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base.Themes;
+using System;
 
 namespace MonoGameDrawingApp.Ui.Base
 {
     public class UiEnvironment
     {
-        public IUiElement Root;
-
         public readonly Graphics Graphics;
-
         public readonly ITheme Theme;
-
         public readonly float FontHeight;
-
         public readonly ContentManager Content;
 
+        public KeyboardState OldKeyboardState;
+        public IUiElement Root;
         public object Clipboard = null; //Maybe bad? the convention says not to create empty interfaces, and use attributes instead, but that does not seem to work for variable types
 
         public MouseCursor Cursor
@@ -71,7 +69,26 @@ namespace MonoGameDrawingApp.Ui.Base
                 color: Color.White
             );
 
+            _updateGC();
+
+            OldKeyboardState = Keyboard.GetState();
+
             Graphics.SpriteBatch.End();
+        }
+
+        private void _updateGC()
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (
+                keyboardState.IsKeyDown(Keys.LeftControl) &&
+                keyboardState.IsKeyDown(Keys.LeftShift) &&
+                keyboardState.IsKeyDown(Keys.G) &&
+                OldKeyboardState.IsKeyUp(Keys.G)
+            )
+            {
+                GC.Collect();
+            }
         }
     }
 }

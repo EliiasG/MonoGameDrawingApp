@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.Ui.Base
 {
@@ -53,10 +54,7 @@ namespace MonoGameDrawingApp.Ui.Base
 
         ~RenderHelper()
         {
-            if (_renderTarget != null)
-            {
-                _renderTarget.Dispose();
-            }
+            Task.Run(() => _renderTarget?.Dispose());
         }
 
         public void FinishDraw()

@@ -64,8 +64,12 @@ namespace MonoGameDrawingApp
         {
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
-            text.Text = (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString();
+            DateTime before = DateTime.Now;
             environment.Render();
+            DateTime after = DateTime.Now;
+
+            text.Text = (1f / ((after.Ticks - before.Ticks) / 10000000f)).ToString();
+
             base.Draw(gameTime);
         }
     }
