@@ -69,23 +69,20 @@ namespace MonoGameDrawingApp.Ui.Base
                 color: Color.White
             );
 
-            _updateGC();
+            _updateShortCuts();
 
             OldKeyboardState = Keyboard.GetState();
 
             Graphics.SpriteBatch.End();
         }
 
-        private void _updateGC()
+        private void _updateShortCuts()
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
-            if (
-                keyboardState.IsKeyDown(Keys.LeftControl) &&
-                keyboardState.IsKeyDown(Keys.LeftShift) &&
-                keyboardState.IsKeyDown(Keys.G) &&
-                OldKeyboardState.IsKeyUp(Keys.G)
-            )
+            bool ctrlShift = keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.LeftShift);
+
+            if (ctrlShift && keyboardState.IsKeyDown(Keys.G) && OldKeyboardState.IsKeyUp(Keys.G))
             {
                 GC.Collect();
             }

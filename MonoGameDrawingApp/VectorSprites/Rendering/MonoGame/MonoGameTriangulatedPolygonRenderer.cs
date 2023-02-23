@@ -12,7 +12,7 @@ namespace MonoGameDrawingApp.VectorSprites.Rendering.MonoGame
         {
             VertexPositionColor[] vertexPositionColors = (
                 from System.Numerics.Vector2 v in triangulatedPolygon.Vertices
-                select new VertexPositionColor(new Vector3(v.X + position.X, v.Y + position.Y, 0), Util.ToXnaColor(triangulatedPolygon.Color))
+                select new VertexPositionColor(new Vector3(v.X + position.X, v.Y + position.Y, 0f), Util.ToXnaColor(triangulatedPolygon.Color))
             ).ToArray();
 
             triangleBatch.DrawTriangles(vertexPositionColors, triangulatedPolygon.Indices);

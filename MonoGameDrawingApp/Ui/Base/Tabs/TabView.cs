@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.Base.Tabs
 {
@@ -84,7 +83,6 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
             if (_oldTile != Tab.Title || _oldSelected != Tab.IsSelected || _closeButton.Changed)
             {
                 _changed = true;
-                Debug.WriteLine(Tab.Title + " changed");
             }
 
             _oldSelected = Tab.IsSelected;

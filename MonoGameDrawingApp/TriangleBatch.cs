@@ -10,6 +10,7 @@ namespace MonoGameDrawingApp
         private const int MaxIndexCount = MaxVertexCount * 3;
 
         private bool _isStarted;
+        private bool _isWireframe;
 
         private int _vertexCount;
         private int _indexCount;
@@ -33,6 +34,19 @@ namespace MonoGameDrawingApp
                 View = Matrix.Identity,
                 Projection = Matrix.Identity,
             };
+        }
+
+        public bool IsWireframe
+        {
+            get => _isWireframe;
+            set
+            {
+                if (_isStarted)
+                {
+                    throw new InvalidOperationException("Cannot change wireframe while drawing");
+                }
+                _isWireframe = value;
+            }
         }
 
         public GraphicsDevice GraphicsDevice { get; init; }
@@ -100,19 +114,68 @@ namespace MonoGameDrawingApp
 
         private void _forceDrawTriangles(VertexPositionColor[] vertexData, int[] indices, int vertexCount, int triangleCount)
         {
-            foreach (EffectPass pass in Effect.CurrentTechnique.Passes)
+            if (triangleCount == 0)
             {
-                pass.Apply();
+                return;
+            }
 
-                GraphicsDevice.DrawUserIndexedPrimitives(
-                    primitiveType: PrimitiveType.TriangleList,
-                    vertexData: vertexData,
-                    vertexOffset: 0,
-                    numVertices: vertexCount,
-                    indexData: indices,
-                    indexOffset: 0,
-                    primitiveCount: triangleCount
-                );
+            if (IsWireframe)
+            {
+                int[] newIndices = new int[triangleCount * 6];
+
+                for (int i = 0; i < triangleCount; i++)
+                {
+                    int triangleStart = i * 3;
+                    int a = indices[triangleStart];
+                    int b = indices[triangleStart + 1];
+                    int c = indices[triangleStart + 2];
+
+                    newIndices[triangleStart * 2] = a;
+                    newIndices[triangleStart * 2 + 1] = b;
+                    newIndices[triangleStart * 2 + 2] = a;
+                    newIndices[triangleStart * 2 + 3] = c;
+                    newIndices[triangleStart * 2 + 4] = b;
+                    newIndices[triangleStart * 2 + 5] = c;
+                }
+
+                VertexPositionColor[] newVertices = new VertexPositionColor[vertexCount];
+
+                for (int i = 0; i < vertexCount; i++)
+                {
+                    newVertices[i] = new VertexPositionColor(vertexData[i].Position, Color.Black);
+                }
+
+                foreach (EffectPass pass in Effect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+
+                    GraphicsDevice.DrawUserIndexedPrimitives(
+                        primitiveType: PrimitiveType.LineList,
+                        vertexData: newVertices,
+                        vertexOffset: 0,
+                        numVertices: vertexCount,
+                        indexData: newIndices,
+                        indexOffset: 0,
+                        primitiveCount: triangleCount * 3
+                    );
+                }
+            }
+            else
+            {
+                foreach (EffectPass pass in Effect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+
+                    GraphicsDevice.DrawUserIndexedPrimitives(
+                        primitiveType: PrimitiveType.TriangleList,
+                        vertexData: vertexData,
+                        vertexOffset: 0,
+                        numVertices: vertexCount,
+                        indexData: indices,
+                        indexOffset: 0,
+                        primitiveCount: triangleCount
+                    );
+                }
             }
         }
     }

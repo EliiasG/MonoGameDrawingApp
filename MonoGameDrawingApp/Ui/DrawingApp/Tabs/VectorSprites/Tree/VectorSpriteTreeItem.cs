@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
 {
-    public class VectorSpriteTreeItem : ITreeItem, IVectorSpriteAttachment
+    public class VectorSpriteTreeItem : ITreeItem, IVectorSpriteItemAttachment
     {
         private readonly VectorSpriteTree _tree;
 

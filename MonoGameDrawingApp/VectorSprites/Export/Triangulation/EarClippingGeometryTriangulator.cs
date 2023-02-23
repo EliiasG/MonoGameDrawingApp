@@ -12,6 +12,11 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             Vector2[] vertices = _withoutCollinear(polygon.Vertices);
             vertices = _makeCounterClockwise(vertices);
 
+            if (vertices.Length < 3)
+            {
+                return new TriangulatedPolygon(Array.Empty<Vector2>(), Array.Empty<int>(), polygon.Color);
+            }
+
             List<int> indices = new()
             {
                 Capacity = (vertices.Length - 2) * 3
@@ -30,9 +35,9 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                         continue;
                     }
 
-                    int previousIndex = _findNotNull(remaningIndices, i, -1);
+                    int previousIndex = _findNotNull(remaningIndices, i - 1, -1);
                     int currentIndex = (int)remaningIndices[i];
-                    int nextIndex = _findNotNull(remaningIndices, i, 1);
+                    int nextIndex = _findNotNull(remaningIndices, i + 1, 1);
 
                     Vector2 previous = vertices[previousIndex];
                     Vector2 current = vertices[currentIndex];
@@ -50,9 +55,9 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
                     remaningIndices[i] = null;
 
-                    indices.Add(previousIndex);
-                    indices.Add(currentIndex);
                     indices.Add(nextIndex);
+                    indices.Add(currentIndex);
+                    indices.Add(previousIndex);
 
                     ++remaning;
 
@@ -63,7 +68,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                 }
             }
 
-            foreach (int? index in remaningIndices)
+            foreach (int? index in remaningIndices.Reverse())
             {
                 if (index is int intIndex)
                 {
@@ -78,6 +83,10 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
         {
             foreach (Vector2 p in points)
             {
+                if (p == a || p == b || p == c)
+                {
+                    continue;
+                }
                 if (_isInTrangle(p, a, b, c))
                 {
                     return true;

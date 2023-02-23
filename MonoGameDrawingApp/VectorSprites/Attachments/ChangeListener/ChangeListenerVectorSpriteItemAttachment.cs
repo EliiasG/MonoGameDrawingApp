@@ -2,7 +2,7 @@
 
 namespace MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener
 {
-    public class ChangeListenerVectorSpriteItemAttachment : IVectorSpriteAttachment
+    public class ChangeListenerVectorSpriteItemAttachment : IVectorSpriteItemAttachment
     {
         public Action Changed { get; init; }
 

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 {
@@ -9,14 +11,22 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         //TODO change
         private const int Zoom = 50;
 
-        private RenderHelper _renderHelper;
+        private readonly RenderHelper _renderHelper;
+
+        private readonly PreviewSpriteAttachment _preview;
 
         public VectorSpriteViewportView(UiEnvironment environment, VectorSpriteTabView vectorSpriteTabView)
         {
             Environment = environment;
+            VectorSpriteTabView = vectorSpriteTabView;
 
+            _preview = new PreviewSpriteAttachment(VectorSpriteTabView.Sprite);
             _renderHelper = new RenderHelper();
+
+            VectorSpriteTabView.Sprite.AddAttachment(_preview);
         }
+
+        public VectorSpriteTabView VectorSpriteTabView { get; init; }
 
         public bool Changed => _renderHelper.SizeChanged; //TODO
 
@@ -30,22 +40,20 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         {
             _renderHelper.Begin(graphics, width, height);
 
+            KeyboardState keyboard = Keyboard.GetState();
+
+            if (keyboard.IsKeyDown(Keys.LeftControl) && keyboard.IsKeyDown(Keys.LeftShift) && keyboard.IsKeyDown(Keys.W) && Environment.OldKeyboardState.IsKeyUp(Keys.W))
+            {
+                graphics.TriangleBatch.IsWireframe = !graphics.TriangleBatch.IsWireframe;
+            }
+
             if (_renderHelper.SizeChanged)
             {
                 _renderHelper.BeginDraw();
                 graphics.TriangleBatch.Effect.Projection = Matrix.CreateOrthographicOffCenter(-width / 2 / Zoom, width / 2 / Zoom, -height / 2 / Zoom, height / 2 / Zoom, 0f, 1f);
                 graphics.TriangleBatch.Begin();
 
-                VertexPositionColor[] vertexPositionColors = new VertexPositionColor[]
-                {
-                    new VertexPositionColor(new Vector3(0, 0, 0), new Color(255, 0, 0)),
-                    new VertexPositionColor(new Vector3(0, 2, 0), new Color(0, 255, 0)),
-                    new VertexPositionColor(new Vector3(2, 0, 0), new Color(0, 0, 255)),
-                };
-
-                int[] indices = new int[] { 0, 1, 2 };
-
-                graphics.TriangleBatch.DrawTriangles(vertexPositionColors, indices);
+                _preview.Draw(graphics.TriangleBatch);
 
                 graphics.TriangleBatch.End();
                 _renderHelper.FinishDraw();
