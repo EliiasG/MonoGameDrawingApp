@@ -61,7 +61,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
             {
                 Texture2D childRender = Child.Render(graphics, Math.Max(width, Child.RequiredWidth), Math.Max(height, Child.RequiredHeight));
 
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 graphics.SpriteBatch.Draw(
                     texture: childRender,
@@ -69,7 +69,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
                     color: Color.White
                 );
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             _changed = false;

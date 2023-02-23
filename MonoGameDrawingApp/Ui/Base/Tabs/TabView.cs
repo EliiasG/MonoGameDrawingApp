@@ -103,7 +103,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
                 Texture2D backgroundRender = currentBackground.Render(graphics, width, height);
                 Texture2D closeButtonRender = _closeButton.Render(graphics, _closeButton.RequiredWidth, _closeButton.RequiredHeight);
 
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 graphics.SpriteBatch.Draw(
                     texture: backgroundRender,
@@ -127,7 +127,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
                     color: Tab.IsSelected ? Environment.Theme.HoveringTextColor : Environment.Theme.DefaultTextColor
                 );
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             _changed = false;

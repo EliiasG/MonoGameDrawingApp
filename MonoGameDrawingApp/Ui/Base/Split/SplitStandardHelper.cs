@@ -20,7 +20,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split
                 Texture2D firstRender = first.Render(graphics, secondPosition.X == 0 ? width : (int)secondPosition.X, secondPosition.Y == 0 ? height : (int)secondPosition.Y);
                 Texture2D secondRender = second.Render(graphics, secondPosition.X == 0 ? width : width - (int)secondPosition.X, secondPosition.Y == 0 ? height : height - (int)secondPosition.Y);
 
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 graphics.SpriteBatch.Draw(
                     texture: firstRender,
@@ -34,7 +34,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split
                     color: Color.White
                 );
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             return _renderHelper.Result;

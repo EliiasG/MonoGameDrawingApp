@@ -51,7 +51,7 @@ namespace MonoGameDrawingApp.Ui.Base
 
             if (Changed || _renderHelper.SizeChanged)
             {
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 graphics.SpriteBatch.DrawString(
                     spriteFont: Environment.Font,
@@ -60,7 +60,7 @@ namespace MonoGameDrawingApp.Ui.Base
                     color: Color.White
                 );
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             _changed = false;

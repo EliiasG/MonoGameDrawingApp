@@ -90,7 +90,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                     }
                 }
 
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 foreach ((Vector2, Texture2D) render in renders)
                 {
@@ -101,7 +101,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                     );
                 }
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
             _changed = false;
             return _renderHelper.Result;

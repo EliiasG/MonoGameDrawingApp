@@ -53,7 +53,7 @@ namespace MonoGameDrawingApp.Ui.Base
 
             if (_renderHelper.SizeChanged)
             {
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 graphics.SpriteBatch.Draw(
                     texture: _texture,
@@ -61,7 +61,7 @@ namespace MonoGameDrawingApp.Ui.Base
                     color: Color.White
                 );
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             return _renderHelper.Result;

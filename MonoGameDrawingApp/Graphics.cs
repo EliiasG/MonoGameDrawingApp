@@ -6,11 +6,13 @@ namespace MonoGameDrawingApp
     {
         public readonly GraphicsDevice Device;
         public readonly SpriteBatch SpriteBatch;
+        public readonly TriangleBatch TriangleBatch;
 
-        public Graphics(GraphicsDevice device, SpriteBatch spriteBatch)
+        public Graphics(GraphicsDevice device, SpriteBatch spriteBatch, TriangleBatch triangleBatch)
         {
             Device = device;
             SpriteBatch = spriteBatch;
+            TriangleBatch = triangleBatch;
         }
     }
 }

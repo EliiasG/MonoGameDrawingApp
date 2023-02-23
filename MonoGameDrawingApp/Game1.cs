@@ -43,7 +43,7 @@ namespace MonoGameDrawingApp
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Graphics graphics = new(GraphicsDevice, _spriteBatch);
+            Graphics graphics = new(GraphicsDevice, _spriteBatch, new TriangleBatch(GraphicsDevice));
             environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"), Content);
 
             // TODO: use this.Content to load your game content here
@@ -64,11 +64,11 @@ namespace MonoGameDrawingApp
         {
             //_split.SplitPosition = Mouse.GetState().Y;
             // TODO: Add your drawing code here
-            DateTime before = DateTime.Now;
+            DateTime before = DateTime.UtcNow;
             environment.Render();
-            DateTime after = DateTime.Now;
+            DateTime after = DateTime.UtcNow;
 
-            text.Text = (1f / ((after.Ticks - before.Ticks) / 10000000f)).ToString();
+            text.Text = (1f / ((after.Ticks - before.Ticks) / 10_000_000f)).ToString();
 
             base.Draw(gameTime);
         }

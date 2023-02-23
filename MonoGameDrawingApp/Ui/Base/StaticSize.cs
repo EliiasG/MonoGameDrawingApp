@@ -35,7 +35,7 @@ namespace MonoGameDrawingApp.Ui.Base
             {
                 Texture2D render = Child.Render(graphics, Child.RequiredWidth, Child.RequiredHeight);
 
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 graphics.SpriteBatch.Draw(
                     texture: render,
@@ -43,7 +43,7 @@ namespace MonoGameDrawingApp.Ui.Base
                     color: Color.White
                 );
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             return _renderHelper.Result;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonoGameDrawingApp.VectorSprites.Attachments
 {
-    public interface IVectorSpriteItemAttachment
+    public interface IVectorSpriteAttachment
     {
         void ChildrenChanged() { }
 

@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
 {
-    public class VectorSpriteTreeItem : ITreeItem, IVectorSpriteItemAttachment
+    public class VectorSpriteTreeItem : ITreeItem, IVectorSpriteAttachment
     {
         private readonly VectorSpriteTree _tree;
 
@@ -63,7 +63,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
 
         public void RightClicked()
         {
-            //TODO open contextmenu
             VectorSpriteItemContextMenu contextMenu = new(PopupEnvironment.Environment, Item, PopupEnvironment);
 
             PopupEnvironment.Open(Mouse.GetState().Position, contextMenu);

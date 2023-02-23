@@ -33,9 +33,9 @@ namespace MonoGameDrawingApp.Ui.Base
 
             if (_renderHelper.SizeChanged)
             {
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
                 graphics.Device.Clear(Color);
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             return _renderHelper.Result;

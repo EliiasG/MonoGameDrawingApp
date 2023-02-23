@@ -31,7 +31,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                     renders.Add(item.Render(graphics, item.RequiredWidth, height));
                 }
 
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 Vector2 renderPosition = Vector2.Zero;
                 foreach (Texture2D render in renders)
@@ -44,7 +44,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                     renderPosition += new Vector2(render.Width + Spacing, 0);
                 }
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             _changed = false;

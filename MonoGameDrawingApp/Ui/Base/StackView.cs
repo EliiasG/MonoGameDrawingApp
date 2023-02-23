@@ -45,7 +45,7 @@ namespace MonoGameDrawingApp.Ui.Base
                     renders.Add(child.Render(graphics, width, height));
                 }
 
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
 
                 foreach (Texture2D render in renders)
                 {
@@ -56,7 +56,7 @@ namespace MonoGameDrawingApp.Ui.Base
                     );
                 }
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             _changed = false;

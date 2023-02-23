@@ -36,7 +36,7 @@ namespace MonoGameDrawingApp.Ui.Base
             {
                 Texture2D childRender = Child.Render(graphics, Child.RequiredWidth, Child.RequiredHeight);
 
-                _renderHelper.BeginDraw();
+                _renderHelper.BeginSpriteBatchDraw();
                 // to disable blur
                 if (DisableBlur)
                 {
@@ -50,7 +50,7 @@ namespace MonoGameDrawingApp.Ui.Base
                     color: Color.White
                 );
 
-                _renderHelper.FinishDraw();
+                _renderHelper.FinishSpriteBatchDraw();
             }
 
             return _renderHelper.Result;

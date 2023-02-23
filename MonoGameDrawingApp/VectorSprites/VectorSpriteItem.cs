@@ -9,7 +9,7 @@ namespace MonoGameDrawingApp.VectorSprites
     {
         private readonly List<VectorSpriteItem> _children;
         private readonly List<IVectorSpriteItemModifier> _modifiers;
-        private readonly Dictionary<Type, IVectorSpriteItemAttachment> _attchments;
+        private readonly Dictionary<Type, IVectorSpriteAttachment> _attchments;
 
         private string _name;
         private Vector2 _position;
@@ -18,7 +18,7 @@ namespace MonoGameDrawingApp.VectorSprites
         {
             _children = new List<VectorSpriteItem>();
             _modifiers = new List<IVectorSpriteItemModifier>();
-            _attchments = new Dictionary<Type, IVectorSpriteItemAttachment>();
+            _attchments = new Dictionary<Type, IVectorSpriteAttachment>();
             Sprite = sprite;
             Name = name;
             Sprite.ApplyAttachments(this);
@@ -75,12 +75,12 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public IEnumerable<IVectorSpriteItemModifier> Modifiers => _modifiers;
 
-        public void AddAttachment(IVectorSpriteItemAttachment attachment)
+        public void AddAttachment(IVectorSpriteAttachment attachment)
         {
             _attchments.TryAdd(attachment.GetType(), attachment);
         }
 
-        public Type GetAttachment<Type>() where Type : IVectorSpriteItemAttachment
+        public Type GetAttachment<Type>() where Type : IVectorSpriteAttachment
         {
             return (Type)_attchments[typeof(Type)];
         }
@@ -144,7 +144,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         private void _childrenChanged()
         {
-            foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
+            foreach (IVectorSpriteAttachment attachment in _attchments.Values)
             {
                 attachment.ChildrenChanged();
             }
@@ -152,7 +152,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         internal void _dataChanged()
         {
-            foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
+            foreach (IVectorSpriteAttachment attachment in _attchments.Values)
             {
                 attachment.DataChanged();
             }
@@ -160,7 +160,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         private void _childrenChanging()
         {
-            foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
+            foreach (IVectorSpriteAttachment attachment in _attchments.Values)
             {
                 attachment.ChildrenChanging();
             }
@@ -168,7 +168,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         internal void _dataChanging()
         {
-            foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
+            foreach (IVectorSpriteAttachment attachment in _attchments.Values)
             {
                 attachment.DataChanged();
             }

@@ -82,8 +82,6 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
                     new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
                 }),
             });
-
-            //TODO not yet tested
         }
 
         public bool Changed => _root.Changed;

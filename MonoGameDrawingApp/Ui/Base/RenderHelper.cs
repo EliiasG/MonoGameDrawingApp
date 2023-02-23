@@ -49,20 +49,29 @@ namespace MonoGameDrawingApp.Ui.Base
         {
             _graphics.Device.SetRenderTarget(_renderTarget);
             _graphics.Device.Clear(Color.Transparent);
+        }
+
+        public void BeginSpriteBatchDraw()
+        {
+            BeginDraw();
             _graphics.SpriteBatch.Begin();
+        }
+
+        public void FinishDraw()
+        {
+            _changed = false;
+            _graphics.Device.SetRenderTarget(null);
+        }
+
+        public void FinishSpriteBatchDraw()
+        {
+            _graphics.SpriteBatch.End();
+            FinishDraw();
         }
 
         ~RenderHelper()
         {
             Task.Run(() => _renderTarget?.Dispose());
         }
-
-        public void FinishDraw()
-        {
-            _changed = false;
-            _graphics.SpriteBatch.End();
-            _graphics.Device.SetRenderTarget(null);
-        }
-
     }
 }

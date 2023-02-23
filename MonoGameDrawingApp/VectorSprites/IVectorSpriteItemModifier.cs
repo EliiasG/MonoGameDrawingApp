@@ -1,7 +1,9 @@
-﻿namespace MonoGameDrawingApp.VectorSprites
+﻿using MonoGameDrawingApp.VectorSprites.Export;
+
+namespace MonoGameDrawingApp.VectorSprites
 {
     public interface IVectorSpriteItemModifier
     {
-        void Apply(VectorSpriteItem item);
+        void Apply(ModifiedGeometry geometry);
     }
 }

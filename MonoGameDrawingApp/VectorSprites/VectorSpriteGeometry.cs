@@ -1,6 +1,8 @@
-﻿using System;
+﻿using MonoGameDrawingApp.VectorSprites.Export;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Numerics;
 
 namespace MonoGameDrawingApp.VectorSprites
@@ -61,5 +63,10 @@ namespace MonoGameDrawingApp.VectorSprites
         }
 
         public int Size => _points.Count;
+
+        public Polygon ToPolygon()
+        {
+            return new Polygon(Points.ToArray(), Color);
+        }
     }
 }

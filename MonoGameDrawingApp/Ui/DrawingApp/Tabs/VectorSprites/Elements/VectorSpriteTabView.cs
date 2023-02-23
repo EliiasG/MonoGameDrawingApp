@@ -40,7 +40,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             IUiElement treeElement = new VectorSpriteTreeView(Environment, this);
 
-            IUiElement viewportElement = new CenterView(Environment, new TextView(Environment, "Viewport goes here"), true, true);
+            IUiElement viewportElement = new VectorSpriteViewportView(Environment, this);//new CenterView(Environment, new TextView(Environment, "Viewport goes here"), true, true);
 
             IUiElement inspectorElement = new VectorSpriteInspector(Environment, this);
 

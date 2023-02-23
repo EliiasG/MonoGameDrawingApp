@@ -102,7 +102,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         private IUiElement _generateButton(string path)
         {
-            //TODO
             return new ContextMenuButton(Environment, path, () =>
             {
                 Root.PopupEnvironment.OpenCentered(new ChoicePopup(Environment, path, Root.PopupEnvironment, new ChoicePopupOption[]
