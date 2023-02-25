@@ -23,14 +23,14 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         private bool _pressedSave;
 
-
         private KeyboardState _oldKeyboard;
 
         public VectorSpriteTabView(UiEnvironment environment, VectorSprite sprite, string path, PopupEnvironment popupEnvironment)
         {
             Environment = environment;
             Sprite = sprite;
-            Sprite.AddAttachment(new ChangeListenerVectorSpriteAttachment(() => _pressedSave = false));
+            ChangeListener = new ChangeListenerVectorSpriteAttachment(() => _pressedSave = false);
+            Sprite.AddAttachment(ChangeListener);
             _jsonSaver = new VectorSpriteJsonSaver(Sprite);
             Path = path;
             _pressedSave = true;
@@ -60,6 +60,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             _root = _outer;
         }
+
+        public ChangeListenerVectorSpriteAttachment ChangeListener { get; init; }
 
         public PopupEnvironment PopupEnvironment { get; init; }
 

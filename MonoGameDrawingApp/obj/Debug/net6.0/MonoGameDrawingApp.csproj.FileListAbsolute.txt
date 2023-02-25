@@ -37,3 +37,4 @@ C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\System.Ru
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\textfile.xnb
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\imagefile.xnb
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\spriteitem.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\grid.xnb

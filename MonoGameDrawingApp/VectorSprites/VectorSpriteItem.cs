@@ -19,12 +19,14 @@ namespace MonoGameDrawingApp.VectorSprites
             _children = new List<VectorSpriteItem>();
             _modifiers = new List<IVectorSpriteItemModifier>();
             _attchments = new Dictionary<Type, IVectorSpriteItemAttachment>();
+
             Sprite = sprite;
             Name = name;
-            Sprite.ApplyAttachments(this);
             Geometry = geometry;
             Geometry.VectorSpriteItem = this;
             Position = position;
+
+            Sprite.ApplyAttachments(this);
         }
 
         public VectorSpriteItem(string name, VectorSprite sprite) : this(name, sprite, new VectorSpriteGeometry(), Vector2.Zero)
@@ -62,6 +64,25 @@ namespace MonoGameDrawingApp.VectorSprites
                     _position = value;
                     _dataChanged();
                 }
+            }
+        }
+
+        public Vector2 AbsolutePosition
+        {
+            get
+            {
+                VectorSpriteItem parent = this;
+                Vector2 position = Vector2.Zero;
+                while (parent != null)
+                {
+                    position += parent.Position;
+                    parent = parent.Parent;
+                }
+                return position;
+            }
+            set
+            {
+                _position = value - (AbsolutePosition - _position);
             }
         }
 

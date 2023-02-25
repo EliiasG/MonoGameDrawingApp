@@ -75,7 +75,10 @@ namespace MonoGameDrawingApp.Ui.Base
 
             Graphics.SpriteBatch.End();
         }
-
+        public bool JustPressed(Keys key)
+        {
+            return Keyboard.GetState().IsKeyDown(key) && OldKeyboardState.IsKeyUp(key);
+        }
         private void _updateShortCuts()
         {
             KeyboardState keyboardState = Keyboard.GetState();

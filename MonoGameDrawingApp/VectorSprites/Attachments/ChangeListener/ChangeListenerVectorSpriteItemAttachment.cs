@@ -1,24 +1,23 @@
-﻿using System;
-
-namespace MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener
+﻿namespace MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener
 {
     public class ChangeListenerVectorSpriteItemAttachment : IVectorSpriteItemAttachment
     {
-        public Action Changed { get; init; }
 
-        public ChangeListenerVectorSpriteItemAttachment(Action Changed)
+        public ChangeListenerVectorSpriteItemAttachment(ChangeListenerVectorSpriteAttachment vectorSpriteAttachment)
         {
-            this.Changed = Changed;
+            VectorSpriteAttachment = vectorSpriteAttachment;
         }
+
+        public ChangeListenerVectorSpriteAttachment VectorSpriteAttachment { get; init; }
 
         public void ChildrenChanged()
         {
-            Changed();
+            VectorSpriteAttachment.Changed();
         }
 
         public void DataChanged()
         {
-            Changed();
+            VectorSpriteAttachment.Changed();
         }
     }
 }

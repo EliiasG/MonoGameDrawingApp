@@ -9,10 +9,10 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener
         public ChangeListenerVectorSpriteAttachment(Action Changed)
         {
             this.Changed = Changed;
-            _attachment = new ChangeListenerVectorSpriteItemAttachment(Changed);
+            _attachment = new ChangeListenerVectorSpriteItemAttachment(this);
         }
 
-        public Action Changed { get; init; }
+        public Action Changed { get; set; }
 
         public void Attach(VectorSpriteItem item)
         {

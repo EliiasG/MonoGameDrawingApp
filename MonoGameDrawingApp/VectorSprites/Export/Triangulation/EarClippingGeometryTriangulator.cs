@@ -28,6 +28,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
             while (remaning < vertices.Length - 3)
             {
+                int _oldRemaning = remaning;
                 for (int i = 0; i < vertices.Length; i++)
                 {
                     if (remaningIndices[i] == null)
@@ -61,10 +62,14 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
                     ++remaning;
 
-                    if (remaning < vertices.Length - 3)
+                    if (remaning >= vertices.Length - 3)
                     {
                         break;
                     }
+                }
+                if (remaning == _oldRemaning)
+                {
+                    return new TriangulatedPolygon(Array.Empty<Vector2>(), Array.Empty<int>(), polygon.Color);
                 }
             }
 

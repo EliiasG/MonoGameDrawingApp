@@ -2,9 +2,9 @@
 {
     public class Util
     {
-        public static Microsoft.Xna.Framework.Vector2 ToXnaVector2(System.Numerics.Vector2 vector)
+        public static System.Numerics.Vector2 ToNumericsVector2(Microsoft.Xna.Framework.Vector2 vector)
         {
-            return new Microsoft.Xna.Framework.Vector2(vector.X, vector.Y);
+            return new System.Numerics.Vector2(vector.X, vector.Y);
         }
 
         public static Microsoft.Xna.Framework.Color ToXnaColor(System.Drawing.Color color)
