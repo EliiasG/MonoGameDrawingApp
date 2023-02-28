@@ -11,7 +11,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
         private readonly UiEnvironment _environment;
 
         private Vector2 _position = Vector2.Zero;
-        private RenderHelper _renderHelper;
+        private readonly RenderHelper _renderHelper;
         private bool _changed = true;
 
         private int _width = 1;

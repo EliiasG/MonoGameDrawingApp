@@ -28,7 +28,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
             while (remaning < vertices.Length - 3)
             {
-                int _oldRemaning = remaning;
+                int oldRemaning = remaning;
                 for (int i = 0; i < vertices.Length; i++)
                 {
                     if (remaningIndices[i] == null)
@@ -44,7 +44,19 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                     Vector2 current = vertices[currentIndex];
                     Vector2 next = vertices[nextIndex];
 
-                    if (!_isConvex(previous, current, next))
+                    if (ExtraMath.IsOnLine(current, previous, next))
+                    {
+                        remaningIndices[i] = null;
+
+                        ++remaning;
+
+                        if (remaning >= vertices.Length - 3)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (!ExtraMath.IsConvex(previous, current, next))
                     {
                         continue;
                     }
@@ -67,7 +79,8 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                         break;
                     }
                 }
-                if (remaning == _oldRemaning)
+
+                if (remaning == oldRemaning)
                 {
                     return new TriangulatedPolygon(Array.Empty<Vector2>(), Array.Empty<int>(), polygon.Color);
                 }
@@ -81,7 +94,11 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                 }
             }
 
-            return new TriangulatedPolygon(vertices, indices.ToArray(), polygon.Color);
+            if (indices.Count % 3 == 0)
+            {
+                return new TriangulatedPolygon(vertices, indices.ToArray(), polygon.Color);
+            }
+            return new TriangulatedPolygon(Array.Empty<Vector2>(), Array.Empty<int>(), polygon.Color);
         }
 
         private static bool _anyInTriangle(Vector2[] points, Vector2 a, Vector2 b, Vector2 c)
@@ -135,7 +152,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                 Vector2 current = vertices[i];
                 Vector2 next = _nextPoint(vertices, i);
 
-                if (_isCollinear(current, last, next) && newVertecies == null)
+                if (ExtraMath.IsOnLine(current, last, next) && newVertecies == null)
                 {
                     newVertecies ??= vertices.Take(i).ToList();
                 }
@@ -146,34 +163,6 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             }
 
             return newVertecies?.ToArray() ?? vertices;
-        }
-
-        private static bool _isCollinear(Vector2 point, Vector2 lineStart, Vector2 lineEnd)
-        {
-            Vector2 line = lineEnd - lineStart;
-            Vector2 pointToEnd = lineEnd - point;
-
-            if (Math.Sign(line.X) != Math.Sign(pointToEnd.X))
-            {
-                return false;
-            }
-
-            if (Math.Sign(line.Y) != Math.Sign(pointToEnd.Y))
-            {
-                return false;
-            }
-
-            if (line.Y == 0)
-            {
-                return pointToEnd.Y == 0;
-            }
-
-            if (pointToEnd.Y == 0)
-            {
-                return false;
-            }
-
-            return line.X / line.Y == pointToEnd.X / pointToEnd.Y;
         }
 
         private static Vector2[] _makeCounterClockwise(Vector2[] vertices)
@@ -214,19 +203,12 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             return lastCurrent.X * nextCurrent.Y < lastCurrent.Y * nextCurrent.X;
         }
 
-        private static bool _isConvex(Vector2 a, Vector2 b, Vector2 c)
-        {
-            Vector2 cb = b - c;
-            Vector2 ab = b - a;
-            return cb.X * ab.Y > cb.Y * ab.X;
-        }
-
         private static bool _isInTrangle(Vector2 point, Vector2 a, Vector2 b, Vector2 c)
         {
             bool b1 = _isCounterClockwise(new Vector2[] { a, b, point });
             bool b2 = _isCounterClockwise(new Vector2[] { b, c, point });
             bool b3 = _isCounterClockwise(new Vector2[] { c, a, point });
-            return b1 == b2 && b2 == b3;
+            return (b1 == b2 && b2 == b3) || ExtraMath.IsOnLine(point, a, b) || ExtraMath.IsOnLine(point, a, c) || ExtraMath.IsOnLine(point, b, c);
         }
     }
 }

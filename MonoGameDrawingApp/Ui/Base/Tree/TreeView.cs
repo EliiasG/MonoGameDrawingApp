@@ -22,7 +22,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
         private readonly TreeItemView _rootView;
         private readonly VScrollableListView _listView;
 
-        private List<TreeItemView> _items;
+        private readonly List<TreeItemView> _items;
         private bool _oldJustRight;
         private bool _oldJustLeft;
 

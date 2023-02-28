@@ -12,11 +12,23 @@
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/folder.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/imagefile.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/open.png</File>
+    <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/originDefault.png</File>
+    <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/originSelected.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/sprite.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/spriteitem.png</File>
     <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/textfile.png</File>
+    <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/vertexDefault.png</File>
+    <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/icons/vertexSelected.png</File>
+    <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/palette.png</File>
+    <File>C:/Projects/Git/MonoGameDrawingApp/MonoGameDrawingApp/Content/pixel.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

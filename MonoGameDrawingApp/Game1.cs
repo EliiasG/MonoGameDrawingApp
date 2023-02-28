@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
+        private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private UiEnvironment environment;
         private TextView text;

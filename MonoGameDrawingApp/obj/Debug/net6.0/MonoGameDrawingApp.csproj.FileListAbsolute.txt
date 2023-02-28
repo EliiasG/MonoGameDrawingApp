@@ -38,3 +38,9 @@ C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\i
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\imagefile.xnb
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\spriteitem.xnb
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\grid.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\vertexDefault.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\pixel.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\vertexSelected.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\originDefault.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\originSelected.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\palette.xnb

@@ -26,11 +26,11 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
 
         private MouseState _oldMouse;
 
-        private IScrollableView _child;
+        private readonly IScrollableView _child;
 
-        private VSplit _outer;
-        private HSplit _main;
-        private HSplit _scrollBar;
+        private readonly VSplit _outer;
+        private readonly HSplit _main;
+        private readonly HSplit _scrollBar;
 
         public ScrollWindow(UiEnvironment environment, IScrollableView child, bool isLeft = false, bool isTop = false, bool allowHoverScrolling = true)
         {

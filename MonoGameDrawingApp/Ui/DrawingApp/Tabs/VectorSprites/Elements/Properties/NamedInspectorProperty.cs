@@ -7,7 +7,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
 {
     public class NamedInspectorProperty : IUiElement
     {
-        private IUiElement _root;
+        private readonly IUiElement _root;
 
         public NamedInspectorProperty(UiEnvironment environment, IUiElement child, string text)
         {

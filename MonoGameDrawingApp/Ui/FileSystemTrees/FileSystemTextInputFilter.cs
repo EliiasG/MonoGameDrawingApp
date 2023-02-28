@@ -7,7 +7,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees
 {
     internal class FileSystemTextInputFilter : ITextInputFilter
     {
-        private ISet<char> _allowedCharacters = " _-.,;+¤&()[]".ToHashSet();
+        private readonly ISet<char> _allowedCharacters = " _-.,;+¤&()[]".ToHashSet();
 
         private readonly ITextInputFilter[] _subFilters = new ITextInputFilter[]
         {

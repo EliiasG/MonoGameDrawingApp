@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Popup;
+using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
+using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree;
 using MonoGameDrawingApp.VectorSprites;
@@ -15,26 +18,28 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         private readonly static Color[] s_backgroundColors = new Color[]
         {
-            new Color(255, 255, 255),
-            new Color(255, 0, 0),
-            new Color(0, 255, 0),
-            new Color(0, 0, 255),
-            new Color(0, 255, 255),
-            new Color(255, 0, 255),
-            new Color(255, 255, 0),
+            new Color(200, 200, 200),
+            new Color(75, 75, 75),
+            new Color(200, 0, 0),
+            new Color(0, 200, 0),
+            new Color(0, 0, 200),
+            new Color(0, 200, 200),
+            new Color(200, 0, 200),
+            new Color(200, 200, 0),
         };
 
         private readonly RenderHelper _renderHelper;
         private readonly PreviewSpriteAttachment _preview;
         private readonly Camera _camera;
 
+        private readonly Grid _grid;
+        private readonly VectorSpriteItemEditor _editor;
         private Vector2? _worldDragStart = null;
         private Vector2? _pixelDragStart = null;
         private int _colorIndex = 0;
+        private bool _showGrid = true;
         private MouseState _oldMouse;
-        private VectorSpriteItem _selected;
         private float _targetZoom = 50;
-        private static Texture2D _grid;
 
         public VectorSpriteViewportView(UiEnvironment environment, VectorSpriteTabView vectorSpriteTabView)
         {
@@ -43,12 +48,14 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             _preview = new PreviewSpriteAttachment(VectorSpriteTabView.Sprite);
             _renderHelper = new RenderHelper();
-            _grid ??= environment.Content.Load<Texture2D>("grid");
+
             _camera = new Camera()
             {
                 Zoom = 50,
                 Position = new Vector2(0, 0)
             };
+            _grid = new Grid(_camera, 8, Environment.Content);
+            _editor = new VectorSpriteItemEditor(Environment.Content, _camera, _grid);
 
             VectorSpriteTabView.Sprite.AddAttachment(_preview);
 
@@ -58,7 +65,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             };
 
         }
-
         public VectorSpriteTabView VectorSpriteTabView { get; init; }
 
         public Color BackgroundColor => s_backgroundColors[_colorIndex];
@@ -83,7 +89,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 _camera.Apply(graphics.TriangleBatch.Effect, width, height);
                 graphics.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-                _renderGrid(graphics.SpriteBatch, width, height);
+                _grid.RenderBackground(graphics.SpriteBatch, width, height, BackgroundColor);
 
                 graphics.SpriteBatch.End();
 
@@ -92,14 +98,17 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 _preview.Draw(graphics.TriangleBatch);
 
                 graphics.TriangleBatch.End();
-                if (_selected is VectorSpriteItem item)
+
+                graphics.SpriteBatch.Begin();
+
+                _editor.Draw(graphics.SpriteBatch, Environment.Font, Util.InvertColor(BackgroundColor));
+
+                if (_showGrid)
                 {
-                    graphics.SpriteBatch.Begin();
-
-                    _renderIndices(graphics.SpriteBatch, item);
-
-                    graphics.SpriteBatch.End();
+                    _grid.RenderGrid(graphics.SpriteBatch, width, height, Util.InvertColor(BackgroundColor) * 0.5f);
                 }
+
+                graphics.SpriteBatch.End();
 
                 _renderHelper.FinishDraw();
             }
@@ -121,47 +130,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             }
 
             return _renderHelper.Result;
-        }
-
-        private void _renderIndices(SpriteBatch spriteBatch, VectorSpriteItem item)
-        {
-
-
-            int i = 0;
-            foreach (Vector2 point in item.Geometry.Points)
-            {
-                spriteBatch.DrawString(Environment.Font, i.ToString(), _camera.WorldToPixel(point + item.AbsolutePosition), Color.White);
-                ++i;
-            }
-        }
-
-        private void _renderGrid(SpriteBatch spriteBatch, int width, int height)
-        {
-            float zoom = _camera.Zoom * 2;
-            int horizontalAmount = (int)(width / zoom + 4);
-            int verticalAmount = (int)(height / zoom + 4);
-
-            Vector2 start = new(-_camera.Position.X * _camera.Zoom % zoom, _camera.Position.Y * _camera.Zoom % zoom);
-            start -= new Vector2(zoom) * 2;
-            start += new Vector2(width / 2 % zoom, height / 2 % zoom);
-
-            for (int x = 0; x < horizontalAmount; x++)
-            {
-                for (int y = 0; y < verticalAmount; y++)
-                {
-                    spriteBatch.Draw(
-                        texture: _grid,
-                        position: start + new Vector2(x * zoom, y * zoom),
-                        sourceRectangle: null,
-                        color: BackgroundColor,
-                        rotation: 0f,
-                        origin: Vector2.Zero,
-                        scale: zoom / 2,
-                        effects: SpriteEffects.None,
-                        layerDepth: 0f
-                    );
-                }
-            }
         }
 
         public void Update(Vector2 position, int width, int height)
@@ -200,20 +168,62 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             VectorSpriteTreeItem treeItem = VectorSpriteTabView.Tree.Selected as VectorSpriteTreeItem;
 
-            if (treeItem?.Item != _selected)
+            _editor.Selected = treeItem?.Item;
+
+            _editor.Update(position);
+
+            if (_editor.Changed)
             {
-                _selected = treeItem?.Item;
                 Changed = true;
             }
 
-            if (Environment.JustPressed(Keys.F) && _selected is VectorSpriteItem selected)
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) != Environment.OldKeyboardState.IsKeyDown(Keys.LeftShift))
+            {
+                Changed = true;
+            }
+
+            if (Environment.JustPressed(Keys.F) && _editor.Selected is VectorSpriteItem selected)
             {
                 _camera.Position = selected.AbsolutePosition;
+            }
+
+            if (Environment.JustPressed(Keys.G))
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+                {
+                    _updateGridResolution();
+                }
+                else
+                {
+                    _showGrid = !_showGrid;
+                    Changed = true;
+                }
+
             }
 
             _updateZoom(dragging);
 
             _oldMouse = mouse;
+        }
+
+        private void _updateGridResolution()
+        {
+            VectorSpriteTabView.PopupEnvironment.OpenCentered(new TextInputPopup(
+                environment: Environment,
+                popupEnvironment: VectorSpriteTabView.PopupEnvironment,
+                confirmed: (string newValue) =>
+                {
+                    try
+                    {
+                        _grid.Resolution = Math.Clamp(int.Parse(newValue), 0, 512);
+                        _showGrid = true;
+                        Changed = true;
+                    }
+                    catch { }
+                },
+                filters: new ITextInputFilter[] { new NumericTextInputFilter() },
+                title: "Set Grid Resolution (0 for no grid)"
+            ));
         }
 
         private void _updateZoom(bool dragging)

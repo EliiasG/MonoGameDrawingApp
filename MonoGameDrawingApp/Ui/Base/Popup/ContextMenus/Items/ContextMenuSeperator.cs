@@ -9,16 +9,16 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items
     {
         private readonly UiEnvironment _environment;
 
-        private IUiElement _child;
+        private readonly IUiElement _child;
 
         public ContextMenuSeperator(UiEnvironment environment)
         {
             _environment = environment;
             _child = new VListView<IUiElement>(environment, new List<IUiElement>
             {
-                new MinSize(environment, new ColorRect(environment, Color.Transparent), 0, 5),
+                new EmptySpace(Environment,  0, 5),
                 new MinSize(environment, new ColorRect(environment, environment.Theme.SelectedButtonColor), 0, 2),
-                new MinSize(environment, new ColorRect(environment, Color.Transparent), 0, 5),
+                new EmptySpace(Environment,  0, 5),
             });
         }
 

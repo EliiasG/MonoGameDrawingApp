@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
 {
     public class StringInspectorProperty : IInspectorProperty<string>
     {
-        private const int Spacing = 6;
+        private const int Height = 30;
         private const int TextWidth = 200;
 
         private readonly IUiElement _root;
@@ -41,7 +41,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
                     environment: Environment,
                     child: scrollWindow,
                     width: TextWidth,
-                    height: (int)environment.FontHeight + Spacing * 2
+                    height: Height
                 ),
                 text: name
             );

@@ -9,7 +9,7 @@ namespace MonoGameDrawingApp.Ui.Base
 
         private readonly UiEnvironment _environment;
 
-        private RenderHelper _renderHelper;
+        private readonly RenderHelper _renderHelper;
 
         public StaticSize(UiEnvironment environment, IUiElement child)
         {

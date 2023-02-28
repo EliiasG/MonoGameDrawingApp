@@ -11,13 +11,13 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image
 
         private const int Spacing = 20;
 
-        private UiEnvironment _environment;
+        private readonly UiEnvironment _environment;
 
-        private IUiElement _root;
+        private readonly IUiElement _root;
 
-        private IUiElement _image;
+        private readonly IUiElement _image;
 
-        private MinSize _minSize;
+        private readonly MinSize _minSize;
 
         public ImageTabView(UiEnvironment environment, string path)
         {

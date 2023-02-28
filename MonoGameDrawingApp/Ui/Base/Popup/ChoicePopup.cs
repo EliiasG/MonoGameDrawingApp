@@ -43,16 +43,16 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
                 new ColorRect(environment, environment.Theme.SecondaryMenuBackgroundColor),
                 new VListView<IUiElement>(environment, new List<IUiElement>
                 {
-                    new MinSize(environment, new ColorRect(environment, Color.Transparent), 1, Spacing),
-                    new HListView<IUiElement>(Environment, new List<IUiElement>
+                    new EmptySpace(Environment,  1, Spacing),
+                    new CenterView(environment, new HListView<IUiElement>(Environment, new List<IUiElement>
                     {
-                        new MinSize(Environment, new ColorRect(environment, Color.Transparent), Spacing, 1),
+                        new EmptySpace(Environment,  Spacing, 1),
                         new ColorModifier(environment, new TextView(environment, title), environment.Theme.EditingTextColor),
-                        new MinSize(Environment, new ColorRect(environment, Color.Transparent), Spacing, 1),
-                    }),
-                    new MinSize(environment, new ColorRect(environment, Color.Transparent), 1, Spacing * 2),
+                        new EmptySpace(Environment,  Spacing, 1),
+                    }), true, false),
+                    new EmptySpace(Environment,  1, Spacing * 2),
                     new CenterView(environment, buttonView, true, false),
-                    new MinSize(environment, new ColorRect(environment, Color.Transparent), 1, Spacing),
+                    new EmptySpace(Environment,  1, Spacing),
                 }),
             });
         }

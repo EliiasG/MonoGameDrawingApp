@@ -11,7 +11,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project
     {
         public readonly string Path;
 
-        private IUiElement _root;
+        private readonly IUiElement _root;
 
         public ProjectTabView(UiEnvironment environment, DrawingAppRoot root, string path)
         {

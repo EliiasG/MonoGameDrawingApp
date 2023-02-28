@@ -9,9 +9,6 @@ using MonoGameDrawingApp.Ui.Base.Split.Vertical;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp
 {
@@ -19,8 +16,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
     {
 
         public readonly DrawingAppRoot Root;
-
-        private static readonly string ProjectsPath = Path.Join(System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "VectorDrawingApp", "projects.txt");
 
         private readonly UiEnvironment _environment;
         private readonly VScrollableListView _scrollableListView;
@@ -30,16 +25,16 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
         {
             _environment = environment;
             Root = root;
-            _scrollableListView = new VScrollableListView(environment, new IUiElement[0], false, 2);
+            _scrollableListView = new VScrollableListView(environment, System.Array.Empty<IUiElement>(), false, 2);
             ReloadProjects();
-            Debug.WriteLine(ProjectsPath);
+
             _root = new VSplitStandard(
                 environment: Environment,
                 first: new VListView<IUiElement>(Environment, new List<IUiElement>()
                 {
-                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, 5),
+                    new EmptySpace(Environment,  1, 5),
                     new ContextMenuButton(Environment, "Import/Create Project", _import),
-                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, 5),
+                    new EmptySpace(Environment,  1, 5),
                 }),
                 second: new StackView(Environment, new List<IUiElement>() {
                     new ColorRect(Environment, Environment.Theme.MenuBackgorundColor),
@@ -69,34 +64,18 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         public void ReloadProjects()
         {
+            //does intentionally not realod on savestate, is should only reload from savestate, not reload from file
             List<IUiElement> items = new();
-            if (!File.Exists(ProjectsPath))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(ProjectsPath));
-                File.Create(ProjectsPath).Close();
-            }
-            foreach (string line in File.ReadLines(ProjectsPath))
+            foreach (string line in SaveState.Projects)
             {
                 items.Add(_generateButton(line));
             }
-
             _scrollableListView.Items = items;
         }
 
-        public void Remove(string path)
+        private void _remove(string path)
         {
-            List<string> lines = File.ReadLines(ProjectsPath).ToList();
-            while (lines.Remove(path)) ;
-            File.WriteAllLines(ProjectsPath, lines.ToArray());
-            ReloadProjects();
-        }
-
-        public void SetFirst(string path)
-        {
-            List<string> lines = File.ReadLines(ProjectsPath).ToList();
-            while (lines.Remove(path)) ;
-            lines.Insert(0, path);
-            File.WriteAllLines(ProjectsPath, lines.ToArray());
+            SaveState.Remove(path);
             ReloadProjects();
         }
 
@@ -107,7 +86,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                 Root.PopupEnvironment.OpenCentered(new ChoicePopup(Environment, path, Root.PopupEnvironment, new ChoicePopupOption[]
                 {
                     new ChoicePopupOption("Open", () => _open(path)),
-                    new ChoicePopupOption("Remove From List", () => Remove(path)),
+                    new ChoicePopupOption("Remove From List", () => _remove(path)),
                     new ChoicePopupOption("Cancel", () => Root.PopupEnvironment.Close()),
                 }));
             });
@@ -120,7 +99,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         private void _open(string path)
         {
-            SetFirst(path);
+            SaveState.SetFirst(path);
+            ReloadProjects();
             Root.TabEnvironment.TabBar.OpenTab(new ProjectTab(Root, path), true);
         }
     }

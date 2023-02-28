@@ -6,7 +6,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
 {
     public class HSplitStandard : HSplit
     {
-        private SplitStandardHelper _splitHelper;
+        private readonly SplitStandardHelper _splitHelper;
         public HSplitStandard(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition) : base(environment, first, second, splitPosition)
         {
             _splitHelper = new SplitStandardHelper();

@@ -28,6 +28,12 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items
             _button = new Button(environment, _colorModifier);
         }
 
+        public string Title
+        {
+            get => _textView.Text;
+            set => _textView.Text = value;
+        }
+
         public bool Changed => _button.Changed;
 
         public int RequiredWidth => _button.RequiredWidth;

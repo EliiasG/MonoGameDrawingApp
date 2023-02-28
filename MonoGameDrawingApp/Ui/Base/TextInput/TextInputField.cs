@@ -27,9 +27,6 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
 
         private readonly UiEnvironment _environment;
 
-        private int _cursorPosition;
-        private int _counter;
-
         private readonly Dictionary<Keys, char> _customKeyChars;
         private readonly Dictionary<char, char> _customShiftVersions;
         private readonly Dictionary<char, char> _customAltVersions;
@@ -37,11 +34,8 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
         private readonly IUiElement _background;
         private readonly IUiElement _backgroundHovering;
         private readonly IUiElement _backgroundSelected;
-
         private readonly IUiElement _cursorOn;
         private readonly IUiElement _cursorOff;
-
-        private ISet<Keys> _oldKeys;
 
         private readonly Button _button;
         private readonly StackView _outer;
@@ -51,6 +45,10 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
         private readonly ChangeableView _currentCursor;
         private readonly HSplit _cursorInner;
         private readonly HSplit _cursorOuter;
+
+        private ISet<Keys> _oldKeys;
+        private int _cursorPosition;
+        private int _counter;
 
         public TextInputField(UiEnvironment environment, string value, ITextInputFilter[] filters, bool isSelectable = true, bool isDeselectable = true, bool centerHorizontal = false, int maxLength = -1)
         {
@@ -62,7 +60,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             IsDeselectable = isDeselectable;
             Filters = filters;
             MaxLength = maxLength;
-            _oldKeys = new HashSet<Keys>();
+            _oldKeys = Keyboard.GetState().GetPressedKeys().ToHashSet();
 
             IsSelected = false;
 
@@ -113,6 +111,12 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             _button = new Button(environment, _outer);
         }
 
+        public Action TextEntered { get; set; }
+
+        public Action Deselected { get; set; }
+
+        public Action Selected { get; set; }
+
         public bool Changed => _button.Changed;
 
         public int RequiredWidth => _button.RequiredWidth;
@@ -131,14 +135,21 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             if (IsSelected)
             {
                 _updateTyping();
-                if (IsDeselectable && Mouse.GetState().LeftButton == ButtonState.Pressed && !_button.ContainsMouse)
+                if (IsDeselectable && Mouse.GetState().LeftButton == ButtonState.Pressed && !_button.ContainsMouse || Environment.JustPressed(Keys.Escape))
                 {
                     IsSelected = false;
+                    Deselected?.Invoke();
+                }
+                if (Environment.JustPressed(Keys.Enter))
+                {
+                    IsSelected = false;
+                    TextEntered?.Invoke();
                 }
             }
             else if (IsSelectable && _button.JustLeftClicked)
             {
                 IsSelected = true;
+                Selected?.Invoke();
             }
             else
             {
@@ -181,7 +192,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
                 _counter = 0;
             }
 
-            if (MaxLength != -1 && Value.Length >= MaxLength)
+            if (MaxLength != -1 && Value.Length >= MaxLength || keys.Contains(Keys.LeftControl))
             {
                 _oldKeys = keys.ToHashSet();
                 return;

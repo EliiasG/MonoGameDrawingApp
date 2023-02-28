@@ -13,7 +13,7 @@ namespace MonoGameDrawingApp.Ui.Base
         private string _text;
         private bool _changed = true;
 
-        private RenderHelper _renderHelper;
+        private readonly RenderHelper _renderHelper;
 
         public TextView(UiEnvironment environment, string text)
         {

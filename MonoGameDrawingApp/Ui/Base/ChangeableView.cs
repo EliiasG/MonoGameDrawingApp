@@ -5,7 +5,7 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class ChangeableView : IUiElement
     {
-        private UiEnvironment _environment;
+        private readonly UiEnvironment _environment;
 
         private IUiElement _child;
 

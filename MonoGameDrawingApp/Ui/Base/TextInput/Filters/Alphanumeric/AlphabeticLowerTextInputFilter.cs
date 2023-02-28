@@ -6,7 +6,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric
 {
     public class AlphabeticLowerTextInputFilter : ITextInputFilter
     {
-        private ISet<char> _allowedCharacters = "abcdefghijklmnopqrstuvwxyz".ToHashSet();
+        private readonly ISet<char> _allowedCharacters = "abcdefghijklmnopqrstuvwxyz".ToHashSet();
 
         public ISet<char> AllowedCharacters => _allowedCharacters;
 

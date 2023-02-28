@@ -63,23 +63,23 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
                 new ColorRect(Environment, Environment.Theme.SecondaryMenuBackgroundColor),
                 new VListView<IUiElement>(Environment, new List<IUiElement>
                 {
-                    new MinSize(Environment, new ColorRect(environment, Color.Transparent), 1, Spacing),
+                    new EmptySpace(Environment,  1, Spacing),
                     new HListView<IUiElement>(Environment, new List<IUiElement>()
                     {
-                        new MinSize(Environment, new ColorRect(Environment, Color.Transparent), Spacing, 1),
+                        new EmptySpace(Environment,  Spacing, 1),
                         new MinSize(Environment, new ScrollWindow(Environment, new VScrollableListView(Environment, typeButtons, false, 1)), ListWidth, ListHeight),
                         new MinSize(Environment, new ColorRect(Environment  , Color.Transparent), Spacing, 1),
                     }),
-                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
+                    new EmptySpace(Environment,  1, Spacing),
                     new CenterView(Environment, new MinSize(Environment, _textInputField, ListWidth, (int) Environment.FontHeight + TextSpacing), true, false),
-                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
+                    new EmptySpace(Environment,  1, Spacing),
                     new CenterView(Environment, new HListView<IUiElement>(Environment, new List<IUiElement>
                     {
                         new ContextMenuButton(Environment, "Cancel", () => PopupEnvironment.Close()),
-                        new MinSize(Environment, new ColorRect(Environment, Color.Transparent), Spacing, 1),
+                        new EmptySpace(Environment,  Spacing, 1),
                         new ContextMenuButton(Environment, "Create File", _createFile),
                     }), true, false),
-                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
+                    new EmptySpace(Environment,  1, Spacing),
                 }),
             });
         }

@@ -15,6 +15,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 {
     public class VectorSpriteInspector : IUiElement
     {
+        private const int Spacing = 5;
 
         private readonly IUiElement _root;
         private readonly IUiElement _inspector;
@@ -24,6 +25,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         private readonly VectorSpriteTabView _vectorSpriteTabView;
         private readonly StringInspectorProperty _nameField;
+        private readonly ColorInspectorProperty _colorField;
 
         public VectorSpriteInspector(UiEnvironment environment, VectorSpriteTabView vectorSpriteTabView)
         {
@@ -41,13 +43,25 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 }
             });
 
+            _colorField = new ColorInspectorProperty(Environment, vectorSpriteTabView.PopupEnvironment, "Color:", System.Drawing.Color.White, () =>
+            {
+                if (_vectorSpriteTabView.Tree.Selected != null)
+                {
+                    _selected.Geometry.Color = _colorField.Value;
+                }
+            });
 
-            _inspector = new VListView<IUiElement>(
+
+            _inspector = new VScrollableListView(
                 environment: Environment,
                 items: new List<IUiElement>()
                 {
+                    new EmptySpace(Environment,  1, Spacing),
                     _nameField,
-                }
+                    _colorField,
+                },
+                updateOutOfView: false,
+                spacing: Spacing
             );
 
             _changeableView = new ChangeableView(Environment, _inspector);
@@ -55,7 +69,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             _root = new VSplitStandard(Environment, new CenterView(Environment, title, true, false), new StackView(Environment, new IUiElement[]
             {
                 new ColorRect(Environment, Environment.Theme.MenuBackgorundColor),
-                new HSplitStandard(Environment, new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 5, 1), _changeableView, -1),
+                new HSplitStandard(Environment, new EmptySpace(Environment,  5, 1), _changeableView, -1),
             }), -1);
         }
 
@@ -78,12 +92,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         {
             _changeableView.Child = _selected == null ? _deselected : _inspector;
 
-            string name = _selected?.Name ?? "";
+            _nameField.Value = _selected?.Name ?? "";
+            _colorField.Value = _selected?.Geometry.Color ?? System.Drawing.Color.White;
 
-            if (_nameField.Value != name)
-            {
-                _nameField.Value = name;
-            }
 
             _root.Update(position, width, height);
         }

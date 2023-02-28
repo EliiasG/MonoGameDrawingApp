@@ -9,7 +9,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
     {
         private const int Spacing = 8;
 
-        private IUiElement _root;
+        private readonly IUiElement _root;
 
         public StaticPopup(UiEnvironment environment, string message)
         {
@@ -19,14 +19,14 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
                 new ColorRect(Environment, Environment.Theme.SecondaryMenuBackgroundColor),
                 new VListView<IUiElement>(Environment, new List<IUiElement>()
                 {
-                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
+                    new EmptySpace(Environment,  1, Spacing),
                     new HListView<IUiElement>(Environment, new List<IUiElement>()
                     {
-                        new MinSize(Environment, new ColorRect(Environment, Color.Transparent), Spacing, 1),
+                        new EmptySpace(Environment,  Spacing, 1),
                         new ColorModifier(Environment, new TextView(Environment, message), Environment.Theme.DefaultTextColor),
-                        new MinSize(Environment, new ColorRect(Environment, Color.Transparent), Spacing, 1),
+                        new EmptySpace(Environment,  Spacing, 1),
                     }),
-                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 1, Spacing),
+                    new EmptySpace(Environment,  1, Spacing),
                 }),
             });
         }

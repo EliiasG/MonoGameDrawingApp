@@ -7,8 +7,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 {
     public class VectorSpriteTab : FileTab
     {
-        private VectorSpriteTabRoot _spriteTabView;
-        private PopupEnvironment _popupEnvironment;
+        private readonly VectorSpriteTabRoot _spriteTabView;
+        private readonly PopupEnvironment _popupEnvironment;
 
         public VectorSpriteTab(UiEnvironment environment, string path, PopupEnvironment popupEnvironment) : base(path)
         {

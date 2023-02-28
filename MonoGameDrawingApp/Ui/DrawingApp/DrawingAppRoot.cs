@@ -16,11 +16,12 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
         public readonly PopupEnvironment PopupEnvironment;
         public readonly FileTypeManager FileTypeManager;
 
-        private UiEnvironment _environment;
+        private readonly UiEnvironment _environment;
 
         public DrawingAppRoot(UiEnvironment environment)
         {
             _environment = environment;
+            SaveState.Init(environment.Content, environment.Graphics.Device);
             TabEnvironment = new TabEnvironment(Environment, new DrawingAppStart(Environment, this));
             PopupEnvironment = new PopupEnvironment(Environment, TabEnvironment);
             FileTypeManager = new FileTypeManager(

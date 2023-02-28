@@ -7,7 +7,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 {
     internal class VSplitStandard : VSplit
     {
-        private SplitStandardHelper _splitHelper;
+        private readonly SplitStandardHelper _splitHelper;
         public VSplitStandard(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition) : base(environment, first, second, splitPosition)
         {
             _splitHelper = new SplitStandardHelper();

@@ -17,9 +17,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter
         public readonly DrawingAppStart Start;
         public readonly ProjectImporterTab Tab;
 
-        private FileSystemTree _tree;
-        private VSplit _root;
-        private ContextMenuButton _importButton;
+        private readonly FileSystemTree _tree;
+        private readonly VSplit _root;
+        private readonly ContextMenuButton _importButton;
 
         public ProjectImporterTabView(UiEnvironment environment, DrawingAppStart start, ProjectImporterTab tab)
         {
@@ -37,7 +37,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter
                 second: new HListView<IUiElement>(environment, new List<IUiElement>()
                 {
                     _importButton,
-                    new MinSize(Environment, new ColorRect(Environment, Color.Transparent), 10, 1),
+                    new EmptySpace(Environment,  10, 1),
                     new ContextMenuButton(Environment, "Close", tab.Close),
                 }),
                 splitPosition: 1
@@ -69,7 +69,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter
             if (_tree.Selected is DirectoryTreeItem item)
             {
                 Tab.Close();
-                Start.SetFirst(item.Path);
+                SaveState.SetFirst(item.Path);
+                Start.ReloadProjects();
             }
         }
     }

@@ -6,7 +6,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric
 {
     public class NumericTextInputFilter : ITextInputFilter
     {
-        private ISet<char> _allowedCharacters = "0123456789".ToHashSet();
+        private readonly ISet<char> _allowedCharacters = "0123456789".ToHashSet();
 
         public ISet<char> AllowedCharacters => _allowedCharacters;
 

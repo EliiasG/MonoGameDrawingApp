@@ -99,7 +99,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 
             _outer = new HListView<IUiElement>(environment, new List<IUiElement>
             {
-                new MinSize(environment, new ColorRect(environment, Color.Transparent), Indentation, 1),
+                new EmptySpace(Environment,  Indentation, 1),
                 _whole
             });
         }

@@ -15,8 +15,6 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
         public readonly Action<string> Confirmed;
         public readonly PopupEnvironment PopupEnvironment;
 
-        private MouseState _oldMouse;
-
         private readonly UiEnvironment _environment;
 
         private readonly MinSize _outer;
@@ -81,12 +79,12 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
                                         environment: environment,
                                         items: new List<IUiElement>
                                         {
-                                            new MinSize(environment, new ColorRect(environment, Color.Transparent), 20, 1),
+                                            new EmptySpace(Environment,  20, 1),
                                             new MinSize(environment, _textInput, 200, 40),
-                                            new MinSize(environment, new ColorRect(environment, Color.Transparent), 20, 1),
+                                            new EmptySpace(Environment,  20, 1),
                                         }
                                     ),
-                                    new MinSize(environment, new ColorRect(environment, Color.Transparent), 1, 20),
+                                    new EmptySpace(Environment,  1, 20),
                                     new CenterView(
                                         environment: environment,
                                         child: new HListView<IUiElement>(
@@ -94,7 +92,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
                                             items: new List<IUiElement>
                                             {
                                                 _cancelButton,
-                                                new MinSize(environment, new ColorRect(environment, Color.Transparent), 20, 1),
+                                                new EmptySpace(Environment,  20, 1),
                                                 _confirmButton,
                                             }
                                         ),
@@ -130,19 +128,18 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
         {
             if (!_done)
             {
-                if (_confirmButton.Button.JustLeftClicked || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                if (_confirmButton.Button.JustLeftClicked || Environment.JustPressed(Keys.Enter))
                 {
                     PopupEnvironment.Close();
                     Confirmed(_textInput.Value);
                     _done = true;
                 }
-                else if (_cancelButton.Button.JustLeftClicked)
+                else if (_cancelButton.Button.JustLeftClicked || Environment.JustPressed(Keys.Escape))
                 {
                     PopupEnvironment.Close();
                     _done = true;
                 }
             }
-            _oldMouse = Mouse.GetState();
 
             _outer.Update(position, width, height);
         }

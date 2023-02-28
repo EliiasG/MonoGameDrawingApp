@@ -4,7 +4,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image
 {
     public class ImageTab : FileTab
     {
-        private ImageTabView _imageTabView;
+        private readonly ImageTabView _imageTabView;
 
         public ImageTab(UiEnvironment environment, string path) : base(path)
         {
