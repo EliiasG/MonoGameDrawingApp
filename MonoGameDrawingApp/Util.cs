@@ -29,12 +29,12 @@
 
         public static Microsoft.Xna.Framework.Color ToXnaColor(System.Drawing.Color color)
         {
-            return new Microsoft.Xna.Framework.Color(color.R, color.B, color.G, color.A);
+            return new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
         }
 
         public static System.Drawing.Color ToDrawingColor(Microsoft.Xna.Framework.Color color)
         {
-            return System.Drawing.Color.FromArgb(color.A, color.R, color.B, color.G);
+            return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
         }
     }
 }

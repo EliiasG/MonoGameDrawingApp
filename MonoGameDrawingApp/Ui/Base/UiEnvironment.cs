@@ -14,6 +14,7 @@ namespace MonoGameDrawingApp.Ui.Base
         public readonly float FontHeight;
         public readonly ContentManager Content;
 
+        public MouseState OldMouse;
         public KeyboardState OldKeyboardState;
         public IUiElement Root;
         public object Clipboard = null; //Maybe bad? the convention says not to create empty interfaces, and use attributes instead, but that does not seem to work for variable types
@@ -72,6 +73,7 @@ namespace MonoGameDrawingApp.Ui.Base
             _updateShortCuts();
 
             OldKeyboardState = Keyboard.GetState();
+            OldMouse = Mouse.GetState();
 
             Graphics.SpriteBatch.End();
         }

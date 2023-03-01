@@ -11,6 +11,8 @@ namespace MonoGameDrawingApp.VectorSprites
     {
         private List<Vector2> _points;
 
+        private Color _color;
+
         public VectorSpriteGeometry() : this(Array.Empty<Vector2>()) { }
 
         public VectorSpriteGeometry(IEnumerable<Vector2> points)
@@ -21,7 +23,19 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public VectorSpriteItem VectorSpriteItem { get; set; }
 
-        public Color Color { get; set; }
+        public Color Color
+        {
+            get => _color;
+            set
+            {
+                if (_color != value)
+                {
+                    VectorSpriteItem?._dataChanging();
+                    _color = value;
+                    VectorSpriteItem?._dataChanged();
+                }
+            }
+        }
 
         public IEnumerable<Vector2> Points
         {

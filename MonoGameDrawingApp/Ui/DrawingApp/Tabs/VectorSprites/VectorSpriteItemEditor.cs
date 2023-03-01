@@ -94,12 +94,14 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             if (originMode != _isInOriginMode)
             {
                 _isInOriginMode = originMode;
+                _dragOffset = null;
                 Changed = true;
             }
 
             if (addMode != _isInAddMode)
             {
                 _isInAddMode = addMode;
+                _dragOffset = null;
                 Changed = true;
             }
 
@@ -194,7 +196,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
                 newDragPos = Grid.Snap(newDragPos);
                 if (mouse.LeftButton == ButtonState.Released)
                 {
-                    Selected.Geometry.ReplacePointAt(_selectedIndex, newDragPos.ToNumerics() - Selected.Position);
+                    Selected.Geometry.ReplacePointAt(_selectedIndex, newDragPos.ToNumerics() - Selected.AbsolutePosition);
                     _selectedIndex = -1;
                     _dragPosition = null;
                     _dragOffset = null;

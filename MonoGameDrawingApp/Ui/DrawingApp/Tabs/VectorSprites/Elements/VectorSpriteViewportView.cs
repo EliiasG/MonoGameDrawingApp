@@ -38,7 +38,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         private Vector2? _pixelDragStart = null;
         private int _colorIndex = 0;
         private bool _showGrid = true;
-        private MouseState _oldMouse;
         private float _targetZoom = 50;
 
         public VectorSpriteViewportView(UiEnvironment environment, VectorSpriteTabView vectorSpriteTabView)
@@ -145,11 +144,11 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             Rectangle bounds = new Rectangle(position.ToPoint(), new Point(width, height));
             if (bounds.Contains(mouse.Position))
             {
-                if (mouse.RightButton == ButtonState.Pressed && _oldMouse.RightButton == ButtonState.Released)
+                if (mouse.RightButton == ButtonState.Pressed && Environment.OldMouse.RightButton == ButtonState.Released)
                 {
                     _startDrag();
                 }
-                _targetZoom = Math.Clamp(_targetZoom + (mouse.ScrollWheelValue - _oldMouse.ScrollWheelValue) / 1000f * _camera.Zoom, 5, 5000);
+                _targetZoom = Math.Clamp(_targetZoom + (mouse.ScrollWheelValue - Environment.OldMouse.ScrollWheelValue) / 1000f * _camera.Zoom, 5, 5000);
             }
 
             bool dragging = _worldDragStart != null && mouse.RightButton == ButtonState.Pressed;
@@ -202,8 +201,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             }
 
             _updateZoom(dragging);
-
-            _oldMouse = mouse;
         }
 
         private void _updateGridResolution()

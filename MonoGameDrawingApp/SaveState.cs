@@ -130,7 +130,7 @@ namespace MonoGameDrawingApp
                 if (name != oldName)
                 {
                     Texture2D image = Texture2D.FromFile(_graphicsDevice, palettePath);
-                    _colorPalettes.Insert(i + 2, _fromTexture(image, name));
+                    _colorPalettes.Insert(i + 1, _fromTexture(image, name));
                 }
             }
         }
