@@ -354,14 +354,19 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                                                                 children: new List<IUiElement>()
                                                                 {
                                                                     new ColorRect(Environment, Environment.Theme.ButtonColor),
-                                                                    new ContextMenuButton(
+                                                                    new CenterView(
                                                                         environment: Environment,
-                                                                        title: "Confirm",
-                                                                        onClick: () =>
-                                                                        {
-                                                                            PopupEnvironment.Close();
-                                                                            Confirmed(Selected);
-                                                                        }
+                                                                        child: new ContextMenuButton(
+                                                                            environment: Environment,
+                                                                            title: "Confirm",
+                                                                            onClick: () =>
+                                                                            {
+                                                                                PopupEnvironment.Close();
+                                                                                Confirmed(Selected);
+                                                                            }
+                                                                        ),
+                                                                        centerHorizontal: true,
+                                                                        centerVertical: true
                                                                     )
                                                                 }
                                                             ),
@@ -376,13 +381,18 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                                                                 children: new List<IUiElement>()
                                                                 {
                                                                     new ColorRect(Environment, Environment.Theme.ButtonColor),
-                                                                    new ContextMenuButton(
+                                                                    new CenterView(
                                                                         environment: Environment,
-                                                                        title: "Cancel",
-                                                                        onClick: () =>
-                                                                        {
-                                                                            PopupEnvironment.Close();
-                                                                        }
+                                                                        child: new ContextMenuButton(
+                                                                            environment: Environment,
+                                                                            title: "Cancel",
+                                                                            onClick: () =>
+                                                                            {
+                                                                                PopupEnvironment.Close();
+                                                                            }
+                                                                        ),
+                                                                        centerHorizontal: true,
+                                                                        centerVertical: true
                                                                     )
                                                                 }
                                                             ),
