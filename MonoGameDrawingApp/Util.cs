@@ -1,4 +1,6 @@
-﻿namespace MonoGameDrawingApp
+﻿using System.Collections.Generic;
+
+namespace MonoGameDrawingApp
 {
     public class Util
     {
@@ -35,6 +37,30 @@
         public static System.Drawing.Color ToDrawingColor(Microsoft.Xna.Framework.Color color)
         {
             return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+        }
+
+        public static T GetItemCircled<T>(IList<T> list, int index)
+        {
+            if (index >= 0)
+            {
+                return list[index % list.Count];
+            }
+            else
+            {
+                return list[index % list.Count + list.Count];
+            }
+        }
+
+        public static void SetItemCircled<T>(IList<T> list, int index, T item)
+        {
+            if (index >= 0)
+            {
+                list[index % list.Count] = item;
+            }
+            else
+            {
+                list[index % list.Count + list.Count] = item;
+            }
         }
     }
 }

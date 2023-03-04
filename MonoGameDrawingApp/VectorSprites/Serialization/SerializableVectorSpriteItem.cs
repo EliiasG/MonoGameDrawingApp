@@ -6,17 +6,23 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
     {
         public SerializableVectorSpriteItem() { }
 
-        public SerializableVectorSpriteItem(VectorSpriteItem item)
+        public SerializableVectorSpriteItem(VectorSpriteItem item, bool addChildren = true)
         {
             Name = item.Name;
             Position = new SerializablleVector2(item.Position);
             Geometry = new SerializableVectorSpriteGeometry(item.Geometry);
 
             Children = new SerializableVectorSpriteItem[item.Children.Count()];
+
+            if (!addChildren)
+            {
+                return;
+            }
+
             int index = 0;
             foreach (VectorSpriteItem child in item.Children)
             {
-                Children[index] = new SerializableVectorSpriteItem(child);
+                Children[index] = new SerializableVectorSpriteItem(child, addChildren);
                 ++index;
             }
         }

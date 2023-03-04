@@ -4,6 +4,8 @@ Trying to create a drawing app for the 3rd time, now in MonoGame
  - [Ctrl + Shift + G] - Set grid resolution.
  - [Ctrl + Shift + W] - Toggle wireframe mode.
  - [Ctrl + Shift + C] - Change background color.
+ - [Ctrl + Z] - Undo.
+ - [Ctrl + Y] - Redo.
  - [G] - Toggle grid view. (only visual, to actually disable the grid set resolution to 0)
 # Editing
  - Drag points to move them.

@@ -1,6 +1,7 @@
 ﻿using MonoGameDrawingApp.VectorSprites.Attachments;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace MonoGameDrawingApp.VectorSprites
@@ -82,7 +83,7 @@ namespace MonoGameDrawingApp.VectorSprites
             }
             set
             {
-                _position = value - (AbsolutePosition - _position);
+                Position = value - (AbsolutePosition - _position);
             }
         }
 
@@ -92,7 +93,23 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public VectorSpriteItem Parent { get; private set; }
 
-        public IEnumerable<VectorSpriteItem> Children => _children;
+        public IEnumerable<VectorSpriteItem> Children
+        {
+            get => _children;
+            set
+            {
+                _childrenChanging();
+                _children.Clear();
+                _children.Capacity = value.Count();
+                foreach (var child in value)
+                {
+                    _children.Add(child);
+                    child.Parent?.RemoveChild(child);
+                    child.Parent = this;
+                }
+                _childrenChanged();
+            }
+        }
 
         public IEnumerable<IVectorSpriteItemModifier> Modifiers => _modifiers;
 

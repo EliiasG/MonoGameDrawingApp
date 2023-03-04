@@ -17,8 +17,10 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees
 
         public FileSystemTree(string path, PopupEnvironment popupEnvironment, FileTypeManager fileTypeManager, bool canSelectDirectories = false, bool canSelectFiles = false)
         {
-            _root = new DirectoryTreeItem(path, this, popupEnvironment, fileTypeManager);
-            _root.IsOpen = true;
+            _root = new DirectoryTreeItem(path, this, popupEnvironment, fileTypeManager)
+            {
+                IsOpen = true
+            };
             CanSelectFiles = canSelectFiles;
             CanSelectDirectories = canSelectDirectories;
         }

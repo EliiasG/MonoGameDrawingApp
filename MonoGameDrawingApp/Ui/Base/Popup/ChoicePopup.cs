@@ -35,8 +35,10 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
                 }));
             }
 
-            HListView<IUiElement> buttonView = new(environment, buttons);
-            buttonView.Spacing = ButtonSpacing;
+            HListView<IUiElement> buttonView = new(environment, buttons)
+            {
+                Spacing = ButtonSpacing
+            };
 
             _outer = new StackView(environment, new List<IUiElement>()
             {

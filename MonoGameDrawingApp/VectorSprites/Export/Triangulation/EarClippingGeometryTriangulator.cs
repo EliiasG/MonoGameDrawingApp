@@ -121,25 +121,13 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
         {
             for (int i = 0; i < indices.Length; i++)
             {
-                int? idx = _indexAt(indices, index + i * move);
+                int? idx = Util.GetItemCircled(indices, index + i * move);
                 if (idx is int intIdx)
                 {
                     return intIdx;
                 }
             }
             throw new ArgumentException("All values are null");
-        }
-
-        private static int? _indexAt(int?[] indices, int index)
-        {
-            if (index >= 0)
-            {
-                return indices[index % indices.Length];
-            }
-            else
-            {
-                return indices[index % indices.Length + indices.Length];
-            }
         }
 
         private static Vector2[] _withoutCollinear(Vector2[] vertices)

@@ -51,10 +51,11 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
                 typeButtons.Add(_generateButton(creatableFileType, false));
             }
 
-            _textInputField = new TextInputField(Environment, _selected.Name, new ITextInputFilter[] { new FileSystemTextInputFilter() }, false, false, false, 100);
-
-            _textInputField.IsSelected = true;
-            _textInputField.Extention = _selected.Extension;
+            _textInputField = new TextInputField(Environment, _selected.Name, new ITextInputFilter[] { new FileSystemTextInputFilter() }, false, false, false, 100)
+            {
+                IsSelected = true,
+                Extention = _selected.Extension
+            };
 
             typeButtons.Add(_generateButton(_selected, true));
 
@@ -118,8 +119,10 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
                 _textInputField.Value = creatableFileType.Name;
                 _textInputField.Extention = creatableFileType.Extension;
                 _buttons[index].Disabled = true;
-            });
-            button.Disabled = selected;
+            })
+            {
+                Disabled = selected
+            };
             _buttons.Add(button);
 
             return new HListView<IUiElement>(Environment, new List<IUiElement>()

@@ -7,6 +7,7 @@ using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree;
 using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener;
+using MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo;
 using MonoGameDrawingApp.VectorSprites.Serialization.Json;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
@@ -20,6 +21,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         private readonly HSplit _inner;
         private readonly HSplit _outer;
         private readonly VectorSpriteJsonSaver _jsonSaver;
+        private readonly UndoRedoVectorSpiteAttachment _undoRedoAttachment;
 
         private bool _pressedSave;
 
@@ -30,11 +32,14 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             Environment = environment;
             Sprite = sprite;
             ChangeListener = new ChangeListenerVectorSpriteAttachment(() => _pressedSave = false);
-            Sprite.AddAttachment(ChangeListener);
+            _undoRedoAttachment = new UndoRedoVectorSpiteAttachment();
             _jsonSaver = new VectorSpriteJsonSaver(Sprite);
             Path = path;
             _pressedSave = true;
             PopupEnvironment = popupEnvironment;
+
+            Sprite.AddAttachment(ChangeListener);
+            Sprite.AddAttachment(_undoRedoAttachment);
 
             Tree = new VectorSpriteTree(Sprite, popupEnvironment);
 
@@ -67,7 +72,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         public VectorSpriteTree Tree { get; init; }
 
-        public VectorSprite Sprite { get; private set; }
+        public VectorSprite Sprite { get; init; }
 
         public bool IsSaved => _pressedSave && !_jsonSaver.CurrentlySaving;
 
@@ -81,7 +86,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         public int RequiredHeight => _root.RequiredHeight;
 
-        public UiEnvironment Environment { get; set; }
+        public UiEnvironment Environment { get; init; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -98,6 +103,16 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             if (keyboard.IsKeyDown(Keys.LeftControl) && keyboard.IsKeyDown(Keys.S) && !_oldKeyboard.IsKeyDown(Keys.S))
             {
                 Save();
+            }
+
+            if (keyboard.IsKeyDown(Keys.LeftControl) && keyboard.IsKeyDown(Keys.Z) && !_oldKeyboard.IsKeyDown(Keys.Z))
+            {
+                _undoRedoAttachment.Undo();
+            }
+
+            if (keyboard.IsKeyDown(Keys.LeftControl) && keyboard.IsKeyDown(Keys.Y) && !_oldKeyboard.IsKeyDown(Keys.Y))
+            {
+                _undoRedoAttachment.Redo();
             }
 
             _root.Update(position, width, height);

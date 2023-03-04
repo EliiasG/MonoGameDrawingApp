@@ -26,8 +26,10 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
         public TextInputPopup(UiEnvironment environment, PopupEnvironment popupEnvironment, Action<string> confirmed, ITextInputFilter[] filters, string title, string currentValue = "")
         {
             _environment = environment;
-            _textInput = new TextInputField(environment, currentValue, filters, true, false);
-            _textInput.IsSelected = true;
+            _textInput = new TextInputField(environment, currentValue, filters, true, false)
+            {
+                IsSelected = true
+            };
             _confirmButton = new TextButton(environment, "Confirm");
             _cancelButton = new TextButton(environment, "Cancel");
             Confirmed = confirmed;

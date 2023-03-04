@@ -15,7 +15,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
 
         private readonly IUiElement _root;
 
-        private string _oldValue;
+        private string _value;
 
         public StringInspectorProperty(UiEnvironment environment, string name, string value, ITextInputFilter[] textInputFilters, Action changed)
         {
@@ -23,7 +23,19 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
             Environment = environment;
 
             TextInput = new TextInputField(Environment, value, textInputFilters);
-            _oldValue = value;
+            Value = value;
+
+            TextInput.TextEntered += () =>
+            {
+                Value = TextInput.Value;
+                ValueChanged?.Invoke();
+            };
+
+            TextInput.Deselected += () =>
+            {
+                Value = TextInput.Value;
+                ValueChanged?.Invoke();
+            };
 
             ScrollWindow scrollWindow = new(
                 environment: Environment,
@@ -31,9 +43,10 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
                     environment: Environment,
                     child: TextInput
                 )
-            );
-
-            scrollWindow.ScrollBarSize = 5;
+            )
+            {
+                ScrollBarSize = 5
+            };
 
             _root = new NamedInspectorProperty(
                 environment: Environment,
@@ -51,13 +64,13 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
 
         public string Value
         {
-            get => TextInput.Value;
+            get => _value;
             set
             {
-                if (TextInput.Value != value)
+                if (_value != value)
                 {
+                    _value = value;
                     TextInput.Value = value;
-                    ValueChanged?.Invoke();
                 }
             }
         }
@@ -80,12 +93,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
         public void Update(Vector2 position, int width, int height)
         {
             _root.Update(position, width, height);
-
-            if (TextInput.Value != _oldValue)
-            {
-                _oldValue = TextInput.Value;
-                ValueChanged?.Invoke();
-            }
         }
     }
 }
