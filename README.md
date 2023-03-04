@@ -1,5 +1,5 @@
 # MonoGameDrawingApp
-Trying to create a drawing app for the 3rd time, now in MonoGame
+Trying to create a drawing app for the 3rd (or maybe even 4th) time, now in MonoGame
 # Shortcuts
  - [Ctrl + Shift + G] - Set grid resolution.
  - [Ctrl + Shift + W] - Toggle wireframe mode.
