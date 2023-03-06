@@ -9,7 +9,7 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
         private int _index;
         private readonly IUndoRedoAction[] _actions;
         private IUndoRedoAction _current;
-        private bool _doing;
+        private bool _disabled;
 
         public UndoRedoVectorSpiteAttachment()
         {
@@ -27,12 +27,12 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
             IUndoRedoAction action = Util.GetItemCircled(_actions, _index);
             if (action != null)
             {
-                _doing = true;
+                _disabled = true;
 
                 action.Undo();
                 --_index;
 
-                _doing = false;
+                _disabled = false;
             }
         }
 
@@ -41,20 +41,21 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
             IUndoRedoAction action = Util.GetItemCircled(_actions, _index + 1);
             if (action != null)
             {
-                _doing = true;
+                _disabled = true;
 
                 action.Redo();
                 ++_index;
 
-                _doing = false;
+                _disabled = false;
             }
         }
 
         internal void _dataChanging(VectorSpriteItem item)
         {
-            if (!_doing)
+            if (!_disabled)
             {
                 _add(new DataUndoRedoAction(item));
+                _disabled = true;
             }
         }
 
@@ -66,9 +67,10 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
 
         internal void _childrenChanging(VectorSpriteItem item)
         {
-            if (!_doing)
+            if (!_disabled)
             {
                 _add(new ChildrenUndoRedoAction(item));
+                _disabled = true;
             }
         }
 
@@ -83,6 +85,11 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
             _current = action;
             Util.SetItemCircled(_actions, ++_index, _current);
             Util.SetItemCircled(_actions, _index + 1, null);
+        }
+
+        public void ReAllow()
+        {
+            _disabled = false;
         }
     }
 }

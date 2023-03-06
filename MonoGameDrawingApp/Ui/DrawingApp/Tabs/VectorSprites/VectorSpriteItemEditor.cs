@@ -71,7 +71,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
                 _renderVertices(spriteBatch, color);
                 _renderOrigin(spriteBatch, _originDefault, color);
             }
-            if (_dragPosition != null && _selectedIndex == -1)
+            if (_dragPosition != null && _selectedIndex == -1 && !_isInOriginMode)
             {
                 spriteBatch.Draw(
                     texture: _vertexSelected,

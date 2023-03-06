@@ -1,4 +1,5 @@
 ﻿using MonoGameDrawingApp.VectorSprites.Attachments;
+using MonoGameDrawingApp.VectorSprites.Modifiers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,6 +94,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public VectorSpriteItem Parent { get; private set; }
 
+
         public IEnumerable<VectorSpriteItem> Children
         {
             get => _children;
@@ -144,6 +146,8 @@ namespace MonoGameDrawingApp.VectorSprites
         {
             _dataChanging();
             _modifiers.Add(modifier);
+            modifier.Changed += _dataChanged;
+            modifier.Changing += _dataChanging;
             _dataChanged();
         }
 
@@ -151,6 +155,31 @@ namespace MonoGameDrawingApp.VectorSprites
         {
             _dataChanging();
             _modifiers.Remove(modifier);
+            modifier.Changed -= _dataChanged;
+            modifier.Changing -= _dataChanging;
+            _dataChanged();
+        }
+
+        public void MoveModifierUp(IVectorSpriteItemModifier modifier)
+        {
+            _dataChanging();
+            int index = _modifiers.IndexOf(modifier);
+            if (index > 0)
+            {
+                _modifiers.RemoveAt(index);
+                _modifiers.Insert(index - 1, modifier);
+            }
+            _dataChanged();
+        }
+        public void MoveModifierDown(IVectorSpriteItemModifier modifier)
+        {
+            _dataChanging();
+            int index = _modifiers.IndexOf(modifier);
+            if (index < _modifiers.Count - 1)
+            {
+                _modifiers.RemoveAt(index);
+                _modifiers.Insert(index + 1, modifier);
+            }
             _dataChanged();
         }
 

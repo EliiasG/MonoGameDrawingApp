@@ -115,6 +115,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 _undoRedoAttachment.Redo();
             }
 
+            _undoRedoAttachment.ReAllow();
+
             _root.Update(position, width, height);
 
             _oldKeyboard = Keyboard.GetState();

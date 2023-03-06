@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MonoGameDrawingApp.VectorSprites.Modifiers;
 
 namespace MonoGameDrawingApp.VectorSprites.Export
 {
@@ -10,7 +11,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export
 
             foreach (IVectorSpriteItemModifier modifier in geometry.VectorSpriteItem.Modifiers)
             {
-                modifier.Apply(this);
+                modifier.Modify(this);
             }
         }
         public List<Polygon> ModifiedPolygons { get; init; }

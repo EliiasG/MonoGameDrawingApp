@@ -18,7 +18,11 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization.Json
 
         public void StartSaving(string path)
         {
-            JsonSerializerOptions options = new() { WriteIndented = true, MaxDepth = int.MaxValue };
+            JsonSerializerOptions options = new()
+            {
+                WriteIndented = true,
+                MaxDepth = int.MaxValue,
+            };
             CurrentlySaving = true;
             SerializableVectorSprite serializableVectorSprite = new(Sprite);
             Task.Run(async () =>
