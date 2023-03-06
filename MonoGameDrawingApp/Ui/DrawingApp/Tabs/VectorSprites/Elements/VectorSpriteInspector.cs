@@ -43,7 +43,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 }
             });
 
-            _colorField = new ColorInspectorProperty(Environment, vectorSpriteTabView.PopupEnvironment, "Color:", System.Drawing.Color.White, () =>
+            _colorField = new ColorInspectorProperty(Environment, _vectorSpriteTabView.PopupEnvironment, "Color:", System.Drawing.Color.White, () =>
             {
                 if (_vectorSpriteTabView.Tree.Selected != null)
                 {
@@ -56,7 +56,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 environment: Environment,
                 items: new List<IUiElement>()
                 {
-                    new EmptySpace(Environment,  1, Spacing),
+                    new EmptySpace(Environment, 1, Spacing),
                     _nameField,
                     _colorField,
                 },

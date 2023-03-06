@@ -4,6 +4,7 @@ using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Themes;
 using MonoGameDrawingApp.Ui.DrawingApp;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MonoGameDrawingApp
@@ -30,7 +31,6 @@ namespace MonoGameDrawingApp
         {
             Debug.WriteLine("Started!");
             // TODO: Add your initialization logic here
-
 
             //_split = new ColorRect(Color.Gold);
             TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
