@@ -66,6 +66,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             _root = _outer;
         }
 
+        public VectorSpriteItem Selected => (Tree.Selected as VectorSpriteTreeItem)?.Item;
+
         public ChangeListenerVectorSpriteAttachment ChangeListener { get; init; }
 
         public PopupEnvironment PopupEnvironment { get; init; }
@@ -115,7 +117,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 _undoRedoAttachment.Redo();
             }
 
-            _undoRedoAttachment.ReAllow();
+            _undoRedoAttachment.Tick();
 
             _root.Update(position, width, height);
 

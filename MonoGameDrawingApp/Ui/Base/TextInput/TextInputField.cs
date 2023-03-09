@@ -12,15 +12,6 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
 {
     public class TextInputField : IUiElement
     {
-        public string Value { get; set; }
-
-        public string Extention { get; set; }
-
-        public bool IsSelected { get; set; }
-
-        public bool IsSelectable { get; set; }
-        public bool IsDeselectable { get; set; }
-
         public readonly int MaxLength;
 
         public readonly ITextInputFilter[] Filters;
@@ -49,6 +40,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
         private ISet<Keys> _oldKeys;
         private int _cursorPosition;
         private int _counter;
+        private string _value;
 
         public TextInputField(UiEnvironment environment, string value, ITextInputFilter[] filters, bool isSelectable = true, bool isDeselectable = true, bool centerHorizontal = false, int maxLength = -1)
         {
@@ -111,11 +103,34 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             _button = new Button(environment, _outer);
         }
 
+        public string Value
+        {
+            get => _value;
+            set
+            {
+                if (value != _value)
+                {
+                    _value = value;
+                    ValueChanged?.Invoke();
+                }
+            }
+        }
+
+        public string Extention { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        public bool IsSelectable { get; set; }
+
+        public bool IsDeselectable { get; set; }
+
         public Action TextEntered { get; set; }
 
         public Action Deselected { get; set; }
 
         public Action Selected { get; set; }
+
+        public Action ValueChanged { get; set; }
 
         public bool Changed => _button.Changed;
 

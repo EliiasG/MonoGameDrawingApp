@@ -4,7 +4,6 @@ using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Themes;
 using MonoGameDrawingApp.Ui.DrawingApp;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MonoGameDrawingApp
@@ -67,7 +66,6 @@ namespace MonoGameDrawingApp
             DateTime before = DateTime.UtcNow;
             environment.Render();
             DateTime after = DateTime.UtcNow;
-
             text.Text = (1f / ((after.Ticks - before.Ticks) / 10_000_000f)).ToString();
 
             base.Draw(gameTime);

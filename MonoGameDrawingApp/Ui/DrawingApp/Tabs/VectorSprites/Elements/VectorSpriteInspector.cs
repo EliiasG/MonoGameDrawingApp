@@ -7,8 +7,6 @@ using MonoGameDrawingApp.Ui.Base.Split.Vertical;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Properties;
-using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree;
-using MonoGameDrawingApp.VectorSprites;
 using System.Collections.Generic;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
@@ -39,7 +37,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             {
                 if (_vectorSpriteTabView.Tree.Selected != null)
                 {
-                    _selected.Name = _nameField.Value;
+                    vectorSpriteTabView.Selected.Name = _nameField.Value;
                 }
             });
 
@@ -47,21 +45,26 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             {
                 if (_vectorSpriteTabView.Tree.Selected != null)
                 {
-                    _selected.Geometry.Color = _colorField.Value;
+                    vectorSpriteTabView.Selected.Geometry.Color = _colorField.Value;
                 }
             });
 
 
-            _inspector = new VScrollableListView(
+            _inspector = new VSplitStandard(
                 environment: Environment,
-                items: new List<IUiElement>()
-                {
-                    new EmptySpace(Environment, 1, Spacing),
-                    _nameField,
-                    _colorField,
-                },
-                updateOutOfView: false,
-                spacing: Spacing
+                first: new VListView<IUiElement>(
+                    environment: Environment,
+                    items: new List<IUiElement>()
+                    {
+                        new EmptySpace(Environment, 1, Spacing),
+                        _nameField,
+                        new EmptySpace(Environment, 1, Spacing),
+                        _colorField,
+                        new EmptySpace(Environment, 1, Spacing),
+                    }
+                ),
+                second: new VectorSpriteModifierListInspectorView(Environment, vectorSpriteTabView),
+                splitPosition: -1
             );
 
             _changeableView = new ChangeableView(Environment, _inspector);
@@ -81,8 +84,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         public UiEnvironment Environment { get; init; }
 
-        private VectorSpriteItem _selected => (_vectorSpriteTabView.Tree.Selected as VectorSpriteTreeItem)?.Item;
-
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _root.Render(graphics, width, height);
@@ -90,10 +91,10 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         public void Update(Vector2 position, int width, int height)
         {
-            _changeableView.Child = _selected == null ? _deselected : _inspector;
+            _changeableView.Child = _vectorSpriteTabView.Selected == null ? _deselected : _inspector;
 
-            _nameField.Value = _selected?.Name ?? "";
-            _colorField.Value = _selected?.Geometry.Color ?? System.Drawing.Color.White;
+            _nameField.Value = _vectorSpriteTabView.Selected?.Name ?? "";
+            _colorField.Value = _vectorSpriteTabView.Selected?.Geometry.Color ?? System.Drawing.Color.White;
 
 
             _root.Update(position, width, height);

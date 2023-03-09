@@ -1,4 +1,6 @@
 ﻿using MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Actions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
 {
@@ -8,12 +10,15 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
 
         private int _index;
         private readonly IUndoRedoAction[] _actions;
-        private IUndoRedoAction _current;
+        private readonly bool[] _skip;
+        private readonly IList<IUndoRedoAction> _currentActions;
         private bool _disabled;
 
         public UndoRedoVectorSpiteAttachment()
         {
             _actions = new IUndoRedoAction[ActionAmount];
+            _skip = new bool[ActionAmount];
+            _currentActions = new List<IUndoRedoAction>();
             _index = 0;
         }
 
@@ -34,6 +39,10 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
 
                 _disabled = false;
             }
+            if (Util.GetItemCircled(_skip, _index + 1))
+            {
+                Undo();
+            }
         }
 
         public void Redo()
@@ -48,48 +57,46 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
 
                 _disabled = false;
             }
+            if (Util.GetItemCircled(_skip, _index))
+            {
+                Redo();
+            }
         }
 
         internal void _dataChanging(VectorSpriteItem item)
         {
-            if (!_disabled)
-            {
-                _add(new DataUndoRedoAction(item));
-                _disabled = true;
-            }
-        }
-
-        internal void _dataChanged(VectorSpriteItem item)
-        {
-            _current?.Done();
-            _current = null;
+            _add(new DataUndoRedoAction(item));
         }
 
         internal void _childrenChanging(VectorSpriteItem item)
         {
-            if (!_disabled)
-            {
-                _add(new ChildrenUndoRedoAction(item));
-                _disabled = true;
-            }
-        }
-
-        internal void _childrenChanged(VectorSpriteItem item)
-        {
-            _current?.Done();
-            _current = null;
+            _add(new ChildrenUndoRedoAction(item));
         }
 
         private void _add(IUndoRedoAction action)
         {
-            _current = action;
+            if (!_disabled && _currentActions.All((IUndoRedoAction a) => a.GetType() != action.GetType()))
+            {
+                _currentActions.Add(action);
+            }
+            /*
             Util.SetItemCircled(_actions, ++_index, _current);
             Util.SetItemCircled(_actions, _index + 1, null);
+            */
         }
 
-        public void ReAllow()
+        public void Tick()
         {
-            _disabled = false;
+            bool skip = false;
+            foreach (IUndoRedoAction action in _currentActions)
+            {
+                action.Done();
+                Util.SetItemCircled(_actions, ++_index, action);
+                Util.SetItemCircled(_actions, _index + 1, null);
+                Util.SetItemCircled(_skip, _index, skip);
+                skip = true;
+            }
+            _currentActions.Clear();
         }
     }
 }

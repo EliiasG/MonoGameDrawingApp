@@ -103,10 +103,10 @@ namespace MonoGameDrawingApp.VectorSprites
                 _childrenChanging();
                 _children.Clear();
                 _children.Capacity = value.Count();
-                foreach (var child in value)
+                foreach (VectorSpriteItem child in value)
                 {
-                    _children.Add(child);
                     child.Parent?.RemoveChild(child);
+                    _children.Add(child);
                     child.Parent = this;
                 }
                 _childrenChanged();

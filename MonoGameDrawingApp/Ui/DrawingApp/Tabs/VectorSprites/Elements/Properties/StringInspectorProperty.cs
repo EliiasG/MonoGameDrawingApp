@@ -11,13 +11,12 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
     public class StringInspectorProperty : IInspectorProperty<string>
     {
         private const int Height = 30;
-        private const int TextWidth = 200;
 
         private readonly IUiElement _root;
 
         private string _value;
 
-        public StringInspectorProperty(UiEnvironment environment, string name, string value, ITextInputFilter[] textInputFilters, Action changed)
+        public StringInspectorProperty(UiEnvironment environment, string name, string value, ITextInputFilter[] textInputFilters, Action changed, int width = 200)
         {
             ValueChanged = changed;
             Environment = environment;
@@ -53,7 +52,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
                 child: new MinSize(
                     environment: Environment,
                     child: scrollWindow,
-                    width: TextWidth,
+                    width: width,
                     height: Height
                 ),
                 text: name
@@ -83,7 +82,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Propertie
 
         public int RequiredHeight => _root.RequiredHeight;
 
-        public UiEnvironment Environment { get; set; }
+        public UiEnvironment Environment { get; init; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

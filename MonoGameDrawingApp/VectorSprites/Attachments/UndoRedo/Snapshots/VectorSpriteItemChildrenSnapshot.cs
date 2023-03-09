@@ -6,7 +6,7 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Snapshots
     {
         public VectorSpriteItemChildrenSnapshot(VectorSpriteItem item)
         {
-            Children = item.Children;
+            Children = new List<VectorSpriteItem>(item.Children);
         }
 
         public IEnumerable<VectorSpriteItem> Children { get; init; }

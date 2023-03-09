@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Lists;
+using MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items;
+using MonoGameDrawingApp.Ui.Base.Scroll;
+using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Base.Split.Vertical;
 using MonoGameDrawingApp.VectorSprites;
 using System.Collections.Generic;
@@ -21,16 +26,33 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             _root = new VSplitStandard(
                 environment: Environment,
-                first: new ColorModifier(
+                first: new HSplitStandard(
                     environment: Environment,
-                    child: new TextView(Environment, "Modifiers:"),
-                    color: Environment.Theme.DefaultTextColor
+                    first: new ColorModifier(
+                        environment: Environment,
+                        child: new TextView(Environment, "Modifiers:"),
+                        color: Environment.Theme.DefaultTextColor
+                    ),
+                    second: new ContextMenuButton(Environment, "+  ", () =>
+                    {
+                        vectorSpriteTabView.PopupEnvironment.Open(Mouse.GetState().Position, new ModifierAddPopup(Environment, vectorSpriteTabView.PopupEnvironment, vectorSpriteTabView.Selected));
+                    }),
+                    splitPosition: -2
                 ),
                 second: new StackView(
                     environment: Environment,
                     children: new List<IUiElement>()
                     {
-                        new ColorRect(Environment, Environment.Theme.SecondaryMenuBackgroundColor)
+                        new ColorRect(Environment, Environment.Theme.SecondaryMenuBackgroundColor),
+                        new ScrollWindow(
+                            environment: Environment,
+                            child: new VScrollableListView(
+                                environment: Environment,
+                                items: _modifierList,
+                                updateOutOfView: true,
+                                spacing: 2
+                            )
+                        ),
                     }
                 ),
                 splitPosition: -1

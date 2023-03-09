@@ -13,8 +13,9 @@ namespace MonoGameDrawingApp.Ui.Base.Split
 
         private int _splitPosition;
 
-        private bool _stickToSide;
+        private bool _stick;
         private bool _stickToLast;
+        private bool _stickToMiddle;
 
         protected int _height = -1;
         protected int _width = -1;
@@ -34,15 +35,23 @@ namespace MonoGameDrawingApp.Ui.Base.Split
         {
             set
             {
-                _stickToSide = value < 0;
+                _stick = value < 0;
                 _stickToLast = value == -2;
+                _stickToMiddle = value == -3;
                 setSplitPositon(value);
             }
             get
             {
-                if (_stickToSide)
+                if (_stick)
                 {
-                    _splitPosition = _stickToLast ? Math.Max(_width, _height) : 0;
+                    if (_stickToMiddle)
+                    {
+                        _splitPosition = Math.Max(MaxPosition, MinPosition) / 2;
+                    }
+                    else
+                    {
+                        _splitPosition = _stickToLast ? Math.Max(_width, _height) : 0;
+                    }
                 }
                 setSplitPositon(_splitPosition); //to update the split position, as it may been restricted since set
                 return _splitPosition;

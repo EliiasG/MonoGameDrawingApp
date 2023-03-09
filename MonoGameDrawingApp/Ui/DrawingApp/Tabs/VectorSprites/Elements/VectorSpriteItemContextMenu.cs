@@ -55,7 +55,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         public VectorSpriteItem Item { get; set; }
 
-        public PopupEnvironment PopupEnvironment { get; set; }
+        public PopupEnvironment PopupEnvironment { get; init; }
 
         public bool Changed => _root.Changed;
 
