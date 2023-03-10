@@ -5,8 +5,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Descript
 {
     public interface IModifierViewDescription
     {
-        public IEnumerable<IModifierViewProperty> Properties { get; }
-
         public string Name { get; }
+
+        public IEnumerable<IModifierViewProperty> GenerateProperties();
     }
 }

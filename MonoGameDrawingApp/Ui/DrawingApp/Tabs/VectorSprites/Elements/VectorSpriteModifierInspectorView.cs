@@ -6,6 +6,7 @@ using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Descriptions;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Properties;
 using MonoGameDrawingApp.VectorSprites.Modifiers;
+using MonoGameDrawingApp.VectorSprites.Modifiers.Applyable.Simple;
 using System;
 using System.Collections.Generic;
 
@@ -40,7 +41,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 )
             };
 
-            foreach (IModifierViewProperty property in description.Properties)
+            foreach (IModifierViewProperty property in description.GenerateProperties())
             {
                 items.Add(new StackView(
                     environment: Environment,
@@ -50,7 +51,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                         new HSplitStandard(
                             environment: Environment,
                             first: new EmptySpace(Environment, IndentaionAmount, 1),
-                            second: property.Element,
+                            second: property.GenerateElement(environment),
                             splitPosition: -1
                         ),
                     }
@@ -84,6 +85,12 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         private static IModifierViewDescription _generateDescription(IVectorSpriteItemModifier modifier)
         {
+            switch (modifier)
+            {
+                case MoveModifier m:
+                    return new MoveModifierViewDescription(m);
+            }
+
             throw new NotImplementedException("No inspector implementation for: '" + modifier.GetType().Name + "'");
         }
     }

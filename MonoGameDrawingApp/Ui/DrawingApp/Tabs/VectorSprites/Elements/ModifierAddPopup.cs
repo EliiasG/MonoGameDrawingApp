@@ -8,7 +8,6 @@ using MonoGameDrawingApp.Ui.Base.Scroll;
 using MonoGameDrawingApp.Ui.Base.TextInput;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
-using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Modifiers;
 using MonoGameDrawingApp.VectorSprites.Modifiers.Applyable.Simple;
 using System;
@@ -27,22 +26,16 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         private static readonly (string, Func<IVectorSpriteItemModifier>)[] s_modifiers =
         {
             ("Move", () => new MoveModifier()),
-            ("Foo", () => new MoveModifier()),
-            ("Bar", () => new MoveModifier()),
-            ("Baz", () => new MoveModifier()),
-            ("FooBar", () => new MoveModifier()),
-            ("ABC", () => new MoveModifier()),
-            ("BCD", () => new MoveModifier()),
-            ("CDE", () => new MoveModifier()),
         };
 
         private readonly List<ContextMenuButton> _buttons;
         private VScrollableListView _visibleButtons;
+        private ContextMenuButton _first;
 
         private readonly IUiElement _root;
         private readonly TextInputField _searchBar;
 
-        public ModifierAddPopup(UiEnvironment environment, PopupEnvironment popupEnvironment, VectorSpriteItem item)
+        public ModifierAddPopup(UiEnvironment environment, PopupEnvironment popupEnvironment, Action<IVectorSpriteItemModifier> confirmed)
         {
             Environment = environment;
 
@@ -50,7 +43,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 selector: ((string, Func<IVectorSpriteItemModifier>) v) =>
                     new ContextMenuButton(Environment, v.Item1, () =>
                     {
-                        item.AddModifier(v.Item2());
+                        confirmed(v.Item2());
                         popupEnvironment.Close();
                     }
                 )
@@ -58,9 +51,16 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             _searchBar = new TextInputField(Environment, "", new ITextInputFilter[] { new AlphanumericTextInputFilter() });
             _searchBar.ValueChanged += _updateList;
-            //TODO make the menu close when deselecting the text, and confirm on the top element when text is entered
+            _searchBar.Deselected += popupEnvironment.Close;
+            _searchBar.TextEntered += () =>
+            {
+                _first?.OnClick();
+            };
+
+            _searchBar.IsSelected = true;
 
             _visibleButtons = new VScrollableListView(Environment, _buttons, false, ButtonSpacing);
+
             _updateList();
 
             _root = new StackView(
@@ -127,17 +127,20 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         private void _updateList()
         {
+            IEnumerable<ContextMenuButton> buttons;
             if (_searchBar.Value == string.Empty)
             {
-                _visibleButtons.Items = _buttons;
+                buttons = _buttons;
             }
             else
             {
-                _visibleButtons.Items = _buttons.Where(
+                buttons = _buttons.Where(
                     predicate: (ContextMenuButton button) =>
                         button.Title.ToLower().Contains(_searchBar.Value.ToLower())
                 );
             }
+            _first = buttons.FirstOrDefault();
+            _visibleButtons.Items = buttons;
         }
     }
 }

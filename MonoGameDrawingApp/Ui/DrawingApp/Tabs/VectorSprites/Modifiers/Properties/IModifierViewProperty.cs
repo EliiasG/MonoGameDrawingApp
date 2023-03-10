@@ -4,6 +4,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Properti
 {
     public interface IModifierViewProperty
     {
-        IUiElement Element { get; }
+        IUiElement GenerateElement(UiEnvironment environment);
     }
 }

@@ -8,6 +8,7 @@ using MonoGameDrawingApp.Ui.Base.Scroll;
 using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Base.Split.Vertical;
 using MonoGameDrawingApp.VectorSprites;
+using MonoGameDrawingApp.VectorSprites.Modifiers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,6 +17,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
     public class VectorSpriteModifierListInspectorView : IUiElement
     {
         private readonly IUiElement _root;
+
+        private VectorSpriteItem _oldSelected;
 
         private readonly List<IUiElement> _modifierList = new();
 
@@ -35,7 +38,11 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                     ),
                     second: new ContextMenuButton(Environment, "+  ", () =>
                     {
-                        vectorSpriteTabView.PopupEnvironment.Open(Mouse.GetState().Position, new ModifierAddPopup(Environment, vectorSpriteTabView.PopupEnvironment, vectorSpriteTabView.Selected));
+                        vectorSpriteTabView.PopupEnvironment.Open(Mouse.GetState().Position, new ModifierAddPopup(Environment, vectorSpriteTabView.PopupEnvironment, (IVectorSpriteItemModifier modifier) =>
+                        {
+                            vectorSpriteTabView.Selected.AddModifier(modifier);
+                            Reload(vectorSpriteTabView.Selected);
+                        }));
                     }),
                     splitPosition: -2
                 ),
@@ -91,6 +98,11 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         public void Update(Vector2 position, int width, int height)
         {
             _root.Update(position, width, height);
+            if (_oldSelected != VectorSpriteTabView.Selected)
+            {
+                Reload(VectorSpriteTabView.Selected);
+                _oldSelected = VectorSpriteTabView.Selected;
+            }
         }
     }
 }

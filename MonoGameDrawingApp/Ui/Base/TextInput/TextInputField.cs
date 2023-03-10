@@ -37,7 +37,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
         private readonly HSplit _cursorInner;
         private readonly HSplit _cursorOuter;
 
-        private ISet<Keys> _oldKeys;
+        private MouseState _oldMouse;
         private int _cursorPosition;
         private int _counter;
         private string _value;
@@ -52,7 +52,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             IsDeselectable = isDeselectable;
             Filters = filters;
             MaxLength = maxLength;
-            _oldKeys = Keyboard.GetState().GetPressedKeys().ToHashSet();
+            _oldMouse = Mouse.GetState();
 
             IsSelected = false;
 
@@ -150,14 +150,17 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             if (IsSelected)
             {
                 _updateTyping();
-                if (IsDeselectable && Mouse.GetState().LeftButton == ButtonState.Pressed && !_button.ContainsMouse || Environment.JustPressed(Keys.Escape))
+                if (IsDeselectable && (Mouse.GetState().LeftButton == ButtonState.Pressed && !_button.ContainsMouse && _oldMouse.LeftButton == ButtonState.Released || Environment.JustPressed(Keys.Escape)))
                 {
                     IsSelected = false;
                     Deselected?.Invoke();
                 }
                 if (Environment.JustPressed(Keys.Enter))
                 {
-                    IsSelected = false;
+                    if (IsDeselectable)
+                    {
+                        IsSelected = false;
+                    }
                     TextEntered?.Invoke();
                 }
             }
@@ -171,6 +174,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
                 _cursorPosition = Value.Length;
             }
 
+            _oldMouse = Mouse.GetState();
             _updateUiState();
             _button.Update(position, width, height);
         }
@@ -191,17 +195,17 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             KeyboardState _keyboard = Keyboard.GetState();
             Keys[] keys = _keyboard.GetPressedKeys();
 
-            if (keys.Contains(Keys.Left) && !_oldKeys.Contains(Keys.Left))
+            if (Environment.JustPressed(Keys.Left))
             {
                 _cursorPosition = Math.Max(_cursorPosition - 1, 0);
                 _counter = 0;
             }
-            else if (keys.Contains(Keys.Right) && !_oldKeys.Contains(Keys.Right))
+            else if (Environment.JustPressed(Keys.Right))
             {
                 _cursorPosition = Math.Min(_cursorPosition + 1, Value.Length);
                 _counter = 0;
             }
-            if (keys.Contains(Keys.Back) && !_oldKeys.Contains(Keys.Back) && _cursorPosition > 0)
+            if (Environment.JustPressed(Keys.Back) && _cursorPosition > 0)
             {
                 Value = Value.Remove(--_cursorPosition, 1);
                 _counter = 0;
@@ -209,13 +213,12 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
 
             if (MaxLength != -1 && Value.Length >= MaxLength || keys.Contains(Keys.LeftControl))
             {
-                _oldKeys = keys.ToHashSet();
                 return;
             }
 
             foreach (Keys key in keys)
             {
-                if (_oldKeys.Contains(key)) continue;
+                if (!Environment.JustPressed(key)) continue;
 
                 string keyName = _customKeyChars.ContainsKey(key) ? _customKeyChars[key].ToString() : key.ToString();
                 if (keyName.Length > 1) continue;
@@ -233,8 +236,6 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
                 _typeChar(keyChar);
 
             }
-
-            _oldKeys = keys.ToHashSet();
         }
 
         private bool _checkFilters(char key, ITextInputFilter[] filters)
