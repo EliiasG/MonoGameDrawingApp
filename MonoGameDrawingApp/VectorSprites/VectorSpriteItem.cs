@@ -113,7 +113,23 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        public IEnumerable<IVectorSpriteItemModifier> Modifiers => _modifiers;
+        public IEnumerable<IVectorSpriteItemModifier> Modifiers
+        {
+            get => _modifiers;
+            set
+            {
+                _dataChanging();
+                foreach (IVectorSpriteItemModifier modifier in _modifiers.ToArray())
+                {
+                    _removeModifier(modifier);
+                }
+                foreach (IVectorSpriteItemModifier modifier in value)
+                {
+                    _addModifier(modifier);
+                }
+                _dataChanged();
+            }
+        }
 
         public void AddAttachment(IVectorSpriteItemAttachment attachment)
         {
@@ -145,18 +161,14 @@ namespace MonoGameDrawingApp.VectorSprites
         public void AddModifier(IVectorSpriteItemModifier modifier)
         {
             _dataChanging();
-            _modifiers.Add(modifier);
-            modifier.Changed += _dataChanged;
-            modifier.Changing += _dataChanging;
+            _addModifier(modifier);
             _dataChanged();
         }
 
         public void RemoveModifier(IVectorSpriteItemModifier modifier)
         {
             _dataChanging();
-            _modifiers.Remove(modifier);
-            modifier.Changed -= _dataChanged;
-            modifier.Changing -= _dataChanging;
+            _removeModifier(modifier);
             _dataChanged();
         }
 
@@ -207,6 +219,20 @@ namespace MonoGameDrawingApp.VectorSprites
                 children.Insert(index + 1, this);
                 Parent._childrenChanged();
             }
+        }
+
+        private void _removeModifier(IVectorSpriteItemModifier modifier)
+        {
+            _modifiers.Remove(modifier);
+            modifier.Changed -= _dataChanged;
+            modifier.Changing -= _dataChanging;
+        }
+
+        private void _addModifier(IVectorSpriteItemModifier modifier)
+        {
+            _modifiers.Add(modifier);
+            modifier.Changed += _dataChanged;
+            modifier.Changing += _dataChanging;
         }
 
         private void _childrenChanged()

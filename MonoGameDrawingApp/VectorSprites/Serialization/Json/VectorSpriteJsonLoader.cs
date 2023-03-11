@@ -10,7 +10,12 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization.Json
 
             using FileStream openStream = File.OpenRead(path);
 
-            JsonSerializerOptions options = new() { MaxDepth = int.MaxValue };
+            JsonSerializerOptions options = new()
+            {
+                MaxDepth = int.MaxValue,
+            };
+
+            options.Converters.Add(new ModifierJsonConverter());
 
             SerializableVectorSprite vectorSprite = JsonSerializer.Deserialize<SerializableVectorSprite>(openStream, options);
 

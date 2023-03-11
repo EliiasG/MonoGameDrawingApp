@@ -49,7 +49,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 try
                 {
                     VectorSprite vectorSprite = new VectorSpriteJsonLoader().LoadVectorSprite(path);
-                    _vectorSpriteTabView = new(Environment, vectorSprite, path, popupEnvironment);
+                    _vectorSpriteTabView = new VectorSpriteTabView(Environment, vectorSprite, path, popupEnvironment);
                     changeableView.Child = _vectorSpriteTabView;
                 }
                 catch (Exception e)

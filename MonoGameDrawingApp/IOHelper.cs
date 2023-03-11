@@ -30,7 +30,7 @@ namespace MonoGameDrawingApp
         private static void _copyDirectory(string sourceDir, string destinationDir, ISet<string> createdDirectories)
         {
             // Get information about the source directory
-            var dir = new DirectoryInfo(sourceDir);
+            DirectoryInfo dir = new(sourceDir);
 
             // Check if the source directory exists
             if (!dir.Exists)

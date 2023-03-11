@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree;
 using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener;
@@ -31,7 +32,14 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         {
             Environment = environment;
             Sprite = sprite;
-            ChangeListener = new ChangeListenerVectorSpriteAttachment(() => _pressedSave = false);
+            ChangeListener = new ChangeListenerVectorSpriteAttachment(() =>
+            {
+                _pressedSave = false;
+                if (Selected?.Parent == null && sprite.Root != Selected)
+                {
+                    Tree.Selected = null;
+                }
+            });
             _undoRedoAttachment = new UndoRedoVectorSpiteAttachment();
             _jsonSaver = new VectorSpriteJsonSaver(Sprite);
             Path = path;

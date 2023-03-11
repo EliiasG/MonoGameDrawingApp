@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using MonoGameDrawingApp.VectorSprites.Modifiers;
+using MonoGameDrawingApp.VectorSprites.Serialization.Modifiers;
+using System.Linq;
 
 namespace MonoGameDrawingApp.VectorSprites.Serialization
 {
@@ -12,19 +14,23 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
             Position = new SerializablleVector2(item.Position);
             Geometry = new SerializableVectorSpriteGeometry(item.Geometry);
 
-            Children = new SerializableVectorSpriteItem[item.Children.Count()];
-
             if (!addChildren)
             {
-                return;
+                Children = new SerializableVectorSpriteItem[item.Children.Count()];
+            }
+            else
+            {
+                Children = item.Children.Select(
+                    (VectorSpriteItem child) =>
+                    new SerializableVectorSpriteItem(child, addChildren)
+                ).ToArray();
             }
 
-            int index = 0;
-            foreach (VectorSpriteItem child in item.Children)
-            {
-                Children[index] = new SerializableVectorSpriteItem(child, addChildren);
-                ++index;
-            }
+            Modifiers = item.Modifiers.Select(
+                (IVectorSpriteItemModifier modifier) =>
+                VectorSpriteItemModifierSerializer.Serialize(modifier)
+            ).ToArray();
+
         }
 
         public string Name { get; set; }
@@ -33,9 +39,9 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 
         public SerializableVectorSpriteGeometry Geometry { get; set; }
 
-        public SerializableVectorSpriteItem[] Children { get; set; }
+        public ISerializableVectorSpriteItemModifier[] Modifiers { get; set; }
 
-        //TODO modifiers
+        public SerializableVectorSpriteItem[] Children { get; set; }
 
         public VectorSpriteItem ToSpriteItem(VectorSprite sprite)
         {
@@ -43,6 +49,10 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
             foreach (SerializableVectorSpriteItem child in Children)
             {
                 res.AddChild(child.ToSpriteItem(sprite));
+            }
+            foreach (ISerializableVectorSpriteItemModifier modifier in Modifiers)
+            {
+                res.AddModifier(modifier.ToModifier());
             }
             return res;
         }

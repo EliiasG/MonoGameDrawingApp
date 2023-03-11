@@ -1,5 +1,5 @@
 ﻿using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Properties;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector.Properties;
 using System;
 using System.Numerics;
 

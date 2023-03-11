@@ -50,7 +50,7 @@ namespace MonoGameDrawingApp
             environment.Root = new StackView(environment, new IUiElement[]
             {
                 new DrawingAppRoot(environment),
-                text,
+                //text,
             });
         }
 
