@@ -1,5 +1,4 @@
 ﻿using MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple;
-using MonoGameDrawingApp.VectorSprites.Modifiers.Parameters;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +11,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers
             () => new MoveModifier(),
             () => new RandomizeModifier(),
             () => new RoundModifier(),
+            () => new SimpleMirrorModifier(),
         };
 
         private static readonly Dictionary<string, Func<IGeometryModifier>> s_nameModifierSet = _generateNameModifierSet();
