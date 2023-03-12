@@ -45,3 +45,5 @@ C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\obj\Debug\net6.0\refint\Mo
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\obj\Debug\net6.0\MonoGameDrawingApp.pdb
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\obj\Debug\net6.0\MonoGameDrawingApp.genruntimeconfig.cache
 C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\obj\Debug\net6.0\ref\MonoGameDrawingApp.dll
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\disabled.xnb
+C:\Projects\Git\MonoGameDrawingApp\MonoGameDrawingApp\bin\Debug\net6.0\Content\icons\enabled.xnb

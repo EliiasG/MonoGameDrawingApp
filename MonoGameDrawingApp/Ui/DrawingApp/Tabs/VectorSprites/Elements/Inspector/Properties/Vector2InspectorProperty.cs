@@ -22,6 +22,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             Environment = environment;
 
             ValueChanged = changed;
+            _value = value;
 
             _xProperty = new FloatInspectorProperty(Environment, "X: ", value.X, () =>
             {

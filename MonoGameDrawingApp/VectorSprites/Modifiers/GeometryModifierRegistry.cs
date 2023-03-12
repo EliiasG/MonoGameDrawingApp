@@ -12,6 +12,16 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers
             () => new RandomizeModifier(),
             () => new RoundModifier(),
             () => new SimpleMirrorModifier(),
+            () => new SubdivideModifier(),
+            () => new FlipModifier(),
+            () => new ScaleModifier(),
+            //TODO AdvancedMirror
+            //TODO Outline
+            //TODO Cut
+            //TODO Instance on points
+            //TODO Rotate
+            //TODO Expand
+            //TODO Copy From
         };
 
         private static readonly Dictionary<string, Func<IGeometryModifier>> s_nameModifierSet = _generateNameModifierSet();

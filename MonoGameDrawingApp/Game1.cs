@@ -29,7 +29,6 @@ namespace MonoGameDrawingApp
         protected override void Initialize()
         {
             Debug.WriteLine("Started!");
-            // TODO: Add your initialization logic here
 
             //_split = new ColorRect(Color.Gold);
             TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
@@ -45,7 +44,6 @@ namespace MonoGameDrawingApp
             Graphics graphics = new(GraphicsDevice, _spriteBatch, new TriangleBatch(GraphicsDevice));
             environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"), Content);
 
-            // TODO: use this.Content to load your game content here
             text = new TextView(environment, "");
             environment.Root = new StackView(environment, new IUiElement[]
             {
@@ -62,7 +60,6 @@ namespace MonoGameDrawingApp
         protected override void Draw(GameTime gameTime)
         {
             //_split.SplitPosition = Mouse.GetState().Y;
-            // TODO: Add your drawing code here
             DateTime before = DateTime.UtcNow;
             environment.Render();
             DateTime after = DateTime.UtcNow;

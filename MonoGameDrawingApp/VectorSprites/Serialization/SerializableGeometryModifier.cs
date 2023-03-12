@@ -52,8 +52,11 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
                 case GeometryModifierParameter<float> v:
                     v.Value = jsonElement?.Deserialize<float>() ?? (float)value;
                     break;
+                case GeometryModifierParameter<bool> v:
+                    v.Value = jsonElement?.Deserialize<bool>() ?? (bool)value;
+                    break;
                 default:
-                    throw new NotImplementedException($"Could not convert to type '{parameter.ObjectValue.GetType().Name}' :\n{jsonElement.ToString()}");
+                    throw new NotImplementedException($"Could not convert to type '{parameter.ObjectValue.GetType().Name}' :\n{jsonElement}");
             }
         }
 

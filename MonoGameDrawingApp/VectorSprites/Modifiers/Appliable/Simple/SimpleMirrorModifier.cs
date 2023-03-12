@@ -24,6 +24,11 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 
         protected override Polygon _modifyPolygon(Polygon polygon)
         {
+            if (polygon.Vertices.Length < 3)
+            {
+                return polygon;
+            }
+
             Vector2 line1 = Util.GetItemCircled(polygon.Vertices, _indexOffset.Value);
             Vector2 line2 = Util.GetItemCircled(polygon.Vertices, _indexOffset.Value + 1);
 

@@ -9,15 +9,13 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 {
     public class RoundModifier : SimpleModifier
     {
-        public const int MaxResolution = 8;
-
         private readonly GeometryModifierParameter<float> _amount;
         private readonly GeometryModifierParameter<int> _resolution;
 
         public RoundModifier()
         {
             _amount = new GeometryModifierParameter<float>(0, "Amount");
-            _resolution = new GeometryModifierParameter<int>(1, "Resolution", (int v) => Math.Clamp(v, 0, MaxResolution));
+            _resolution = new GeometryModifierParameter<int>(1, "Resolution", (int v) => Math.Clamp(v, 1, 8));
             Parameters = new IGeometryModifierParameter[]
             {
                 _amount,

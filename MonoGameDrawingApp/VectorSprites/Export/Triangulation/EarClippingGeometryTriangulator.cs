@@ -19,6 +19,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                 return new TriangulatedPolygon(Array.Empty<Vector2>(), Array.Empty<int>(), polygon.Color);
             }
         }
+
         private static TriangulatedPolygon _triangulate(Polygon polygon)
         {
             Vector2[] vertices = _withoutCollinear(polygon.Vertices);
