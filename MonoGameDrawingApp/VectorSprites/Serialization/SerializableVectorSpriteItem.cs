@@ -1,5 +1,4 @@
 ﻿using MonoGameDrawingApp.VectorSprites.Modifiers;
-using MonoGameDrawingApp.VectorSprites.Serialization.Modifiers;
 using System.Linq;
 
 namespace MonoGameDrawingApp.VectorSprites.Serialization
@@ -26,11 +25,8 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
                 ).ToArray();
             }
 
-            Modifiers = item.Modifiers.Select(
-                (IVectorSpriteItemModifier modifier) =>
-                VectorSpriteItemModifierSerializer.Serialize(modifier)
-            ).ToArray();
-
+            Modifiers = (from IGeometryModifier modifier in item.Modifiers
+                         select new SerializableGeometryModifier(modifier)).ToArray();
         }
 
         public string Name { get; set; }
@@ -39,21 +35,19 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 
         public SerializableVectorSpriteGeometry Geometry { get; set; }
 
-        public ISerializableVectorSpriteItemModifier[] Modifiers { get; set; }
+        public SerializableGeometryModifier[] Modifiers { get; set; }
 
         public SerializableVectorSpriteItem[] Children { get; set; }
 
-        public VectorSpriteItem ToSpriteItem(VectorSprite sprite)
+        public VectorSpriteItem ToItem(VectorSprite sprite)
         {
             VectorSpriteItem res = new(Name, sprite, Geometry.ToGeometry(), Position.ToVector());
             foreach (SerializableVectorSpriteItem child in Children)
             {
-                res.AddChild(child.ToSpriteItem(sprite));
+                res.AddChild(child.ToItem(sprite));
             }
-            foreach (ISerializableVectorSpriteItemModifier modifier in Modifiers)
-            {
-                res.AddModifier(modifier.ToModifier());
-            }
+            res.Modifiers = from SerializableGeometryModifier modifer in Modifiers
+                            select modifer.ToModifier();
             return res;
         }
     }

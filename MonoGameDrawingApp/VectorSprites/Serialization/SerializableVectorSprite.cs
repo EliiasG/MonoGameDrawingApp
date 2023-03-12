@@ -14,7 +14,7 @@
         public VectorSprite ToSprite()
         {
             VectorSprite res = new();
-            res.Root = Root.ToSpriteItem(res);
+            res.Root = Root.ToItem(res);
             return res;
         }
     }

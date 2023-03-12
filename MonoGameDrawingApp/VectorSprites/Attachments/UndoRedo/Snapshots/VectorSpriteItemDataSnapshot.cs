@@ -1,6 +1,5 @@
 ﻿using MonoGameDrawingApp.VectorSprites.Modifiers;
 using MonoGameDrawingApp.VectorSprites.Serialization;
-using MonoGameDrawingApp.VectorSprites.Serialization.Modifiers;
 using System.Linq;
 using System.Numerics;
 
@@ -17,8 +16,8 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Snapshots
                 Color = item.Geometry.Color
             };
             Modifiers = item.Modifiers.Select(
-                (IVectorSpriteItemModifier modifier) =>
-                VectorSpriteItemModifierSerializer.Serialize(modifier)
+                (IGeometryModifier modifier) =>
+                new SerializableGeometryModifier(modifier)
             ).ToArray();
         }
 
@@ -28,7 +27,7 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Snapshots
 
         public VectorSpriteGeometry Geometry { get; set; }
 
-        public ISerializableVectorSpriteItemModifier[] Modifiers { get; set; }
+        public SerializableGeometryModifier[] Modifiers { get; set; }
 
         public void Apply(VectorSpriteItem item)
         {
@@ -36,7 +35,7 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Snapshots
             item.Name = Name;
             item.Geometry.Points = Geometry.Points;
             item.Geometry.Color = Geometry.Color;
-            item.Modifiers = Modifiers.Select((ISerializableVectorSpriteItemModifier modifier) => modifier.ToModifier());
+            item.Modifiers = Modifiers.Select((SerializableGeometryModifier modifier) => modifier.ToModifier());
         }
     }
 }

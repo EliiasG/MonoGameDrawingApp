@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace MonoGameDrawingApp
 {
-    public class ExtraMath
+    public static class ExtraMath
     {
         public static bool IsOnLine(Vector2 point, Vector2 lineStart, Vector2 lineEnd)
         {
@@ -72,6 +72,19 @@ namespace MonoGameDrawingApp
             {
                 return a + aToB * distance;
             }
+        }
+
+        public static Vector2 Mirrored(Vector2 line1, Vector2 line2, Vector2 point)
+        {
+            Vector2 line = line2 - line1;
+            point -= line1;
+
+            float a1 = MathF.Atan2(point.Y, point.X);
+            float a2 = MathF.Atan2(line.Y, line.X);
+
+            float a3 = a2 * 2 - a1;
+
+            return new Vector2(MathF.Cos(a3), MathF.Sin(a3)) * point.Length() + line1;
         }
     }
 }

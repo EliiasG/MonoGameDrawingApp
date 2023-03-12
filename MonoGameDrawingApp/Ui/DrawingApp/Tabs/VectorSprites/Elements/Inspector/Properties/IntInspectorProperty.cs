@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
-using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
+using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Types;
 using System;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector.Properties
@@ -19,7 +19,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
 
             ValueChanged = changed;
 
-            _stringInspectorProperty = new StringInspectorProperty(environment, name, value.ToString(), new ITextInputFilter[] { new NumericTextInputFilter() }, () =>
+            _stringInspectorProperty = new StringInspectorProperty(environment, name, value.ToString(), new ITextInputFilter[] { new IntTextInputFilter() }, () =>
             {
                 try
                 {

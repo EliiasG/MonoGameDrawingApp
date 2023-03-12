@@ -32,8 +32,12 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
 
             TextInput.Deselected += () =>
             {
-                Value = TextInput.Value;
-                ValueChanged?.Invoke();
+                TextInput.Value = Value;
+            };
+
+            TextInput.Selected += () =>
+            {
+                TextInput.Value = "";
             };
 
             ScrollWindow scrollWindow = new(

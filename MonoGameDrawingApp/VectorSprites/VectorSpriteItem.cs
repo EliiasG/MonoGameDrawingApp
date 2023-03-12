@@ -1,5 +1,6 @@
 ﻿using MonoGameDrawingApp.VectorSprites.Attachments;
 using MonoGameDrawingApp.VectorSprites.Modifiers;
+using MonoGameDrawingApp.VectorSprites.Modifiers.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MonoGameDrawingApp.VectorSprites
     public class VectorSpriteItem
     {
         private readonly List<VectorSpriteItem> _children;
-        private readonly List<IVectorSpriteItemModifier> _modifiers;
+        private readonly List<IGeometryModifier> _modifiers;
         private readonly Dictionary<Type, IVectorSpriteItemAttachment> _attchments;
 
         private string _name;
@@ -19,7 +20,7 @@ namespace MonoGameDrawingApp.VectorSprites
         public VectorSpriteItem(string name, VectorSprite sprite, VectorSpriteGeometry geometry, Vector2 position)
         {
             _children = new List<VectorSpriteItem>();
-            _modifiers = new List<IVectorSpriteItemModifier>();
+            _modifiers = new List<IGeometryModifier>();
             _attchments = new Dictionary<Type, IVectorSpriteItemAttachment>();
 
             Sprite = sprite;
@@ -113,17 +114,17 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        public IEnumerable<IVectorSpriteItemModifier> Modifiers
+        public IEnumerable<IGeometryModifier> Modifiers
         {
             get => _modifiers;
             set
             {
                 _dataChanging();
-                foreach (IVectorSpriteItemModifier modifier in _modifiers.ToArray())
+                foreach (IGeometryModifier modifier in _modifiers.ToArray())
                 {
                     _removeModifier(modifier);
                 }
-                foreach (IVectorSpriteItemModifier modifier in value)
+                foreach (IGeometryModifier modifier in value)
                 {
                     _addModifier(modifier);
                 }
@@ -158,21 +159,21 @@ namespace MonoGameDrawingApp.VectorSprites
             _childrenChanged();
         }
 
-        public void AddModifier(IVectorSpriteItemModifier modifier)
+        public void AddModifier(IGeometryModifier modifier)
         {
             _dataChanging();
             _addModifier(modifier);
             _dataChanged();
         }
 
-        public void RemoveModifier(IVectorSpriteItemModifier modifier)
+        public void RemoveModifier(IGeometryModifier modifier)
         {
             _dataChanging();
             _removeModifier(modifier);
             _dataChanged();
         }
 
-        public void MoveModifierUp(IVectorSpriteItemModifier modifier)
+        public void MoveModifierUp(IGeometryModifier modifier)
         {
             _dataChanging();
             int index = _modifiers.IndexOf(modifier);
@@ -183,7 +184,7 @@ namespace MonoGameDrawingApp.VectorSprites
             }
             _dataChanged();
         }
-        public void MoveModifierDown(IVectorSpriteItemModifier modifier)
+        public void MoveModifierDown(IGeometryModifier modifier)
         {
             _dataChanging();
             int index = _modifiers.IndexOf(modifier);
@@ -221,18 +222,24 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        private void _removeModifier(IVectorSpriteItemModifier modifier)
+        private void _removeModifier(IGeometryModifier modifier)
         {
             _modifiers.Remove(modifier);
-            modifier.Changed -= _dataChanged;
-            modifier.Changing -= _dataChanging;
+            foreach (IGeometryModifierParameter parameter in modifier.Parameters)
+            {
+                parameter.Changed -= _dataChanged;
+                parameter.Changing -= _dataChanging;
+            }
         }
 
-        private void _addModifier(IVectorSpriteItemModifier modifier)
+        private void _addModifier(IGeometryModifier modifier)
         {
             _modifiers.Add(modifier);
-            modifier.Changed += _dataChanged;
-            modifier.Changing += _dataChanging;
+            foreach (IGeometryModifierParameter parameter in modifier.Parameters)
+            {
+                parameter.Changed += _dataChanged;
+                parameter.Changing += _dataChanging;
+            }
         }
 
         private void _childrenChanged()

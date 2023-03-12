@@ -9,7 +9,6 @@ using MonoGameDrawingApp.Ui.Base.TextInput;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
 using MonoGameDrawingApp.VectorSprites.Modifiers;
-using MonoGameDrawingApp.VectorSprites.Modifiers.Applyable.Simple;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +22,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         private const int InternalWidth = 200;
         private const int ListHeight = 500;
 
-        private static readonly (string, Func<IVectorSpriteItemModifier>)[] s_modifiers =
-        {
-            ("Move", () => new MoveModifier()),
-        };
-
         private readonly List<ContextMenuButton> _buttons;
         private VScrollableListView _visibleButtons;
         private ContextMenuButton _first;
@@ -35,15 +29,15 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         private readonly IUiElement _root;
         private readonly TextInputField _searchBar;
 
-        public ModifierAddPopup(UiEnvironment environment, PopupEnvironment popupEnvironment, Action<IVectorSpriteItemModifier> confirmed)
+        public ModifierAddPopup(UiEnvironment environment, PopupEnvironment popupEnvironment, Action<IGeometryModifier> confirmed)
         {
             Environment = environment;
 
-            _buttons = s_modifiers.Select(
-                selector: ((string, Func<IVectorSpriteItemModifier>) v) =>
-                    new ContextMenuButton(Environment, v.Item1, () =>
+            _buttons = GeometryModifierRegistry.ModifierNames.Select(
+                selector: (string v) =>
+                    new ContextMenuButton(Environment, v, () =>
                     {
-                        confirmed(v.Item2());
+                        confirmed(GeometryModifierRegistry.GenerateFromName(v));
                         popupEnvironment.Close();
                     }
                 )

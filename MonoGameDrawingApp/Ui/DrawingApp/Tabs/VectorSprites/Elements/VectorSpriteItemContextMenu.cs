@@ -115,7 +115,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         {
             if (Environment.Clipboard is SerializableVectorSpriteItem serializableItem)
             {
-                Item.AddChild(serializableItem.ToSpriteItem(Item.Sprite));
+                Item.AddChild(serializableItem.ToItem(Item.Sprite));
             }
             PopupEnvironment.Close();
         }

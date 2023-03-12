@@ -64,7 +64,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
                         new EmptySpace(Environment, 1, Spacing),
                     }
                 ),
-                second: new VectorSpriteModifierListInspectorView(Environment, vectorSpriteTabView),
+                second: new GeometryModifierListInspectorView(Environment, vectorSpriteTabView),
                 splitPosition: -1
             );
 

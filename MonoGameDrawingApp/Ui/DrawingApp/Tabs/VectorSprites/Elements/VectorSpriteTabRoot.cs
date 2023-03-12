@@ -54,7 +54,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 }
                 catch (Exception e)
                 {
-                    text.Text = "Failed to load '" + path + "': " + e.Message;
+                    text.Text = "Failed to load '" + path + "':\n" + e.Message + "\n\n" + e.StackTrace;
                 }
             });
         }

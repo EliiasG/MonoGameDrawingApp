@@ -24,7 +24,15 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             {
                 try
                 {
-                    Value = float.Parse(_stringInspectorProperty.Value, CultureInfo.InvariantCulture);
+                    string val = _stringInspectorProperty.Value;
+                    if (val.Contains('/'))
+                    {
+                        Value = 1 / float.Parse(val.Replace("/", ""), CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        Value = float.Parse(val, CultureInfo.InvariantCulture);
+                    }
                     ValueChanged?.Invoke();
                 }
                 catch

@@ -9,7 +9,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export
         {
             ModifiedPolygons = new List<Polygon>() { geometry.ToPolygon() };
 
-            foreach (IVectorSpriteItemModifier modifier in geometry.VectorSpriteItem.Modifiers)
+            foreach (IGeometryModifier modifier in geometry.VectorSpriteItem.Modifiers)
             {
                 modifier.Modify(this);
             }

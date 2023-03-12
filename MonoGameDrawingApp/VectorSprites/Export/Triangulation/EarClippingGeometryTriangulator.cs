@@ -7,7 +7,19 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 {
     public class EarClippingGeometryTriangulator : IPolygonTriangulator
     {
+
         public TriangulatedPolygon Triangulate(Polygon polygon)
+        {
+            try
+            {
+                return _triangulate(polygon);
+            }
+            catch
+            {
+                return new TriangulatedPolygon(Array.Empty<Vector2>(), Array.Empty<int>(), polygon.Color);
+            }
+        }
+        private static TriangulatedPolygon _triangulate(Polygon polygon)
         {
             Vector2[] vertices = _withoutCollinear(polygon.Vertices);
             vertices = _makeCounterClockwise(vertices);
