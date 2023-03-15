@@ -8,7 +8,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 {
     public class ScaleModifier : SimpleModifier
     {
-        private GeometryModifierParameter<Vector2> _size;
+        private readonly GeometryModifierParameter<Vector2> _size;
 
         public ScaleModifier()
         {

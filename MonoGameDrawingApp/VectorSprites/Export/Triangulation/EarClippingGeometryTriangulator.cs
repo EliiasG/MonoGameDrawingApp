@@ -168,7 +168,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
         private static Vector2[] _makeCounterClockwise(Vector2[] vertices)
         {
-            return _isCounterClockwise(vertices) ? vertices : vertices.Reverse().ToArray();
+            return ExtraMath.IsCounterClockwise(vertices) ? vertices : vertices.Reverse().ToArray();
         }
 
         private static Vector2 _previousPoint(Vector2[] points, int index)
@@ -181,34 +181,11 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             return points[index == points.Length - 1 ? 0 : (index + 1)];
         }
 
-        private static bool _isCounterClockwise(Vector2[] vertices)
-        {
-            int lowestIndex = 0;
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                Vector2 lowestPoint = vertices[lowestIndex];
-                Vector2 point = vertices[i];
-                if (point.Y < lowestPoint.Y || (point.Y == lowestPoint.Y && point.X > lowestPoint.X))
-                {
-                    lowestIndex = i;
-                }
-            }
-
-            Vector2 last = _previousPoint(vertices, lowestIndex);
-            Vector2 current = vertices[lowestIndex];
-            Vector2 next = _nextPoint(vertices, lowestIndex);
-
-            Vector2 lastCurrent = current - last;
-            Vector2 nextCurrent = current - next;
-
-            return lastCurrent.X * nextCurrent.Y < lastCurrent.Y * nextCurrent.X;
-        }
-
         private static bool _isInTrangle(Vector2 point, Vector2 a, Vector2 b, Vector2 c)
         {
-            bool b1 = _isCounterClockwise(new Vector2[] { a, b, point });
-            bool b2 = _isCounterClockwise(new Vector2[] { b, c, point });
-            bool b3 = _isCounterClockwise(new Vector2[] { c, a, point });
+            bool b1 = ExtraMath.IsCounterClockwise(new Vector2[] { a, b, point });
+            bool b2 = ExtraMath.IsCounterClockwise(new Vector2[] { b, c, point });
+            bool b3 = ExtraMath.IsCounterClockwise(new Vector2[] { c, a, point });
             return (b1 == b2 && b2 == b3) || ExtraMath.IsOnLine(point, a, b) || ExtraMath.IsOnLine(point, a, c) || ExtraMath.IsOnLine(point, b, c);
         }
     }

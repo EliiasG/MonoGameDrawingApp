@@ -20,7 +20,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
 
             ValueChanged = changed;
 
-            _stringInspectorProperty = new StringInspectorProperty(environment, name, value.ToString(), new ITextInputFilter[] { new FloatTextInputFilter() }, () =>
+            _stringInspectorProperty = new StringInspectorProperty(environment, name, value.ToString(CultureInfo.InvariantCulture), new ITextInputFilter[] { new FloatTextInputFilter() }, () =>
             {
                 try
                 {
@@ -48,11 +48,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             get => _value;
             set
             {
-                if (_value != value)
-                {
-                    _stringInspectorProperty.Value = value.ToString(CultureInfo.InvariantCulture);
-                    _value = value;
-                }
+                _stringInspectorProperty.Value = value.ToString(CultureInfo.InvariantCulture);
+                _value = value;
             }
         }
         public Action ValueChanged { get; set; }

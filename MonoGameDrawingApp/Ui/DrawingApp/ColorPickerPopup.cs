@@ -43,7 +43,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         private readonly List<IUiElement> _colorList;
 
-        private Button _colorButton;
+        private readonly Button _colorButton;
 
         private System.Drawing.Color _selected;
 

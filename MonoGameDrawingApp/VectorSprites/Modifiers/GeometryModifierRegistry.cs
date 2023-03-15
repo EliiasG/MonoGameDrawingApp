@@ -1,4 +1,5 @@
-﻿using MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple;
+﻿using MonoGameDrawingApp.VectorSprites.Modifiers.Appliable;
+using MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple;
 using System;
 using System.Collections.Generic;
 
@@ -15,12 +16,12 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers
             () => new SubdivideModifier(),
             () => new FlipModifier(),
             () => new ScaleModifier(),
+            () => new RotateModifier(),
+            () => new ExpandModifier(),
+            () => new OutlineModifier(),
             //TODO AdvancedMirror
-            //TODO Outline
             //TODO Cut
             //TODO Instance on points
-            //TODO Rotate
-            //TODO Expand
             //TODO Copy From
         };
 

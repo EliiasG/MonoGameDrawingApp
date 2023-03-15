@@ -115,6 +115,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
                 GeometryModifierParameter<float> p => new FloatModifierParameterView(p),
                 GeometryModifierParameter<System.Numerics.Vector2> p => new Vector2ModifierParameterView(p),
                 GeometryModifierParameter<bool> p => new BoolModifierParameterView(p),
+                GeometryModifierParameter<System.Drawing.Color> p => new ColorModifierParameterView(p, VectorSpriteTabView.PopupEnvironment),
                 _ => throw new NotImplementedException("Cannot display '" + parameter.GetType().Name + "'")
             };
         }

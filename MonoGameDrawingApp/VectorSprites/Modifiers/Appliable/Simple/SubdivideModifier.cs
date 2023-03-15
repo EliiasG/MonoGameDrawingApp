@@ -8,7 +8,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 {
     public class SubdivideModifier : SimpleModifier
     {
-        private GeometryModifierParameter<int> _resolution;
+        private readonly GeometryModifierParameter<int> _resolution;
 
         public SubdivideModifier()
         {

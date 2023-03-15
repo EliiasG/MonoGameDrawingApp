@@ -51,8 +51,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
                         {
                             if (modifier is IAppliableGeometryModifier applyable)
                             {
-                                applyable.Apply(item);
                                 item.RemoveModifier(modifier);
+                                applyable.Apply(item);
                             }
                             popupEnvironment.Close();
                         }

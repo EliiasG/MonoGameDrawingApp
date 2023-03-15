@@ -6,7 +6,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
     {
         public TriangulatedGeometry(IPolygonTriangulator triangulator, ModifiedGeometry modifiedGeometry)
         {
-            Polygons = (from Polygon polygon in modifiedGeometry.ModifiedPolygons
+            Polygons = (from Polygon polygon in modifiedGeometry.ModifiedPolygons.Reverse<Polygon>()
                         where polygon.Vertices.Length >= 3
                         select triangulator.Triangulate(polygon)).ToArray();
         }

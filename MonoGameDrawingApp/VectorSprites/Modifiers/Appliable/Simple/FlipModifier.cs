@@ -8,8 +8,8 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 {
     public class FlipModifier : SimpleModifier
     {
-        private GeometryModifierParameter<bool> _horizontal;
-        private GeometryModifierParameter<bool> _vertical;
+        private readonly GeometryModifierParameter<bool> _horizontal;
+        private readonly GeometryModifierParameter<bool> _vertical;
 
         public FlipModifier()
         {

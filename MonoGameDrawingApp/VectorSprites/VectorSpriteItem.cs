@@ -89,9 +89,9 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        public VectorSprite Sprite { get; init; }
+        public VectorSprite Sprite { get; }
 
-        public VectorSpriteGeometry Geometry { get; init; }
+        public VectorSpriteGeometry Geometry { get; }
 
         public VectorSpriteItem Parent { get; private set; }
 
@@ -142,6 +142,11 @@ namespace MonoGameDrawingApp.VectorSprites
             return (Type)_attchments[typeof(Type)];
         }
 
+        public VectorSpriteItem GetChild(int index)
+        {
+            return _children[index];
+        }
+
         public void RemoveChild(VectorSpriteItem child)
         {
             _childrenChanging();
@@ -152,9 +157,14 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void AddChild(VectorSpriteItem child)
         {
+            InsertChild(_children.Count, child);
+        }
+
+        public void InsertChild(int index, VectorSpriteItem child)
+        {
             _childrenChanging();
             child.Parent?.RemoveChild(child);
-            _children.Add(child);
+            _children.Insert(index, child);
             child.Parent = this;
             _childrenChanged();
         }

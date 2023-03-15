@@ -86,5 +86,76 @@ namespace MonoGameDrawingApp
 
             return new Vector2(MathF.Cos(a3), MathF.Sin(a3)) * point.Length() + line1;
         }
+
+        public static bool IsCounterClockwise(Vector2[] vertices)
+        {
+            int lowestIndex = 0;
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 lowestPoint = vertices[lowestIndex];
+                Vector2 point = vertices[i];
+                if (point.Y < lowestPoint.Y || (point.Y == lowestPoint.Y && point.X > lowestPoint.X))
+                {
+                    lowestIndex = i;
+                }
+            }
+
+            Vector2 prev = Util.GetItemCircled(vertices, lowestIndex - 1);
+            Vector2 current = vertices[lowestIndex];
+            Vector2 next = Util.GetItemCircled(vertices, lowestIndex + 1);
+
+            Vector2 prevCurrent = current - prev;
+            Vector2 nextCurrent = current - next;
+
+            return prevCurrent.X * nextCurrent.Y < prevCurrent.Y * nextCurrent.X;
+        }
+
+        public static Vector2[] Expand(Vector2[] vertices, float amount)
+        {
+            bool inv = IsCounterClockwise(vertices);
+            Vector2[] newVertices = new Vector2[vertices.Length];
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 prev = Util.GetItemCircled(vertices, i - 1);
+                Vector2 cur = vertices[i];
+                Vector2 next = Util.GetItemCircled(vertices, i + 1);
+
+                newVertices[i] = cur + GetNormal(prev, cur, next, inv) * amount;
+            }
+
+            return newVertices;
+        }
+
+        public static Vector2 GetNormal(Vector2 a, Vector2 b, Vector2 c, bool counterClockwise)
+        {
+            Vector2 ba = a - b;
+            Vector2 bc = c - b;
+
+            float abAngle = MathF.Atan2(ba.Y, ba.X);
+            float cbAngle = MathF.Atan2(bc.Y, bc.X);
+
+            abAngle = (abAngle < 0 && MathF.Abs(abAngle - cbAngle) > MathF.PI) ? abAngle + MathF.Tau : abAngle;
+            cbAngle = (cbAngle < 0 && MathF.Abs(cbAngle - abAngle) > MathF.PI) ? cbAngle + MathF.Tau : cbAngle;
+
+            float angle = (abAngle + cbAngle) * 0.5f;
+
+            Vector2 res = new(MathF.Cos(angle), MathF.Sin(angle));
+
+            Vector2 cb = b - c;
+            Vector2 ab = b - a;
+
+            float dot = cb.X * ab.Y - cb.Y * ab.X;
+            bool invert;
+            if (counterClockwise)
+            {
+                invert = dot <= 0;
+            }
+            else
+            {
+                invert = dot >= 0;
+            }
+            return invert ? res : -res;
+        }
     }
 }

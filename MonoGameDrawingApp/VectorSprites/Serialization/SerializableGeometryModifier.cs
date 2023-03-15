@@ -55,6 +55,9 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
                 case GeometryModifierParameter<bool> v:
                     v.Value = jsonElement?.Deserialize<bool>() ?? (bool)value;
                     break;
+                case GeometryModifierParameter<Color> v:
+                    v.Value = jsonElement?.Deserialize<SerializableColor>().ToColor() ?? ((SerializableColor)value).ToColor();
+                    break;
                 default:
                     throw new NotImplementedException($"Could not convert to type '{parameter.ObjectValue.GetType().Name}' :\n{jsonElement}");
             }

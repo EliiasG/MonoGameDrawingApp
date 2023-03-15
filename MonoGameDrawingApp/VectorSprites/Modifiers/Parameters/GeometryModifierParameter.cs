@@ -5,7 +5,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Parameters
     public sealed class GeometryModifierParameter<T> : IGeometryModifierParameter
     {
         private T _value;
-        private Func<T, T> _change;
+        private readonly Func<T, T> _change;
 
         public GeometryModifierParameter(T value, string name, Func<T, T> change = null)
         {

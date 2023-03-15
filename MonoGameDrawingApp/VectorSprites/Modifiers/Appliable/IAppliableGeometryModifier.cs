@@ -2,6 +2,6 @@
 {
     public interface IAppliableGeometryModifier : IGeometryModifier
     {
-        void Apply(VectorSpriteItem Item);
+        void Apply(VectorSpriteItem item);
     }
 }
