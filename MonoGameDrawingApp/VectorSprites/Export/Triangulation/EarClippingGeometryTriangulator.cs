@@ -153,7 +153,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                 Vector2 current = vertices[i];
                 Vector2 next = _nextPoint(vertices, i);
 
-                if (ExtraMath.IsOnLine(current, last, next) && newVertecies == null)
+                if (ExtraMath.IsOnLine(current, last, next))
                 {
                     newVertecies ??= vertices.Take(i).ToList();
                 }

@@ -129,32 +129,44 @@ namespace MonoGameDrawingApp
 
         public static Vector2 GetNormal(Vector2 a, Vector2 b, Vector2 c, bool counterClockwise)
         {
-            Vector2 ba = a - b;
-            Vector2 bc = c - b;
-
-            float abAngle = MathF.Atan2(ba.Y, ba.X);
-            float cbAngle = MathF.Atan2(bc.Y, bc.X);
-
-            abAngle = (abAngle < 0 && MathF.Abs(abAngle - cbAngle) > MathF.PI) ? abAngle + MathF.Tau : abAngle;
-            cbAngle = (cbAngle < 0 && MathF.Abs(cbAngle - abAngle) > MathF.PI) ? cbAngle + MathF.Tau : cbAngle;
-
-            float angle = (abAngle + cbAngle) * 0.5f;
-
-            Vector2 res = new(MathF.Cos(angle), MathF.Sin(angle));
-
             Vector2 cb = b - c;
             Vector2 ab = b - a;
 
             float dot = cb.X * ab.Y - cb.Y * ab.X;
+
+            float angle;
+
+            Vector2 ba = a - b;
+            Vector2 bc = c - b;
+
             bool invert;
-            if (counterClockwise)
+            if (dot == 0)
             {
-                invert = dot <= 0;
+                angle = MathF.Atan2(ba.Y, ba.X) - MathF.PI / 2;
+                invert = !counterClockwise;
             }
             else
             {
-                invert = dot >= 0;
+                float abAngle = MathF.Atan2(ba.Y, ba.X);
+                float cbAngle = MathF.Atan2(bc.Y, bc.X);
+
+                abAngle = (abAngle < 0 && MathF.Abs(abAngle - cbAngle) > MathF.PI) ? abAngle + MathF.Tau : abAngle;
+                cbAngle = (cbAngle < 0 && MathF.Abs(cbAngle - abAngle) > MathF.PI) ? cbAngle + MathF.Tau : cbAngle;
+
+                angle = (abAngle + cbAngle) * 0.5f;
+
+                if (counterClockwise)
+                {
+                    invert = dot < 0;
+                }
+                else
+                {
+                    invert = dot > 0;
+                }
             }
+
+            Vector2 res = new(MathF.Cos(angle), MathF.Sin(angle));
+
             return invert ? res : -res;
         }
     }

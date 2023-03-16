@@ -1,24 +1,23 @@
 ﻿using MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Actions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
 {
     public class UndoRedoVectorSpiteAttachment : IVectorSpriteAttachment
     {
-        private const int ActionAmount = 256;
+        private const int ActionAmount = 512;
 
         private int _index;
         private readonly IUndoRedoAction[] _actions;
         private readonly bool[] _skip;
-        private readonly IList<IUndoRedoAction> _currentActions;
+        private readonly Dictionary<VectorSpriteItem, ISet<IUndoRedoAction>> _currentActions;
         private bool _disabled;
 
         public UndoRedoVectorSpiteAttachment()
         {
             _actions = new IUndoRedoAction[ActionAmount];
             _skip = new bool[ActionAmount];
-            _currentActions = new List<IUndoRedoAction>();
+            _currentActions = new Dictionary<VectorSpriteItem, ISet<IUndoRedoAction>>();
             _index = 0;
         }
 
@@ -65,36 +64,40 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
 
         internal void _dataChanging(VectorSpriteItem item)
         {
-            _add(new DataUndoRedoAction(item));
+            _add(new DataUndoRedoAction(item), item);
         }
 
         internal void _childrenChanging(VectorSpriteItem item)
         {
-            _add(new ChildrenUndoRedoAction(item));
+            _add(new ChildrenUndoRedoAction(item), item);
         }
 
-        private void _add(IUndoRedoAction action)
+        private void _add(IUndoRedoAction action, VectorSpriteItem item)
         {
-            if (!_disabled && _currentActions.All((IUndoRedoAction a) => a.GetType() != action.GetType()))
+            if (!_currentActions.ContainsKey(item))
             {
-                _currentActions.Add(action);
+                _currentActions[item] = new HashSet<IUndoRedoAction>();
             }
-            /*
-            Util.SetItemCircled(_actions, ++_index, _current);
-            Util.SetItemCircled(_actions, _index + 1, null);
-            */
+
+            if (!_disabled && !_currentActions[item].Contains(action))
+            {
+                _currentActions[item].Add(action);
+            }
         }
 
         public void Tick()
         {
             bool skip = false;
-            foreach (IUndoRedoAction action in _currentActions)
+            foreach (ISet<IUndoRedoAction> actions in _currentActions.Values)
             {
-                action.Done();
-                Util.SetItemCircled(_actions, ++_index, action);
-                Util.SetItemCircled(_actions, _index + 1, null);
-                Util.SetItemCircled(_skip, _index, skip);
-                skip = true;
+                foreach (IUndoRedoAction action in actions)
+                {
+                    action.Done();
+                    Util.SetItemCircled(_actions, ++_index, action);
+                    Util.SetItemCircled(_actions, _index + 1, null);
+                    Util.SetItemCircled(_skip, _index, skip);
+                    skip = true;
+                }
             }
             _currentActions.Clear();
         }
