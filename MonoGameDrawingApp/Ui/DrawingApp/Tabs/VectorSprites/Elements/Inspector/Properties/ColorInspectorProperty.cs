@@ -44,7 +44,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
                 {
                     _value = value;
                     _colorRect.Color = Util.ToXnaColor(value);
-                    ValueChanged?.Invoke();
                 }
             }
         }
@@ -70,7 +69,11 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
         {
             if (_button.JustLeftClicked)
             {
-                ColorPickerPopup popup = new ColorPickerPopup(Environment, PopupEnvironment, Value, (c) => Value = c);
+                ColorPickerPopup popup = new(Environment, PopupEnvironment, Value, (c) =>
+                {
+                    Value = c;
+                    ValueChanged?.Invoke();
+                });
                 PopupEnvironment.OpenCentered(popup);
             }
 

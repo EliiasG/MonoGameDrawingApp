@@ -47,7 +47,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
                 res.AddChild(child.ToItem(sprite));
             }
             res.Modifiers = from SerializableGeometryModifier modifer in Modifiers
-                            select modifer.ToModifier();
+                            select modifer.ToModifier(sprite);
             return res;
         }
     }

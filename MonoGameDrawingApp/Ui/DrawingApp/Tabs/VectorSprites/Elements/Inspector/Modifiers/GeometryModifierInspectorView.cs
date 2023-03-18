@@ -7,6 +7,7 @@ using MonoGameDrawingApp.Ui.Base.Lists;
 using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Properties;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Properties.Typed;
+using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Modifiers;
 using MonoGameDrawingApp.VectorSprites.Modifiers.Parameters;
 using System;
@@ -114,6 +115,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
                 GeometryModifierParameter<int> p => new IntModifierParameterView(p),
                 GeometryModifierParameter<float> p => new FloatModifierParameterView(p),
                 GeometryModifierParameter<System.Numerics.Vector2> p => new Vector2ModifierParameterView(p),
+                GeometryModifierParameter<VectorSpriteItemReference> p => new VectorSpriteItemReferenceModifierParameterView(p, VectorSpriteTabView),
                 GeometryModifierParameter<bool> p => new BoolModifierParameterView(p),
                 GeometryModifierParameter<System.Drawing.Color> p => new ColorModifierParameterView(p, VectorSpriteTabView.PopupEnvironment),
                 _ => throw new NotImplementedException("Cannot display '" + parameter.GetType().Name + "'")

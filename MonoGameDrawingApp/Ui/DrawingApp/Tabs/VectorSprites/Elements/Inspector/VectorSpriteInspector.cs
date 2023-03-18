@@ -36,7 +36,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
 
             _nameField = new StringInspectorProperty(Environment, "Name:", "", new ITextInputFilter[] { new AlphanumericTextInputFilter() }, () =>
             {
-                if (_vectorSpriteTabView.Tree.Selected != null)
+                if (_vectorSpriteTabView.Selected != null)
                 {
                     vectorSpriteTabView.Selected.Name = _nameField.Value;
                 }
@@ -44,7 +44,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
 
             _colorField = new ColorInspectorProperty(Environment, _vectorSpriteTabView.PopupEnvironment, "Color:", System.Drawing.Color.White, () =>
             {
-                if (_vectorSpriteTabView.Tree.Selected != null)
+                if (_vectorSpriteTabView.Selected != null)
                 {
                     vectorSpriteTabView.Selected.Geometry.Color = _colorField.Value;
                 }

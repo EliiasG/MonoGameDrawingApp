@@ -6,7 +6,6 @@ using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering;
-using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree;
 using MonoGameDrawingApp.VectorSprites;
 using System;
 
@@ -141,7 +140,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 Changed = true;
             }
 
-            Rectangle bounds = new Rectangle(position.ToPoint(), new Point(width, height));
+            Rectangle bounds = new(position.ToPoint(), new Point(width, height));
             if (bounds.Contains(mouse.Position))
             {
                 if (mouse.RightButton == ButtonState.Pressed && Environment.OldMouse.RightButton == ButtonState.Released)
@@ -165,9 +164,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 _pixelDragStart = null;
             }
 
-            VectorSpriteTreeItem treeItem = VectorSpriteTabView.Tree.Selected as VectorSpriteTreeItem;
-
-            _editor.Selected = treeItem?.Item;
+            _editor.Selected = VectorSpriteTabView.Selected;
 
             _editor.Update(position);
 

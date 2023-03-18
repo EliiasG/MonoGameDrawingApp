@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
+using MonoGameDrawingApp.Ui.Base.Buttons;
 using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector;
@@ -10,6 +11,8 @@ using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener;
 using MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo;
 using MonoGameDrawingApp.VectorSprites.Serialization.Json;
+using System;
+using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 {
@@ -25,8 +28,11 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         private readonly UndoRedoVectorSpiteAttachment _undoRedoAttachment;
 
         private bool _pressedSave;
+        private Action<VectorSpriteItem> _onSelected;
+        private Button _treeButton;
+        private VectorSpriteTreeItem _selected;
 
-        private KeyboardState _oldKeyboard;
+        private MouseState _oldMouse;
 
         public VectorSpriteTabView(UiEnvironment environment, VectorSprite sprite, string path, PopupEnvironment popupEnvironment)
         {
@@ -51,15 +57,15 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             Tree = new VectorSpriteTree(Sprite, popupEnvironment);
 
-            IUiElement treeElement = new VectorSpriteTreeView(Environment, this);
+            _treeButton = new Button(Environment, new VectorSpriteTreeView(Environment, this));
 
-            IUiElement viewportElement = new VectorSpriteViewportView(Environment, this);//new CenterView(Environment, new TextView(Environment, "Viewport goes here"), true, true);
+            IUiElement viewportElement = new VectorSpriteViewportView(Environment, this);
 
             IUiElement inspectorElement = new VectorSpriteInspector(Environment, this);
 
             _inner = new HSplitStandard(
                 environment: Environment,
-                first: treeElement,
+                first: _treeButton,
                 second: viewportElement,
                 splitPosition: TreeSize
             );
@@ -74,7 +80,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             _root = _outer;
         }
 
-        public VectorSpriteItem Selected => (Tree.Selected as VectorSpriteTreeItem)?.Item;
+        public VectorSpriteItem Selected => _selected?.Item;//(Tree.Selected as VectorSpriteTreeItem)?.Item;
 
         public ChangeListenerVectorSpriteAttachment ChangeListener { get; init; }
 
@@ -106,30 +112,59 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         public void Update(Vector2 position, int width, int height)
         {
             KeyboardState keyboard = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
 
             _inner.SplitPosition = TreeSize;
             _outer.SplitPosition = width - InspectorSize;
 
-            if (keyboard.IsKeyDown(Keys.LeftControl) && keyboard.IsKeyDown(Keys.S) && !_oldKeyboard.IsKeyDown(Keys.S))
+            if (keyboard.IsKeyDown(Keys.LeftControl) && Environment.JustPressed(Keys.S))
             {
                 Save();
             }
 
-            if (keyboard.IsKeyDown(Keys.LeftControl) && keyboard.IsKeyDown(Keys.Z) && !_oldKeyboard.IsKeyDown(Keys.Z))
+            if (keyboard.IsKeyDown(Keys.LeftControl) && Environment.JustPressed(Keys.Z))
             {
                 _undoRedoAttachment.Undo();
             }
 
-            if (keyboard.IsKeyDown(Keys.LeftControl) && keyboard.IsKeyDown(Keys.Y) && !_oldKeyboard.IsKeyDown(Keys.Y))
+            if (keyboard.IsKeyDown(Keys.LeftControl) && Environment.JustPressed(Keys.Y))
             {
                 _undoRedoAttachment.Redo();
+            }
+
+            bool justLeft = _oldMouse.LeftButton == ButtonState.Released && mouse.LeftButton == ButtonState.Pressed;
+            bool justRight = _oldMouse.RightButton == ButtonState.Released && mouse.RightButton == ButtonState.Pressed;
+
+            if (_onSelected == null)
+            {
+                _selected = Tree.Selected as VectorSpriteTreeItem;
+            }
+            else if (Tree.Selected is VectorSpriteTreeItem item)
+            {
+                Debug.WriteLine("ay");
+                _onSelected(item.Item);
+                _onSelected = null;
+                Tree.Selected = _selected;
+            }
+            else if ((justLeft && !_treeButton.ContainsMouse) || justRight)
+            {
+                _onSelected(null);
+                _onSelected = null;
+                Tree.Selected = _selected;
             }
 
             _undoRedoAttachment.Tick();
 
             _root.Update(position, width, height);
 
-            _oldKeyboard = Keyboard.GetState();
+            _oldMouse = Mouse.GetState();
+        }
+
+        public void SelectItem(Action<VectorSpriteItem> selected)
+        {
+            _onSelected = selected;
+            Tree.Selected = null;
+            _oldMouse = Mouse.GetState();
         }
 
         public void Save()

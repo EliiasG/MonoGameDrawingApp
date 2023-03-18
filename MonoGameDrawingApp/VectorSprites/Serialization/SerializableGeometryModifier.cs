@@ -25,20 +25,20 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 
         public object[] Parameters { get; set; }
 
-        public IGeometryModifier ToModifier()
+        public IGeometryModifier ToModifier(VectorSprite sprite)
         {
             IGeometryModifier modifier = GeometryModifierRegistry.GenerateFromName(Name);
 
             int i = 0;
             foreach (IGeometryModifierParameter parameter in modifier.Parameters)
             {
-                _setParameter(parameter, Parameters[i++]);
+                _setParameter(parameter, Parameters[i++], sprite);
             }
 
             return modifier;
         }
 
-        private void _setParameter(IGeometryModifierParameter parameter, object value)
+        private void _setParameter(IGeometryModifierParameter parameter, object value, VectorSprite sprite)
         {
             JsonElement? jsonElement = value as JsonElement?;
             switch (parameter)
@@ -58,6 +58,9 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
                 case GeometryModifierParameter<Color> v:
                     v.Value = jsonElement?.Deserialize<SerializableColor>().ToColor() ?? ((SerializableColor)value).ToColor();
                     break;
+                case GeometryModifierParameter<VectorSpriteItemReference> v:
+                    v.Value = jsonElement?.Deserialize<SerializableVectorSpriteItemReference>().ToReference(sprite) ?? ((SerializableVectorSpriteItemReference)value).ToReference(sprite);
+                    break;
                 default:
                     throw new NotImplementedException($"Could not convert to type '{parameter.ObjectValue.GetType().Name}' :\n{jsonElement}");
             }
@@ -69,6 +72,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
             {
                 Color v => new SerializableColor(v),
                 Vector2 v => new SerializablleVector2(v),
+                VectorSpriteItemReference v => new SerializableVectorSpriteItemReference(v),
                 _ => value,
             };
         }

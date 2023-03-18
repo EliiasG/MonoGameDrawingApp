@@ -195,7 +195,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         private Button _generateColorButton()
         {
-            ScrollWindow scrollWindow = new ScrollWindow(
+            ScrollWindow scrollWindow = new(
                 environment: Environment,
                 child: new VScrollableListView(
                     environment: Environment,

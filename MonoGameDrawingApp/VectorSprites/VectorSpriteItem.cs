@@ -124,7 +124,7 @@ namespace MonoGameDrawingApp.VectorSprites
                 {
                     _removeModifier(modifier);
                 }
-                foreach (IGeometryModifier modifier in value)
+                foreach (IGeometryModifier modifier in value.ToArray())
                 {
                     _addModifier(modifier);
                 }

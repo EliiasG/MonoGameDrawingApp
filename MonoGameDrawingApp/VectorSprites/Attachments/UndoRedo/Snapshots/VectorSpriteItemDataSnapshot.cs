@@ -35,7 +35,7 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Snapshots
             item.Name = Name;
             item.Geometry.Points = Geometry.Points;
             item.Geometry.Color = Geometry.Color;
-            item.Modifiers = Modifiers.Select((SerializableGeometryModifier modifier) => modifier.ToModifier());
+            item.Modifiers = Modifiers.Select((SerializableGeometryModifier modifier) => modifier.ToModifier(item.Sprite));
         }
     }
 }

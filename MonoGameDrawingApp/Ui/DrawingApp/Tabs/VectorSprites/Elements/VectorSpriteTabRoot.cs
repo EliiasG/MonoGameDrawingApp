@@ -20,9 +20,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         {
             Environment = environment;
 
-            TextView text = new TextView(Environment, "Loading...");
+            TextView text = new(Environment, "Loading...");
 
-            ChangeableView changeableView = new ChangeableView(
+            ChangeableView changeableView = new(
                 environment: Environment,
                 child: new ScrollWindow(
                     environment: Environment,

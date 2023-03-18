@@ -19,10 +19,10 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers
             () => new RotateModifier(),
             () => new ExpandModifier(),
             () => new OutlineModifier(),
+            () => new CopyModifier(),
             //TODO AdvancedMirror
             //TODO Cut
             //TODO Instance on points
-            //TODO Copy From
         };
 
         private static readonly Dictionary<string, Func<IGeometryModifier>> s_nameModifierSet = _generateNameModifierSet();
@@ -36,7 +36,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers
 
         private static Dictionary<string, Func<IGeometryModifier>> _generateNameModifierSet()
         {
-            Dictionary<string, Func<IGeometryModifier>> res = new Dictionary<string, Func<IGeometryModifier>>();
+            Dictionary<string, Func<IGeometryModifier>> res = new();
 
             foreach (Func<IGeometryModifier> modifierFunc in s_modifiers)
             {
