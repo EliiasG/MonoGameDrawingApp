@@ -26,7 +26,7 @@ namespace MonoGameDrawingApp.VectorSprites
             Sprite = sprite;
             Name = name;
             Geometry = geometry;
-            Geometry.VectorSpriteItem = this;
+            Geometry.Item = this;
             Position = position;
 
             Sprite.ApplyAttachments(this);

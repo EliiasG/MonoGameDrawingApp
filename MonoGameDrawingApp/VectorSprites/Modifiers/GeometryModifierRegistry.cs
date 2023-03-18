@@ -20,7 +20,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers
             () => new ExpandModifier(),
             () => new OutlineModifier(),
             () => new CopyModifier(),
-            //TODO AdvancedMirror
+            () => new MirrorModifier(),
             //TODO Cut
             //TODO Instance on points
         };

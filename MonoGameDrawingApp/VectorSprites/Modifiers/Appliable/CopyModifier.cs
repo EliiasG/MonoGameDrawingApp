@@ -24,7 +24,6 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable
 
         public void Apply(VectorSpriteItem item)
         {
-            item.RemoveModifier(this);
             if (_from.Value.Item != null)
             {
                 item.Geometry.Points = _from.Value.Item.Geometry.Points;
@@ -35,10 +34,11 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable
 
         public void Modify(ModifiedGeometry geometry)
         {
-            if (_from.Value.Item != null)
+            ModifiedGeometry modifiedGeometry = _from.Value.ModifiedGeometry;
+            if (modifiedGeometry != null)
             {
                 geometry.ModifiedPolygons.Clear();
-                geometry.ModifiedPolygons.AddRange(_from.Value.ModifiedGeometry.ModifiedPolygons);
+                geometry.ModifiedPolygons.AddRange(modifiedGeometry.ModifiedPolygons);
             }
         }
     }

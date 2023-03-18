@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using MonoGameDrawingApp.VectorSprites.Modifiers;
+﻿using MonoGameDrawingApp.VectorSprites.Modifiers;
+using System.Collections.Generic;
+using System.Numerics;
 
 namespace MonoGameDrawingApp.VectorSprites.Export
 {
@@ -9,11 +10,16 @@ namespace MonoGameDrawingApp.VectorSprites.Export
         {
             ModifiedPolygons = new List<Polygon>() { geometry.ToPolygon() };
 
-            foreach (IGeometryModifier modifier in geometry.VectorSpriteItem.Modifiers)
+            Position = geometry.Item.AbsolutePosition;
+
+            foreach (IGeometryModifier modifier in geometry.Item.Modifiers)
             {
                 modifier.Modify(this);
             }
         }
+
         public List<Polygon> ModifiedPolygons { get; init; }
+
+        public Vector2 Position { get; }
     }
 }

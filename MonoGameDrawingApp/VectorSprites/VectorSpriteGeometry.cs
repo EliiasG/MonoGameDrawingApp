@@ -21,7 +21,7 @@ namespace MonoGameDrawingApp.VectorSprites
             Color = Color.White;
         }
 
-        public VectorSpriteItem VectorSpriteItem { get; set; }
+        public VectorSpriteItem Item { get; set; }
 
         public Color Color
         {
@@ -30,9 +30,9 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 if (_color != value)
                 {
-                    VectorSpriteItem?._dataChanging();
+                    Item?._dataChanging();
                     _color = value;
-                    VectorSpriteItem?._dataChanged();
+                    Item?._dataChanged();
                 }
             }
         }
@@ -42,24 +42,24 @@ namespace MonoGameDrawingApp.VectorSprites
             get => _points;
             set
             {
-                VectorSpriteItem?._dataChanging();
+                Item?._dataChanging();
                 _points = new List<Vector2>(value);
-                VectorSpriteItem?._dataChanged();
+                Item?._dataChanged();
             }
         }
 
         public void AddPoint(Vector2 point)
         {
-            VectorSpriteItem?._dataChanging();
+            Item?._dataChanging();
             _points.Add(point);
-            VectorSpriteItem?._dataChanged();
+            Item?._dataChanged();
         }
 
         public void RemovePointAt(int index)
         {
-            VectorSpriteItem?._dataChanging();
+            Item?._dataChanging();
             _points.RemoveAt(index);
-            VectorSpriteItem?._dataChanged();
+            Item?._dataChanged();
         }
 
         public Vector2 PointAt(int pointIndex)
@@ -69,16 +69,16 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void InsertPointAt(int index, Vector2 point)
         {
-            VectorSpriteItem?._dataChanging();
+            Item?._dataChanging();
             _points.Insert(index, point);
-            VectorSpriteItem?._dataChanged();
+            Item?._dataChanged();
         }
 
         public void ReplacePointAt(int index, Vector2 point)
         {
-            VectorSpriteItem?._dataChanging();
+            Item?._dataChanging();
             _points[index] = point;
-            VectorSpriteItem?._dataChanged();
+            Item?._dataChanged();
         }
 
         public int Size => _points.Count;

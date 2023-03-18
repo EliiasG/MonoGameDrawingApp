@@ -80,6 +80,7 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 if (_recursing)
                 {
+                    Item = null;
                     return null;
                 }
 
@@ -136,6 +137,12 @@ namespace MonoGameDrawingApp.VectorSprites
 
         private void _changing() => Changing?.Invoke();
 
-        private void _changed() => Changed?.Invoke();
+        private void _changed()
+        {
+            if (!_recursing)
+            {
+                Changed?.Invoke();
+            }
+        }
     }
 }
