@@ -3,7 +3,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base.Themes;
-using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.Base
 {
@@ -34,6 +35,7 @@ namespace MonoGameDrawingApp.Ui.Base
         public readonly SpriteFont Font;
 
         private MouseCursor _cursor;
+        private readonly List<GlobalShortcut> _globalShortcuts;
         private bool _cursorLocked;
 
         public UiEnvironment(Graphics graphics, ITheme theme, SpriteFont font, ContentManager content)
@@ -42,6 +44,7 @@ namespace MonoGameDrawingApp.Ui.Base
             Theme = theme;
             Font = font;
             FontHeight = font.MeasureString("X").Y;
+            _globalShortcuts = new List<GlobalShortcut>();
             Content = content;
         }
 
@@ -70,7 +73,7 @@ namespace MonoGameDrawingApp.Ui.Base
                 color: Color.White
             );
 
-            _updateShortCuts();
+            _updateShortcuts();
 
             OldKeyboardState = Keyboard.GetState();
             OldMouse = Mouse.GetState();
@@ -81,15 +84,29 @@ namespace MonoGameDrawingApp.Ui.Base
         {
             return Keyboard.GetState().IsKeyDown(key) && OldKeyboardState.IsKeyUp(key);
         }
-        private void _updateShortCuts()
+
+        public void AddShortcut(GlobalShortcut shortcut)
+        {
+            _globalShortcuts.Add(shortcut);
+        }
+
+        public void RemoveShortcut(GlobalShortcut shortcut)
+        {
+            _globalShortcuts.Remove(shortcut);
+        }
+
+        private void _updateShortcuts()
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
-            bool ctrlShift = keyboardState.IsKeyDown(Keys.LeftControl) && keyboardState.IsKeyDown(Keys.LeftShift);
-
-            if (ctrlShift && keyboardState.IsKeyDown(Keys.G) && OldKeyboardState.IsKeyUp(Keys.G))
+            foreach (GlobalShortcut shortcut in _globalShortcuts)
             {
-                GC.Collect();
+                bool allDown = shortcut.ActivationKeys.All((Keys key) => keyboardState.IsKeyDown(key));
+                bool anyJustPressed = shortcut.ActivationKeys.Any((Keys key) => OldKeyboardState.IsKeyUp(key));
+                if (allDown && anyJustPressed)
+                {
+                    shortcut.Run();
+                }
             }
         }
     }

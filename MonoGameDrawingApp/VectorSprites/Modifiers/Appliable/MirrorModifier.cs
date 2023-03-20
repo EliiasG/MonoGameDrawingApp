@@ -50,7 +50,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable
             int c = geometry.ModifiedPolygons.Count;
             for (int i = 0; i < c; i++)
             {
-                Polygon polygon = geometry.ModifiedPolygons[i];
+                Polygon polygon = geometry.ModifiedPolygons[i * 2];
                 geometry.ModifiedPolygons.Insert(i * 2 + 1, new Polygon(_mirror(polygon.Vertices, geometry.Position), polygon.Color));
             }
         }

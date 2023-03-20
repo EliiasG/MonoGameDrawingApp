@@ -26,6 +26,5 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener
             Changed?.Invoke();
         }
 
-
     }
 }

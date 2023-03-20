@@ -4,6 +4,7 @@ using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Attachments;
 using MonoGameDrawingApp.VectorSprites.Export.Triangulation;
 using MonoGameDrawingApp.VectorSprites.Rendering.MonoGame;
+using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering
 {
@@ -38,7 +39,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering
 
             _renderer.Render(triangleBatch, item.GetAttachment<PreviewSpriteItemAttachment>().TriangulatedGeometry, position);
 
-            foreach (VectorSpriteItem child in item.Children)
+            foreach (VectorSpriteItem child in item.Children.Reverse())
             {
                 _draw(triangleBatch, child, position);
             }

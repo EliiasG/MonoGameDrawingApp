@@ -121,13 +121,13 @@ namespace MonoGameDrawingApp
                 Vector2 cur = vertices[i];
                 Vector2 next = Util.GetItemCircled(vertices, i + 1);
 
-                newVertices[i] = cur + GetNormal(prev, cur, next, inv) * amount;
+                newVertices[i] = cur + GetSquareNormal(prev, cur, next, inv) * amount;
             }
 
             return newVertices;
         }
 
-        public static Vector2 GetNormal(Vector2 a, Vector2 b, Vector2 c, bool counterClockwise)
+        public static Vector2 GetSquareNormal(Vector2 a, Vector2 b, Vector2 c, bool counterClockwise)
         {
             Vector2 cb = b - c;
             Vector2 ab = b - a;
@@ -165,7 +165,10 @@ namespace MonoGameDrawingApp
                 }
             }
 
-            Vector2 res = new(MathF.Cos(angle), MathF.Sin(angle));
+            float cos = MathF.Cos(angle);
+            float sin = MathF.Sin(angle);
+
+            Vector2 res = new(cos, sin);// * (MathF.Abs(cos) + MathF.Abs(sin));
 
             return invert ? res : -res;
         }

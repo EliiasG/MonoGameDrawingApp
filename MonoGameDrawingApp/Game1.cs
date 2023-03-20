@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Themes;
 using MonoGameDrawingApp.Ui.DrawingApp;
@@ -43,6 +44,8 @@ namespace MonoGameDrawingApp
 
             Graphics graphics = new(GraphicsDevice, _spriteBatch, new TriangleBatch(GraphicsDevice));
             environment = new UiEnvironment(graphics, new DarkTheme(), Content.Load<SpriteFont>("font"), Content);
+
+            environment.AddShortcut(new GlobalShortcut(new Keys[] { Keys.LeftControl, Keys.LeftShift, Keys.G }, GC.Collect));
 
             text = new TextView(environment, "");
             environment.Root = new StackView(environment, new IUiElement[]

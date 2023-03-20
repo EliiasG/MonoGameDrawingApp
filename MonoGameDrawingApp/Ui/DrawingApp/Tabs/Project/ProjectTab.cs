@@ -1,6 +1,10 @@
-﻿using MonoGameDrawingApp.Ui.Base;
+﻿using Microsoft.Xna.Framework.Input;
+using MonoGameDrawingApp.Export;
+using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Tabs;
+using System;
+using System.IO;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project
 {
@@ -9,11 +13,31 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project
         public readonly DrawingAppRoot Root;
 
         private readonly IUiElement _child;
+        private readonly GlobalShortcut _exportShortcut;
+
 
         public ProjectTab(DrawingAppRoot root, string path)
         {
             Root = root;
             _child = new ProjectTabView(root.Environment, root, path);
+
+            ProjectExporter exporter = new(Path.Join(path, "CreationTimes.txt"), Path.Join(path, "Profiles.json"), Path.Join(path, "Source"));
+
+            _exportShortcut = new GlobalShortcut(new Keys[] { Keys.LeftControl, Keys.E, }, () =>
+            {
+                Root.PopupEnvironment.OpenCentered(new StaticPopup(root.Environment, "Exporting..."));
+                try
+                {
+                    exporter.Export(path + "Export");
+                    Root.PopupEnvironment.Close();
+                }
+                catch (Exception e)
+                {
+                    root.PopupEnvironment.OpenCentered(new MessagePopup(root.Environment, e.Message, root.PopupEnvironment));
+                }
+            });
+
+            root.Environment.AddShortcut(_exportShortcut);
         }
 
         public override IUiElement Child => _child;
@@ -28,6 +52,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project
             {
                 new ChoicePopupOption("Confirm", () =>
                 {
+                    Root.Environment.RemoveShortcut(_exportShortcut);
                     while(true)
                     {
                         Tab selected = Root.TabEnvironment.TabBar.SelectedTab;

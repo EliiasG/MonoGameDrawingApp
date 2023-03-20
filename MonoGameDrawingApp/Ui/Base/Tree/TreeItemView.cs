@@ -190,6 +190,11 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
                 }
                 IEnumerable<ITreeItem> itemChildren = TreeItem.Children; // TreeItem.Children can be expensive
 
+                if (!TreeItem.IsOpen)
+                {
+                    goto After;
+                }
+
                 _childrenChanged = _calculateChildrenChanged(itemChildren);
                 if (_childrenChanged)
                 {
@@ -218,7 +223,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
             {
                 _childrenChanged = _wasOpen;
             }
-
+        After:
             if (_button.JustLeftClicked)
             {
                 TreeItem.IsOpen = !TreeItem.IsOpen;

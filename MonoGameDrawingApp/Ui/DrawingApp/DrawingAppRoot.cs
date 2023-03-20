@@ -7,8 +7,6 @@ using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites;
 using MonoGameDrawingApp.Ui.FileSystemTrees;
 using MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes;
 using MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image;
-using System;
-using System.Collections.Generic;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp
 {
