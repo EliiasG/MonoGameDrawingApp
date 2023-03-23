@@ -3,9 +3,9 @@ using System.Text.Json;
 
 namespace MonoGameDrawingApp.VectorSprites.Serialization.Json
 {
-    public class VectorSpriteJsonLoader
+    public static class VectorSpriteJsonLoader
     {
-        public VectorSprite LoadVectorSprite(string path)
+        public static VectorSprite LoadVectorSprite(string path)
         {
 
             using FileStream openStream = File.OpenRead(path);

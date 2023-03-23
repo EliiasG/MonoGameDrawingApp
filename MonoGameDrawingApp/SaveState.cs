@@ -31,7 +31,7 @@ namespace MonoGameDrawingApp
         {
             get
             {
-                if (_selectedColorPaletteIndex >= _colorPalettes.Count - 1)
+                if (_selectedColorPaletteIndex >= _colorPalettes.Count)
                 {
                     SelectedColorPalette = _defaultPalette;
                 }
@@ -40,7 +40,7 @@ namespace MonoGameDrawingApp
             set
             {
                 _selectedColorPaletteIndex = _colorPalettes.IndexOf(value);
-                File.WriteAllText(SelectedPalettePath, value.ToString());
+                File.WriteAllText(SelectedPalettePath, _selectedColorPaletteIndex.ToString());
             }
         }
 

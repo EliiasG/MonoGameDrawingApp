@@ -2,8 +2,10 @@
 {
     public interface IFileExporter
     {
-        string Extention { get; }
+        string InputExtention { get; }
 
-        void Export(string fromPath, string exportDirPath);
+        string OutputExtention { get; }
+
+        void Export(string fromPath, string exportFilePath);
     }
 }

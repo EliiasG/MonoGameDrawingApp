@@ -21,14 +21,14 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project
             Root = root;
             _child = new ProjectTabView(root.Environment, root, path);
 
-            ProjectExporter exporter = new(Path.Join(path, "CreationTimes.txt"), Path.Join(path, "Profiles.json"), Path.Join(path, "Source"));
+            ProjectExporter exporter = new(Path.Join(path, "Profiles.json"), Path.Join(path, "Source"), root.Environment.Graphics);
 
             _exportShortcut = new GlobalShortcut(new Keys[] { Keys.LeftControl, Keys.E, }, () =>
             {
                 Root.PopupEnvironment.OpenCentered(new StaticPopup(root.Environment, "Exporting..."));
                 try
                 {
-                    exporter.Export(path + "Export");
+                    exporter.Export(Path.Join(path, "Export"));
                     Root.PopupEnvironment.Close();
                 }
                 catch (Exception e)

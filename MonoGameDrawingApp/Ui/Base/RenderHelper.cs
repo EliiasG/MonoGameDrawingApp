@@ -39,10 +39,7 @@ namespace MonoGameDrawingApp.Ui.Base
                 _renderTarget = null;
             }
 
-            if (_renderTarget == null)
-            {
-                _renderTarget = new RenderTarget2D(graphics.Device, Math.Max(width, 1), Math.Max(height, 1));
-            }
+            _renderTarget ??= new RenderTarget2D(graphics.Device, Math.Max(width, 1), Math.Max(height, 1));
         }
 
         public void BeginDraw()

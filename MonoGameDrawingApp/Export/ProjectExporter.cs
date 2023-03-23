@@ -1,23 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using MonoGameDrawingApp.Export.VectorSprites;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace MonoGameDrawingApp.Export
 {
     public class ProjectExporter
     {
-        public ProjectExporter(string creationTimesPath, string profilesPath, string sourcePath)
+        public ProjectExporter(string profilesPath, string sourcePath, Graphics graphics)
         {
-            CreationTimesPath = creationTimesPath;
             ProfilesPath = profilesPath;
             SourcePath = sourcePath;
+            Graphics = graphics;
         }
-
-        public string CreationTimesPath { get; }
 
         public string ProfilesPath { get; }
 
         public string SourcePath { get; }
+
+        public Graphics Graphics { get; }
 
         public void Export(string outputPath)
         {
@@ -26,76 +27,46 @@ namespace MonoGameDrawingApp.Export
                 throw new IOException("Source directory does not exist: '" + SourcePath + "'");
             }
 
-            Dictionary<string, long> creationTimes = _getCreationTimes();
+            (IFileExporter, string)[] exporters = _getExporters();
 
-            IFileExporter[] exporters = _getExporters();
+            Directory.CreateDirectory(outputPath);
 
-            foreach (string path in Directory.EnumerateFiles(SourcePath))
+            foreach (string path in Directory.EnumerateFiles(SourcePath, "", SearchOption.AllDirectories))
             {
-                long time = File.GetCreationTime(path).Ticks;
-                if (creationTimes.ContainsKey(path) && creationTimes[path] == time)
-                {
-                    continue;
-                }
+                long time = File.GetLastWriteTimeUtc(path).Ticks;
 
-                foreach (IFileExporter exporter in exporters)
+                string realativeDirectoryPath = Path.GetRelativePath(SourcePath, Path.GetDirectoryName(path));
+                string exportDirectoryPath = Path.Combine(outputPath, realativeDirectoryPath);
+
+                foreach ((IFileExporter, string) exporter in exporters)
                 {
-                    if (exporter.Extention != Path.GetExtension(path).Replace(".", ""))
+                    if (exporter.Item1.InputExtention != Path.GetExtension(path).Replace(".", ""))
                     {
                         continue;
                     }
 
-                    string realativeDirectoryPath = Path.GetRelativePath(SourcePath, Path.GetDirectoryName(path));
-                    string exportPath = Path.Combine(outputPath, realativeDirectoryPath);
+                    string exportedPath = Path.Combine(exportDirectoryPath, IOHelper.RemoveExtention(Path.GetFileName(path)) + exporter.Item2 + "." + exporter.Item1.OutputExtention);
 
-                    Directory.CreateDirectory(exportPath);
+                    Directory.CreateDirectory(exportDirectoryPath);
 
-                    exporter.Export(path, exportPath);
+                    if (File.Exists(exportedPath))
+                    {
+                        if (File.GetLastWriteTimeUtc(exportedPath).Ticks > time)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        File.Create(exportedPath).Close();
+                    }
+
+                    exporter.Item1.Export(path, exportedPath);
                 }
-
-                creationTimes[path] = time;
             }
-
-            string[] lines = new string[creationTimes.Count * 2];
-
-            int i = 0;
-            foreach (string key in creationTimes.Keys)
-            {
-                lines[i++] = key;
-                lines[i++] = creationTimes[key].ToString();
-            }
-
-            File.WriteAllLines(CreationTimesPath, lines);
         }
 
-        private Dictionary<string, long> _getCreationTimes()
-        {
-            if (!File.Exists(CreationTimesPath))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(CreationTimesPath));
-                File.Create(CreationTimesPath).Close();
-            }
-
-            Dictionary<string, long> times = new();
-
-            string name = "";
-
-            foreach (string line in File.ReadLines(CreationTimesPath))
-            {
-                if (File.Exists(line))
-                {
-                    name = line;
-                }
-                else
-                {
-                    times.Add(name, long.Parse(line));
-                }
-            }
-
-            return times;
-        }
-
-        private IFileExporter[] _getExporters()
+        private (IFileExporter, string)[] _getExporters()
         {
             if (!File.Exists(ProfilesPath))
             {
@@ -103,25 +74,29 @@ namespace MonoGameDrawingApp.Export
             }
             using FileStream stream = File.OpenRead(ProfilesPath);
 
-            object[][] objects = JsonSerializer.Deserialize<object[][]>(stream);
+            JsonValue[][] objects = JsonSerializer.Deserialize<JsonValue[][]>(stream);
 
-            IFileExporter[] exporters = new IFileExporter[objects.Length];
+            (IFileExporter, string)[] exporters = new (IFileExporter, string)[objects.Length];
 
             for (int i = 0; i < objects.Length; i++)
             {
-                object[] currentObjects = objects[i];
-                if (currentObjects.Length < 1)
+                JsonValue[] currentValues = objects[i];
+                if (currentValues.Length < 2)
                 {
-                    throw new InvalidDataException("Cannot have empty export profile");
+                    throw new InvalidDataException("Export profiles must contain type and prefix");
                 }
-                exporters[i] = currentObjects[0] switch
-                {
-                    string s => s switch
+
+                string name = currentValues[0].Deserialize<string>();
+
+                exporters[i] = (
+                    name switch
                     {
-                        _ => throw new InvalidDataException("No such export profile: '" + s + "'"),
+                        "Png" => new VectorSpritePngExporter(currentValues[2].Deserialize<int>(), currentValues[3].Deserialize<bool>(), Graphics),
+                        _ => throw new InvalidDataException("No such export profile: '" + name + "'"),
                     },
-                    _ => throw new InvalidDataException("First element of profile mut be string")
-                };
+                    currentValues[1].Deserialize<string>()
+                );
+
             }
 
             return exporters;

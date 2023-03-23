@@ -2,14 +2,11 @@
 using MonoGameDrawingApp.VectorSprites.Attachments;
 using MonoGameDrawingApp.VectorSprites.Export;
 using MonoGameDrawingApp.VectorSprites.Export.Triangulation;
-using System;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Preview
 {
     public class PreviewSpriteItemAttachment : IVectorSpriteItemAttachment
     {
-
         public PreviewSpriteItemAttachment(VectorSpriteItem item, IPolygonTriangulator triangulator)
         {
             Triangulator = triangulator;
