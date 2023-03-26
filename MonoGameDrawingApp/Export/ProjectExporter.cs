@@ -1,4 +1,5 @@
 ﻿using MonoGameDrawingApp.Export.VectorSprites;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -31,12 +32,20 @@ namespace MonoGameDrawingApp.Export
 
             Directory.CreateDirectory(outputPath);
 
+            ISet<string> exportedFiles = new HashSet<string>();
+
+            foreach (string path in Directory.EnumerateFiles(outputPath, "", SearchOption.AllDirectories))
+            {
+                exportedFiles.Add(path);
+            }
+
+
             foreach (string path in Directory.EnumerateFiles(SourcePath, "", SearchOption.AllDirectories))
             {
                 long time = File.GetLastWriteTimeUtc(path).Ticks;
 
                 string realativeDirectoryPath = Path.GetRelativePath(SourcePath, Path.GetDirectoryName(path));
-                string exportDirectoryPath = Path.Combine(outputPath, realativeDirectoryPath);
+                string exportDirectoryPath = realativeDirectoryPath == "." ? outputPath : Path.Combine(outputPath, realativeDirectoryPath);
 
                 foreach ((IFileExporter, string) exporter in exporters)
                 {
@@ -48,6 +57,8 @@ namespace MonoGameDrawingApp.Export
                     string exportedPath = Path.Combine(exportDirectoryPath, IOHelper.RemoveExtention(Path.GetFileName(path)) + exporter.Item2 + "." + exporter.Item1.OutputExtention);
 
                     Directory.CreateDirectory(exportDirectoryPath);
+
+                    exportedFiles.Remove(exportedPath);
 
                     if (File.Exists(exportedPath))
                     {
@@ -63,6 +74,11 @@ namespace MonoGameDrawingApp.Export
 
                     exporter.Item1.Export(path, exportedPath);
                 }
+            }
+
+            foreach (string path in exportedFiles)
+            {
+                File.Delete(path);
             }
         }
 
