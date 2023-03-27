@@ -26,7 +26,7 @@ namespace MonoGameDrawingApp.Export.VectorSprites
         public bool RoundUnits { get; }
 
 
-        public override void _exportSprite(TriangulatedVectorSprite sprite, string exportFilePath)
+        protected override void _exportSprite(TriangulatedVectorSprite sprite, string exportFilePath)
         {
             float left = 0, right = 0, top = 0, bottom = 0;
 
@@ -46,8 +46,8 @@ namespace MonoGameDrawingApp.Export.VectorSprites
                 left = MathF.Floor(left);
             }
 
-            float width = right - left;
-            float height = top - bottom;
+            float width = Math.Max(right - left, 1);
+            float height = Math.Max(top - bottom, 1);
 
             int imageWidth = (int)MathF.Ceiling(width * UnitPixelSize);
             int imageHeight = (int)MathF.Ceiling(height * UnitPixelSize);

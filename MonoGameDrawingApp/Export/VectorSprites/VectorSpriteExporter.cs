@@ -18,6 +18,6 @@ namespace MonoGameDrawingApp.Export.VectorSprites
             _exportSprite(new TriangulatedVectorSprite(vectorSprite), exportFilePath);
         }
 
-        public abstract void _exportSprite(TriangulatedVectorSprite sprite, string exportFilePath);
+        protected abstract void _exportSprite(TriangulatedVectorSprite sprite, string exportFilePath);
     }
 }

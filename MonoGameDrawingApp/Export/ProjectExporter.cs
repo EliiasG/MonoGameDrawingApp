@@ -47,16 +47,24 @@ namespace MonoGameDrawingApp.Export
                 string realativeDirectoryPath = Path.GetRelativePath(SourcePath, Path.GetDirectoryName(path));
                 string exportDirectoryPath = realativeDirectoryPath == "." ? outputPath : Path.Combine(outputPath, realativeDirectoryPath);
 
-                foreach ((IFileExporter, string) exporter in exporters)
+                foreach ((IFileExporter, string) exporterData in exporters)
                 {
-                    if (exporter.Item1.InputExtention != Path.GetExtension(path).Replace(".", ""))
+                    IFileExporter exporter = exporterData.Item1;
+                    string suffix = exporterData.Item2;
+
+                    if (exporter.InputExtention != Path.GetExtension(path).Replace(".", ""))
                     {
                         continue;
                     }
 
-                    string exportedPath = Path.Combine(exportDirectoryPath, IOHelper.RemoveExtention(Path.GetFileName(path)) + exporter.Item2 + "." + exporter.Item1.OutputExtention);
+                    string itemName = IOHelper.RemoveExtention(Path.GetFileName(path));
 
-                    Directory.CreateDirectory(exportDirectoryPath);
+                    string dirPath = suffix.Contains('/') ? Path.Join(exportDirectoryPath, itemName) : exportDirectoryPath;
+
+                    string exportedName = itemName + suffix.Replace("/", "") + "." + exporter.OutputExtention;
+                    string exportedPath = Path.Combine(dirPath, exportedName);
+
+                    Directory.CreateDirectory(dirPath);
 
                     exportedFiles.Remove(exportedPath);
 
@@ -72,7 +80,7 @@ namespace MonoGameDrawingApp.Export
                         File.Create(exportedPath).Close();
                     }
 
-                    exporter.Item1.Export(path, exportedPath);
+                    exporter.Export(path, exportedPath);
                 }
             }
 
@@ -108,6 +116,7 @@ namespace MonoGameDrawingApp.Export
                     name switch
                     {
                         "Png" => new VectorSpritePngExporter(currentValues[2].Deserialize<int>(), currentValues[3].Deserialize<bool>(), Graphics),
+                        "Tris" => new VectorSpriteTriangleExporter(),
                         _ => throw new InvalidDataException("No such export profile: '" + name + "'"),
                     },
                     currentValues[1].Deserialize<string>()
