@@ -1,5 +1,5 @@
 # MonoGameDrawingApp
-Trying to create a drawing app for the 3rd (or maybe even 4th) time, now in MonoGame
+An app made to draw vector graphics as triangles
 # Shortcuts
 | Combination | Function |
 | --- | :-: |
@@ -11,15 +11,15 @@ Trying to create a drawing app for the 3rd (or maybe even 4th) time, now in Mono
 | [G] | Toggle grid view. | (only visual, to actually disable the grid set resolution to 0)
 | [F] | Focus on selected item. |
 # Editing
- - Drag points to move them.
- - Hold [Shift] and drag origin to move origin.
- - Hold [Ctrl] and click to add points at the end of the list.
- - Hold [Alt] and click points to remove them.
+ Drag points to move them.  
+ Hold [Shift] and drag origin to move origin.  
+ Hold [Ctrl] and click to add points at the end of the list.  
+ Hold [Alt] and click points to remove them.  
 # Modifiers
- - Modifiers are operations that are executed every time the geometry is changed, that change the output geometry.  
- - An item may have multiple modifiers.  
- - Modifiers can be applied to be executed on the actual geometry.  
- - Some modifiers may change the structure when applied, since each item can only have one shape an color.  
+ Modifiers are operations that are executed every time the geometry is changed, that change the output geometry.  
+ An item may have multiple modifiers.  
+ Modifiers can be applied to be executed on the actual geometry.  
+ Some modifiers may change the structure when applied, since each item can only have one shape and color.  
 ### A list of the modifiers:
 | Name | Function |
 | --- | --- |
@@ -34,3 +34,47 @@ Trying to create a drawing app for the 3rd (or maybe even 4th) time, now in Mono
 | Expand | Moves all points away from their original position, also works with negative values to move points closer. |
 | Outline | Adds an outline with the selected width and color. |
 | Copy | Immitates the geometry of another item. |
+# Exporting
+An export profile tells the program how to export a file.  
+There can be multiple export profiles, and if so, each file will be exported as multiple files.  
+To export a project it must contain a Profiles.json file and a Source directory (case sensitive).  
+The Profiles.json file is a list of lists, each inner list being a profile.  
+The first item in an export profile is the name of the exporter to use (case sensitive).  
+The second item in an export profile is the suffix of the exported file, it can begin with a '/' to export to a subfolder with the same name as the input file (so a postfix of *"/Big"* in a Png profile will turn *"SomeSprite.vecspr"* into *"SomeSprite/SomeSpriteBig.png"*).  
+The remaning items of the list are parameters for the profile.  
+### Types of profiles:
+ - "Png": exports to a .png file.
+   - The first parameter is a unsigned number, representing the amount of pixels per unit. 
+   - The second parameter is a boolean that determines if it should round to whole units (if true, the width and height will always be divisible by the first parameter).
+ - "Tris": exports to a .tris file.
+   - Has no parameters.  
+### Example of a Profiles.json file:
+```json
+[
+    [
+        "Png",
+        "/Big",
+        512,
+        true
+    ],
+    [
+        "Png",
+        "/Small",
+        64,
+        true
+    ],
+    [
+        "Tris",
+        "/"
+    ]
+]
+```
+# The .tris format
+.tris is a format I invented to store vector graphics as vertices and triangles.  
+the .tris file starts with a vertex segment with a color.  
+after the vertex segment there is a list of int32s representing indices, every 3 indices is a triangle.  
+### A vertex segment works as follows:  
+- The first 4 bytes of the vertex segment represent the color of the vertex as ARGB, if it changes color from the last vertex. 
+- The next 8 bytes of the vertex segment represent the position of the vertex (x as a float and y as a float).  
+- The next byte will be 1 if the color changes on the next vertex, 0 if it dosent, and 2 if its the end of vertices.
+- After each vertex segment there is another vertex segment, unless the last byte was 2.
