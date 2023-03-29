@@ -15,6 +15,7 @@ An app made to draw vector graphics as triangles
  Hold [Shift] and drag origin to move origin.  
  Hold [Ctrl] and click to add points at the end of the list.  
  Hold [Alt] and click points to remove them.  
+ Drag a point from a line to create a new point.
 # Modifiers
  Modifiers are operations that are executed every time the geometry is changed, that change the output geometry.  
  An item may have multiple modifiers.  
@@ -44,7 +45,7 @@ The second item in an export profile is the suffix of the exported file, it can 
 The remaning items of the list are parameters for the profile.  
 ### Types of profiles:
  - "Png": exports to a .png file.
-   - The first parameter is a unsigned number, representing the amount of pixels per unit. 
+   - The first parameter is an unsigned number, representing the amount of pixels per unit. 
    - The second parameter is a boolean that determines if it should round to whole units (if true, the width and height will always be divisible by the first parameter).
  - "Tris": exports to a .tris file.
    - Has no parameters.  
