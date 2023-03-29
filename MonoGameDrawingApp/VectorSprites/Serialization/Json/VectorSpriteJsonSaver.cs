@@ -18,21 +18,25 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization.Json
 
         public void StartSaving(string path)
         {
+            CurrentlySaving = true;
+            Task.Run(() =>
+            {
+                Save(path);
+                CurrentlySaving = false;
+            });
+        }
+
+        public void Save(string path)
+        {
             JsonSerializerOptions options = new()
             {
                 WriteIndented = true,
                 MaxDepth = int.MaxValue,
             };
 
-            CurrentlySaving = true;
             SerializableVectorSprite serializableVectorSprite = new(Sprite);
-            Task.Run(async () =>
-            {
-                using FileStream createStream = File.Create(path);
-                await JsonSerializer.SerializeAsync(createStream, serializableVectorSprite, options);
-                await createStream.DisposeAsync();
-                CurrentlySaving = false;
-            });
+            using FileStream createStream = File.Create(path);
+            JsonSerializer.Serialize(createStream, serializableVectorSprite, options);
         }
     }
 }

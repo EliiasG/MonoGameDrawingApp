@@ -12,8 +12,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             sprite.Root = new VectorSpriteItem("Root", sprite);
 
             VectorSpriteJsonSaver saver = new(sprite);
-            saver.StartSaving(path);
-            while (saver.CurrentlySaving) ;
+            saver.Save(path);
         }
     }
 }
