@@ -121,13 +121,46 @@ namespace MonoGameDrawingApp
                 Vector2 cur = vertices[i];
                 Vector2 next = Util.GetItemCircled(vertices, i + 1);
 
-                newVertices[i] = cur + GetSquareNormal(prev, cur, next, inv) * amount;
+                newVertices[i] = cur + GetExpanded(prev, cur, next, inv) * amount;
             }
 
             return newVertices;
         }
 
-        public static Vector2 GetSquareNormal(Vector2 a, Vector2 b, Vector2 c, bool counterClockwise)
+
+        public static Vector2 GetExpanded(Vector2 a, Vector2 b, Vector2 c, bool invert)
+        {
+            Vector2 ba = a - b;
+            Vector2 bc = c - b;
+
+            Vector2 baBack = -Vector2.Normalize(ba);
+            Vector2 bcBack = -Vector2.Normalize(bc);
+
+            Vector2 point;
+
+            if (baBack == bcBack || baBack == -bcBack)
+            {
+                float angle = MathF.Atan2(ba.Y, ba.X) - MathF.PI / 2;
+                point = new(MathF.Cos(angle), MathF.Sin(angle));
+            }
+            else
+            {
+                point = baBack + bcBack;
+
+                float bcAngle = MathF.Atan2(bc.Y, bc.X);
+                float baBackAngle = MathF.Atan2(baBack.Y, baBack.X);
+                float angle = baBackAngle - bcAngle;
+
+                //point = Vector2.Normalize(point);
+                point /= MathF.Sin(angle);
+                //point = bcBack;
+            }
+            //point += b;
+
+            return invert ? -point : point;
+        }
+
+        public static Vector2 GetNormal(Vector2 a, Vector2 b, Vector2 c, bool counterClockwise)
         {
             Vector2 cb = b - c;
             Vector2 ab = b - a;
