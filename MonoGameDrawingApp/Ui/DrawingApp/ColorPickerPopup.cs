@@ -191,6 +191,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
                 --remaning;
             }
+
+            _colorList.Add(new HListView<IUiElement>(Environment, row));
         }
 
         private Button _generateColorButton()
