@@ -57,7 +57,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
         {
             get
             {
-                if (!Directory.Exists(Path))
+                if (!Directory.Exists(Path) && Path != "")
                 {
                     IsOpen = false;
                 }
