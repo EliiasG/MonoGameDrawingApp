@@ -21,6 +21,7 @@ An app made to draw vector graphics as triangles
  An item may have multiple modifiers.  
  Modifiers can be applied to be executed on the actual geometry.  
  Some modifiers may change the structure when applied, since each item can only have one shape and color.  
+ #### WARNING: if a modifier has an item as a parameter, setting the item to the item containing the modifier or the root may cause weird behaviour.  
 ### A list of the modifiers:
 | Name | Function |
 | --- | --- |
