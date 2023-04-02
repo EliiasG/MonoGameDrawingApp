@@ -31,7 +31,9 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
         private void _addSpriteItem(List<Vector2> vertices, List<int> indices, List<Color> colors, VectorSpriteItem item)
         {
-            TriangulatedGeometry geometry = new(_triangulator, new ModifiedGeometry(item.Geometry));
+            ModifiedGeometry modifiedGeometry = new(item.Geometry);
+
+            TriangulatedGeometry geometry = new(_triangulator, modifiedGeometry);
 
             foreach (TriangulatedPolygon polygon in geometry.Polygons)
             {

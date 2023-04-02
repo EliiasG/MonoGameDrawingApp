@@ -10,6 +10,8 @@ namespace MonoGameDrawingApp.Export.VectorSprites
     public class VectorSpritePngExporter : VectorSpriteExporter
     {
 
+        private const float Allowance = 0.001f;
+
         public VectorSpritePngExporter(int unitPixelSize, bool roundUnits, Graphics graphics)
         {
             UnitPixelSize = unitPixelSize;
@@ -40,10 +42,10 @@ namespace MonoGameDrawingApp.Export.VectorSprites
 
             if (RoundUnits)
             {
-                top = MathF.Ceiling(top);
-                bottom = MathF.Floor(bottom);
-                right = MathF.Ceiling(right);
-                left = MathF.Floor(left);
+                top = MathF.Ceiling(top - Allowance);
+                bottom = MathF.Floor(bottom + Allowance);
+                right = MathF.Ceiling(right - Allowance);
+                left = MathF.Floor(left + Allowance);
             }
 
             float width = Math.Max(right - left, 1);
