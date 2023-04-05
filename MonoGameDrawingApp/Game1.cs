@@ -62,6 +62,11 @@ namespace MonoGameDrawingApp
 
         protected override void Draw(GameTime gameTime)
         {
+            if (!IsActive)
+            {
+                return;
+            }
+
             //_split.SplitPosition = Mouse.GetState().Y;
             DateTime before = DateTime.UtcNow;
             environment.Render();
