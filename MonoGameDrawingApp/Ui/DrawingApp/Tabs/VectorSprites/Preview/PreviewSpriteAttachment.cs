@@ -33,6 +33,20 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering
             _draw(triangleBatch, Sprite.Root, Vector2.Zero);
         }
 
+        public void Retriangulate()
+        {
+            _retriangluate(Sprite.Root);
+        }
+
+        private void _retriangluate(VectorSpriteItem item)
+        {
+            item.GetAttachment<PreviewSpriteItemAttachment>().Retriangulate();
+            foreach (VectorSpriteItem child in item.Children)
+            {
+                _retriangluate(child);
+            }
+        }
+
         private void _draw(TriangleBatch triangleBatch, VectorSpriteItem item, Vector2 position)
         {
             position += item.Position;

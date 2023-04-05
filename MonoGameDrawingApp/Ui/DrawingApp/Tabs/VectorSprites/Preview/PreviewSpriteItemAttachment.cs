@@ -11,7 +11,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Preview
         {
             Triangulator = triangulator;
             Item = item;
-            _retriangulate();
+            Retriangulate();
         }
 
         public TriangulatedGeometry TriangulatedGeometry { get; private set; }
@@ -22,10 +22,10 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Preview
 
         public void DataChanged()
         {
-            _retriangulate();
+            Retriangulate();
         }
 
-        private void _retriangulate()
+        public void Retriangulate()
         {
             TriangulatedGeometry = new TriangulatedGeometry(Triangulator, new ModifiedGeometry(Item.Geometry));
         }

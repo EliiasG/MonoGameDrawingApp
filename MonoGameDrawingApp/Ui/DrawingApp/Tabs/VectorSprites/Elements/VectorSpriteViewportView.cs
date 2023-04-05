@@ -194,7 +194,13 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                     _showGrid = !_showGrid;
                     Changed = true;
                 }
+            }
 
+
+            if (Environment.JustPressed(Keys.R))
+            {
+                _preview.Retriangulate();
+                Changed = true;
             }
 
             _updateZoom(dragging);
