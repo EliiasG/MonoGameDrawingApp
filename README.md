@@ -2,14 +2,15 @@
 An app made to draw vector graphics as triangles
 # Shortcuts
 | Combination | Function |
-| --- | :-: |
+| --- | --- |
 | [Ctrl + Shift + G] | Set grid resolution.
 | [Ctrl + Shift + W] | Toggle wireframe mode.
 | [Ctrl + Shift + C] | Change background color.
 | [Ctrl + Z] | Undo. |
 | [Ctrl + Y] | Redo. |
-| [G] | Toggle grid view. | (only visual, to actually disable the grid set resolution to 0)
+| [G] | Toggle grid view. (only visual, to actually disable the grid set resolution to 0) |
 | [F] | Focus on selected item. |
+| [R] | Redraw all. (sometimes nessecary when dealing with modifiers that refernce other objects) |
 # Editing
  Drag points to move them.  
  Hold [Shift] and drag origin to move origin.  
