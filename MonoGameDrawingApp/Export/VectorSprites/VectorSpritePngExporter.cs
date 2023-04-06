@@ -48,8 +48,8 @@ namespace MonoGameDrawingApp.Export.VectorSprites
                 left = MathF.Floor(left + Allowance);
             }
 
-            float width = Math.Max(right - left, 1);
-            float height = Math.Max(top - bottom, 1);
+            float width = right - left;
+            float height = top - bottom;
 
             int imageWidth = (int)MathF.Ceiling(width * UnitPixelSize);
             int imageHeight = (int)MathF.Ceiling(height * UnitPixelSize);
