@@ -1,6 +1,6 @@
 # MonoGameDrawingApp
-An app made to draw vector graphics as triangles
-Using [an external library](https://github.com/NMO13/earclipper) for triangulation
+An app made to draw vector graphics as triangles.  
+Using [an external library](https://github.com/NMO13/earclipper) for triangulation.  
 # Shortcuts
 | Combination | Function |
 | --- | --- |
