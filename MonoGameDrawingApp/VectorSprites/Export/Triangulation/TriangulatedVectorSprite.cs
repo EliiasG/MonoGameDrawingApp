@@ -11,7 +11,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
         public TriangulatedVectorSprite(VectorSprite sprite)
         {
-            _triangulator = new EarClippingGeometryTriangulator();
+            _triangulator = IPolygonTriangulator.CreateDefault();
             List<Vector2> vertices = new();
             List<int> indices = new();
             List<Color> colors = new();

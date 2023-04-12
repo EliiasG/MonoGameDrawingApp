@@ -16,7 +16,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering
 
         public PreviewSpriteAttachment(VectorSprite sprite)
         {
-            _triangulator = new EarClippingGeometryTriangulator();
+            _triangulator = IPolygonTriangulator.CreateDefault();
             _renderer = new MonoGameTriangulatedGeometryRenderer();
             Sprite = sprite;
         }

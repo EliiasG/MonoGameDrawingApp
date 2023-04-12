@@ -1,0 +1,8 @@
+C:\Projects\Git\MonoGameDrawingApp\EarClipperLib\bin\Release\EarClipperLib.dll
+C:\Projects\Git\MonoGameDrawingApp\EarClipperLib\bin\Release\EarClipperLib.pdb
+C:\Projects\Git\MonoGameDrawingApp\EarClipperLib\bin\Release\Microsoft.Solver.Foundation.dll
+C:\Projects\Git\MonoGameDrawingApp\EarClipperLib\obj\Release\EarClipperLib.csproj.AssemblyReference.cache
+C:\Projects\Git\MonoGameDrawingApp\EarClipperLib\obj\Release\EarClipperLib.csproj.CoreCompileInputs.cache
+C:\Projects\Git\MonoGameDrawingApp\EarClipperLib\obj\Release\EarClipperLib.csproj.CopyComplete
+C:\Projects\Git\MonoGameDrawingApp\EarClipperLib\obj\Release\EarClipperLib.dll
+C:\Projects\Git\MonoGameDrawingApp\EarClipperLib\obj\Release\EarClipperLib.pdb

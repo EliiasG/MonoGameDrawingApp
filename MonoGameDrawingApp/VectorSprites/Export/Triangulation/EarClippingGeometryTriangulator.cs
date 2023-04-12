@@ -23,7 +23,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
         private static TriangulatedPolygon _triangulate(Polygon polygon)
         {
             Vector2[] vertices = _withoutCollinear(polygon.Vertices);
-            vertices = _makeCounterClockwise(vertices);
+            vertices = ExtraMath.MakeCounterClockwise(vertices);
 
             if (vertices.Length < 3)
             {
@@ -164,11 +164,6 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             }
 
             return newVertecies?.ToArray() ?? vertices;
-        }
-
-        private static Vector2[] _makeCounterClockwise(Vector2[] vertices)
-        {
-            return ExtraMath.IsCounterClockwise(vertices) ? vertices : vertices.Reverse().ToArray();
         }
 
         private static Vector2 _previousPoint(Vector2[] points, int index)

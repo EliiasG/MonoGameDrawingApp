@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Numerics;
 
 namespace MonoGameDrawingApp
@@ -204,6 +205,11 @@ namespace MonoGameDrawingApp
             Vector2 res = new(cos, sin);// * (MathF.Abs(cos) + MathF.Abs(sin));
 
             return invert ? res : -res;
+        }
+
+        public static Vector2[] MakeCounterClockwise(Vector2[] vertices)
+        {
+            return IsCounterClockwise(vertices) ? vertices : vertices.Reverse().ToArray();
         }
     }
 }
