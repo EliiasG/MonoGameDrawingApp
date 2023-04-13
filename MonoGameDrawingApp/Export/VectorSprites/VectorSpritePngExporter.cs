@@ -51,8 +51,8 @@ namespace MonoGameDrawingApp.Export.VectorSprites
             float width = right - left;
             float height = top - bottom;
 
-            int imageWidth = (int)MathF.Ceiling(width * UnitPixelSize);
-            int imageHeight = (int)MathF.Ceiling(height * UnitPixelSize);
+            int imageWidth = Math.Max((int)MathF.Ceiling(width * UnitPixelSize), 1);
+            int imageHeight = Math.Max((int)MathF.Ceiling(height * UnitPixelSize), 1);
 
             using RenderTarget2D renderTarget = new(Graphics.Device, imageWidth, imageHeight);
 

@@ -1,4 +1,5 @@
 ﻿using EarClipperLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -18,7 +19,14 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
             clipping.SetPoints(points);
 
-            clipping.Triangulate();
+            try
+            {
+                clipping.Triangulate();
+            }
+            catch
+            {
+                return new TriangulatedPolygon(Array.Empty<Vector2>(), Array.Empty<int>(), polygon.Color);
+            }
 
             List<Vector3m> result = clipping.Result;
 
