@@ -16,7 +16,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
         private readonly UiEnvironment _environment;
 
         private readonly IUiElement _background;
-        private readonly IUiElement _BackgroundSelected;
+        private readonly IUiElement _backgroundSelected;
         private readonly IUiElement _closeButton;
 
         private readonly RenderHelper _renderHelper;
@@ -33,8 +33,8 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
             Tab = tab;
             Spacing = spacing;
             int size = (int)Environment.FontHeight;
-            _background = new ColorRect(environment, environment.Theme.ButtonColor);
-            _BackgroundSelected = new ColorRect(environment, environment.Theme.SelectedButtonColor);
+            _backgroundSelected = new ColorRect(environment, environment.Theme.ButtonColor);
+            _background = new ColorRect(environment, environment.Theme.SelectedButtonColor);
             _closeButton = new MinSize(environment, new ScaleView(environment, new SpriteView(environment, "icons/close")), size, size);
             ExtraSize = extraSize;
 
@@ -97,7 +97,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
             {
                 Vector2 closeButtonPosition = new(width - _closeButton.RequiredWidth - ExtraSize, ExtraSize);
 
-                IUiElement currentBackground = Tab.IsSelected ? _BackgroundSelected : _background;
+                IUiElement currentBackground = Tab.IsSelected ? _backgroundSelected : _background;
                 Texture2D backgroundRender = currentBackground.Render(graphics, width, height);
                 Texture2D closeButtonRender = _closeButton.Render(graphics, _closeButton.RequiredWidth, _closeButton.RequiredHeight);
 
@@ -122,7 +122,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
                     spriteFont: Environment.Font,
                     text: Tab.Title,
                     position: new Vector2(ExtraSize, (height - (int)Environment.Font.MeasureString(Tab.Title).Y) / 2 + 1),
-                    color: Tab.IsSelected ? Environment.Theme.HoveringTextColor : Environment.Theme.DefaultTextColor
+                    color: Tab.IsSelected ? Environment.Theme.DefaultTextColor : Environment.Theme.HoveringTextColor
                 );
 
                 _renderHelper.FinishSpriteBatchDraw();
