@@ -16,7 +16,11 @@ namespace MonoGameDrawingApp.VectorSprites.Export
 
             foreach (IGeometryModifier modifier in geometry.Item.Modifiers)
             {
-                modifier.Modify(this);
+                try
+                {
+                    modifier.Modify(this);
+                }
+                catch { }
             }
         }
 

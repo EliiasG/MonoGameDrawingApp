@@ -1,0 +1,274 @@
+{
+  "Root": {
+    "Name": "Root",
+    "IsVisible": true,
+    "Position": {
+      "X": 0,
+      "Y": 0
+    },
+    "Geometry": {
+      "Points": [],
+      "Color": {
+        "R": 122,
+        "G": 48,
+        "B": 69,
+        "A": 255
+      }
+    },
+    "Modifiers": [
+      {
+        "Name": "Round",
+        "Parameters": [
+          0.125,
+          1
+        ]
+      },
+      {
+        "Name": "Outline",
+        "Parameters": [
+          0.125,
+          {
+            "R": 0,
+            "G": 0,
+            "B": 0,
+            "A": 255
+          }
+        ]
+      }
+    ],
+    "Children": [
+      {
+        "Name": "Leaves",
+        "IsVisible": true,
+        "Position": {
+          "X": -0,
+          "Y": -0.3125
+        },
+        "Geometry": {
+          "Points": [],
+          "Color": {
+            "R": 30,
+            "G": 188,
+            "B": 115,
+            "A": 0
+          }
+        },
+        "Modifiers": [
+          {
+            "Name": "Outline",
+            "Parameters": [
+              0.125,
+              {
+                "R": 0,
+                "G": 0,
+                "B": 0,
+                "A": 255
+              }
+            ]
+          }
+        ],
+        "Children": [
+          {
+            "Name": "Leaves3",
+            "IsVisible": true,
+            "Position": {
+              "X": -0,
+              "Y": 1.5
+            },
+            "Geometry": {
+              "Points": [
+                {
+                  "X": -0.5,
+                  "Y": 0
+                },
+                {
+                  "X": 0.5,
+                  "Y": 0
+                },
+                {
+                  "X": -0,
+                  "Y": 1
+                }
+              ],
+              "Color": {
+                "R": 30,
+                "G": 188,
+                "B": 115,
+                "A": 255
+              }
+            },
+            "Modifiers": [
+              {
+                "Name": "Outline",
+                "Parameters": [
+                  0.125,
+                  {
+                    "R": 0,
+                    "G": 0,
+                    "B": 0,
+                    "A": 255
+                  }
+                ]
+              }
+            ],
+            "Children": []
+          },
+          {
+            "Name": "Leaves2",
+            "IsVisible": true,
+            "Position": {
+              "X": -0,
+              "Y": 0.75
+            },
+            "Geometry": {
+              "Points": [
+                {
+                  "X": -0.75,
+                  "Y": -0
+                },
+                {
+                  "X": 0.75,
+                  "Y": -0
+                },
+                {
+                  "X": 0.25,
+                  "Y": 0.75
+                },
+                {
+                  "X": -0.25,
+                  "Y": 0.75
+                }
+              ],
+              "Color": {
+                "R": 30,
+                "G": 188,
+                "B": 115,
+                "A": 255
+              }
+            },
+            "Modifiers": [
+              {
+                "Name": "Outline",
+                "Parameters": [
+                  0.125,
+                  {
+                    "R": 0,
+                    "G": 0,
+                    "B": 0,
+                    "A": 255
+                  }
+                ]
+              }
+            ],
+            "Children": []
+          },
+          {
+            "Name": "Leaves1",
+            "IsVisible": true,
+            "Position": {
+              "X": 0,
+              "Y": 0
+            },
+            "Geometry": {
+              "Points": [
+                {
+                  "X": -1,
+                  "Y": -0
+                },
+                {
+                  "X": 1,
+                  "Y": -0
+                },
+                {
+                  "X": 0.5,
+                  "Y": 0.75
+                },
+                {
+                  "X": -0.5,
+                  "Y": 0.75
+                }
+              ],
+              "Color": {
+                "R": 30,
+                "G": 188,
+                "B": 115,
+                "A": 255
+              }
+            },
+            "Modifiers": [
+              {
+                "Name": "Outline",
+                "Parameters": [
+                  0.125,
+                  {
+                    "R": 0,
+                    "G": 0,
+                    "B": 0,
+                    "A": 255
+                  }
+                ]
+              }
+            ],
+            "Children": []
+          }
+        ]
+      },
+      {
+        "Name": "Log",
+        "IsVisible": true,
+        "Position": {
+          "X": 0,
+          "Y": 0
+        },
+        "Geometry": {
+          "Points": [
+            {
+              "X": -0.25,
+              "Y": -1
+            },
+            {
+              "X": 0.25,
+              "Y": -1
+            },
+            {
+              "X": 0.25,
+              "Y": 0.5
+            },
+            {
+              "X": -0.25,
+              "Y": 0.5
+            }
+          ],
+          "Color": {
+            "R": 122,
+            "G": 48,
+            "B": 69,
+            "A": 255
+          }
+        },
+        "Modifiers": [
+          {
+            "Name": "Round",
+            "Parameters": [
+              0.125,
+              1
+            ]
+          },
+          {
+            "Name": "Outline",
+            "Parameters": [
+              0.125,
+              {
+                "R": 0,
+                "G": 0,
+                "B": 0,
+                "A": 255
+              }
+            ]
+          }
+        ],
+        "Children": []
+      }
+    ]
+  }
+}

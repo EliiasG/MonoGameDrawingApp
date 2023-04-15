@@ -1,0 +1,87 @@
+{
+  "Root": {
+    "Name": "Root",
+    "IsVisible": true,
+    "Position": {
+      "X": 0,
+      "Y": 0
+    },
+    "Geometry": {
+      "Points": [],
+      "Color": {
+        "R": 255,
+        "G": 255,
+        "B": 255,
+        "A": 255
+      }
+    },
+    "Modifiers": [],
+    "Children": [
+      {
+        "Name": "Asteroid",
+        "IsVisible": true,
+        "Position": {
+          "X": 0,
+          "Y": 0
+        },
+        "Geometry": {
+          "Points": [
+            {
+              "X": -1,
+              "Y": 1
+            },
+            {
+              "X": 1,
+              "Y": 1
+            },
+            {
+              "X": 1,
+              "Y": -1
+            },
+            {
+              "X": -1,
+              "Y": -1
+            }
+          ],
+          "Color": {
+            "R": 98,
+            "G": 85,
+            "B": 101,
+            "A": 255
+          }
+        },
+        "Modifiers": [
+          {
+            "Name": "Subdivide",
+            "Parameters": [
+              2
+            ]
+          },
+          {
+            "Name": "Randomize",
+            "Parameters": [
+              1,
+              {
+                "X": 0.25,
+                "Y": 0.25
+              }
+            ]
+          },
+          {
+            "Name": "Outline",
+            "Parameters": [
+              0.125,
+              {
+                "R": 0,
+                "G": 0,
+                "B": 0,
+                "A": 255
+              }
+            ]
+          }
+        ],
+        "Children": []
+      }
+    ]
+  }
+}

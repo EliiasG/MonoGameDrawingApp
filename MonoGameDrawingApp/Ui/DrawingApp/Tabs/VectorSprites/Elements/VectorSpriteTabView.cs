@@ -12,7 +12,6 @@ using MonoGameDrawingApp.VectorSprites.Attachments.ChangeListener;
 using MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo;
 using MonoGameDrawingApp.VectorSprites.Serialization.Json;
 using System;
-using System.Diagnostics;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 {
@@ -141,7 +140,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             }
             else if (Tree.Selected is VectorSpriteTreeItem item)
             {
-                Debug.WriteLine("ay");
                 _onSelected(item.Item);
                 _onSelected = null;
                 Tree.Selected = _selected;
