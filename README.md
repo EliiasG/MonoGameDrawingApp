@@ -73,10 +73,19 @@ The remaning items of the list are parameters for the profile.
     ]
 ]
 ```
+# Starting a project
+To start a project click "Import / Create Project" and select a folder (or create a folder and select it).  
+There is [a project](https://github.com/EliiasG/MonoGameDrawingApp/tree/main/ExampleProject) included in the repo.  
+### When creating a new project:  
+In the project make a Source folder and a Profiles.json file.  
+All Vector Sprites must be in the Source folder (or any folder in it) to be exported.  
+Vector Sprites must be created using the "Add File" button, just creating an empty file with the .vecspr extention will **NOT** work.
+
+
 # The .tris format
 .tris is a format I invented to store vector graphics as vertices and triangles.  
-the .tris file starts with a vertex segment with a color.  
-after the vertex segment there is a list of int32s representing indices, every 3 indices is a triangle.  
+The .tris file starts with a vertex segment with a color.  
+After the vertex segment there is a list of (signed) int32s representing indices, every 3 indices is a triangle.  
 ### A vertex segment works as follows:  
 - The first 4 bytes of the vertex segment represent the color of the vertex as ARGB, if it changes color from the last vertex. 
 - The next 8 bytes of the vertex segment represent the position of the vertex (x as a float and y as a float).  
