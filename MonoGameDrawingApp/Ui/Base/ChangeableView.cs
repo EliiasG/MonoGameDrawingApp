@@ -19,10 +19,7 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public IUiElement Child
         {
-            get
-            {
-                return _child;
-            }
+            get => _child;
             set
             {
                 if (_child != value && value != null)

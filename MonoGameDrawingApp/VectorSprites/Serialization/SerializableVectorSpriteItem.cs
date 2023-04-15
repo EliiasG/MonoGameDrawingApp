@@ -10,6 +10,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
         public SerializableVectorSpriteItem(VectorSpriteItem item, bool addChildren = true)
         {
             Name = item.Name;
+            IsVisible = item.IsVisible;
             Position = new SerializablleVector2(item.Position);
             Geometry = new SerializableVectorSpriteGeometry(item.Geometry);
 
@@ -31,6 +32,9 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 
         public string Name { get; set; }
 
+        //setting to true to load sprites saved before hiding
+        public bool IsVisible { get; set; } = true;
+
         public SerializablleVector2 Position { get; set; }
 
         public SerializableVectorSpriteGeometry Geometry { get; set; }
@@ -42,6 +46,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
         public VectorSpriteItem ToItem(VectorSprite sprite)
         {
             VectorSpriteItem res = new(Name, sprite, Geometry.ToGeometry(), Position.ToVector());
+            res.IsVisible = IsVisible;
             foreach (SerializableVectorSpriteItem child in Children)
             {
                 res.AddChild(child.ToItem(sprite));

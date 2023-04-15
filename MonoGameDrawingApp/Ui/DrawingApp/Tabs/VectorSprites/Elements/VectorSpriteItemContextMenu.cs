@@ -24,6 +24,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             _root = new ContextMenu(Environment, new IUiElement[]
             {
+                new ContextMenuButton(Environment, Item.IsVisible ? "Hide" : "Show", _changeVisible),
+                new ContextMenuSeperator(Environment),
                 new ContextMenuButton(Environment, "Rename", _rename),
                 new ContextMenuButton(Environment, "Delete", _delete)
                 {
@@ -144,6 +146,12 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
         private void _moveDown()
         {
             Item.MoveDown();
+            PopupEnvironment.Close();
+        }
+
+        private void _changeVisible()
+        {
+            Item.IsVisible = !Item.IsVisible;
             PopupEnvironment.Close();
         }
     }

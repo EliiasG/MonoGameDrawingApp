@@ -27,7 +27,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
 
         public VectorSpriteItem Item { get; init; }
 
-        public string Name => Item.Name;
+        public string Name => Item.Name + (Item.IsVisible ? "" : " [H]");
 
         public bool IsOpen
         {
@@ -36,10 +36,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
                 _isOpen = _isOpen && HasOpenButton;
                 return _isOpen;
             }
-            set
-            {
-                _isOpen = value;
-            }
+            set => _isOpen = value;
         }
 
         public bool HasOpenButton => Item.Children.Any();

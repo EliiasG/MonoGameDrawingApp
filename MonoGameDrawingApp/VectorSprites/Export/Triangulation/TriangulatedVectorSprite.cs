@@ -35,11 +35,14 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
             TriangulatedGeometry geometry = new(_triangulator, modifiedGeometry);
 
-            foreach (TriangulatedPolygon polygon in geometry.Polygons)
+            if (item.IsVisible)
             {
-                indices.AddRange(polygon.Indices.Select((int index) => index + vertices.Count));
-                vertices.AddRange(polygon.Vertices.Select((Vector2 vertex) => vertex + item.AbsolutePosition));
-                colors.AddRange(Enumerable.Repeat(polygon.Color, polygon.Vertices.Length));
+                foreach (TriangulatedPolygon polygon in geometry.Polygons)
+                {
+                    indices.AddRange(polygon.Indices.Select((int index) => index + vertices.Count));
+                    vertices.AddRange(polygon.Vertices.Select((Vector2 vertex) => vertex + item.AbsolutePosition));
+                    colors.AddRange(Enumerable.Repeat(polygon.Color, polygon.Vertices.Length));
+                }
             }
 
             foreach (VectorSpriteItem child in item.Children.Reverse())

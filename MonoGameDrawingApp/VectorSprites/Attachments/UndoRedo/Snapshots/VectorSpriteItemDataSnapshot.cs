@@ -11,6 +11,7 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Snapshots
         {
             Position = item.Position;
             Name = item.Name;
+            IsVisible = item.IsVisible;
             Geometry = new VectorSpriteGeometry(item.Geometry.Points)
             {
                 Color = item.Geometry.Color
@@ -23,6 +24,8 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Snapshots
 
         public Vector2 Position { get; set; }
 
+        public bool IsVisible { get; set; }
+
         public string Name { get; set; }
 
         public VectorSpriteGeometry Geometry { get; set; }
@@ -32,6 +35,7 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo.Snapshots
         public void Apply(VectorSpriteItem item)
         {
             item.Position = Position;
+            item.IsVisible = IsVisible;
             item.Name = Name;
             item.Geometry.Points = Geometry.Points;
             item.Geometry.Color = Geometry.Color;

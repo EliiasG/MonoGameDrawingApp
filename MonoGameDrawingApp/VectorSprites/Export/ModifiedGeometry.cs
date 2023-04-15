@@ -8,9 +8,11 @@ namespace MonoGameDrawingApp.VectorSprites.Export
     {
         public ModifiedGeometry(VectorSpriteGeometry geometry)
         {
-            ModifiedPolygons = new List<Polygon>() { geometry.ToPolygon() };
+            ModifiedPolygons = geometry.Item.IsVisible ? new List<Polygon>() { geometry.ToPolygon() } : new List<Polygon>();
 
             Position = geometry.Item.AbsolutePosition;
+
+            if (!geometry.Item.IsVisible) return;
 
             foreach (IGeometryModifier modifier in geometry.Item.Modifiers)
             {

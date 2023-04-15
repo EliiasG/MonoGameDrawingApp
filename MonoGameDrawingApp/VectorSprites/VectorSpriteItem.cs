@@ -16,12 +16,14 @@ namespace MonoGameDrawingApp.VectorSprites
 
         private string _name;
         private Vector2 _position;
+        private bool _isVisible;
 
         public VectorSpriteItem(string name, VectorSprite sprite, VectorSpriteGeometry geometry, Vector2 position)
         {
             _children = new List<VectorSpriteItem>();
             _modifiers = new List<IGeometryModifier>();
             _attchments = new Dictionary<Type, IVectorSpriteItemAttachment>();
+            _isVisible = true;
 
             Sprite = sprite;
             Name = name;
@@ -36,12 +38,23 @@ namespace MonoGameDrawingApp.VectorSprites
         {
         }
 
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _dataChanging();
+                    _isVisible = value;
+                    _dataChanged();
+                }
+            }
+        }
+
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get => _name;
             set
             {
                 if (_name != value)
@@ -55,10 +68,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public Vector2 Position
         {
-            get
-            {
-                return _position;
-            }
+            get => _position;
             set
             {
                 if (_position != value)
@@ -83,10 +93,7 @@ namespace MonoGameDrawingApp.VectorSprites
                 }
                 return position;
             }
-            set
-            {
-                Position = value - (AbsolutePosition - _position);
-            }
+            set => Position = value - (AbsolutePosition - _position);
         }
 
         public VectorSprite Sprite { get; }

@@ -52,10 +52,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
                 _position = Math.Clamp(_position, 0, End - Size);
                 return _position;
             }
-            set
-            {
-                _position = value;
-            }
+            set => _position = value;
         }
 
         public bool Changed => _outer.Changed;

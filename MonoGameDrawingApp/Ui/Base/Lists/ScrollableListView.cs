@@ -38,10 +38,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 
         public Vector2 Position
         {
-            get
-            {
-                return _position;
-            }
+            get => _position;
             set
             {
                 if (_position != value)
