@@ -16,14 +16,12 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
     {
 
         public readonly DrawingAppRoot Root;
-
-        private readonly UiEnvironment _environment;
         private readonly VScrollableListView _scrollableListView;
         private readonly IUiElement _root;
 
         public DrawingAppStart(UiEnvironment environment, DrawingAppRoot root)
         {
-            _environment = environment;
+            Environment = environment;
             Root = root;
             _scrollableListView = new VScrollableListView(environment, System.Array.Empty<IUiElement>(), false, 2);
             ReloadProjects();
@@ -33,7 +31,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                 first: new VListView<IUiElement>(Environment, new List<IUiElement>()
                 {
                     new EmptySpace(Environment,  1, 5),
-                    new ContextMenuButton(Environment, "Import/Create Project", _import),
+                    new ContextMenuButton(Environment, "Import / Create Project", _import),
                     new EmptySpace(Environment,  1, 5),
                 }),
                 second: new StackView(Environment, new List<IUiElement>() {
@@ -50,7 +48,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         public int RequiredHeight => _root.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

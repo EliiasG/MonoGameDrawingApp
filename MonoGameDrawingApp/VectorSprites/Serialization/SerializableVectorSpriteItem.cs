@@ -14,17 +14,12 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
             Position = new SerializablleVector2(item.Position);
             Geometry = new SerializableVectorSpriteGeometry(item.Geometry);
 
-            if (!addChildren)
-            {
-                Children = new SerializableVectorSpriteItem[item.Children.Count()];
-            }
-            else
-            {
-                Children = item.Children.Select(
+            Children = !addChildren
+                ? (new SerializableVectorSpriteItem[item.Children.Count()])
+                : item.Children.Select(
                     (VectorSpriteItem child) =>
                     new SerializableVectorSpriteItem(child, addChildren)
                 ).ToArray();
-            }
 
             Modifiers = (from IGeometryModifier modifier in item.Modifiers
                          select new SerializableGeometryModifier(modifier)).ToArray();
@@ -45,8 +40,10 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
 
         public VectorSpriteItem ToItem(VectorSprite sprite)
         {
-            VectorSpriteItem res = new(Name, sprite, Geometry.ToGeometry(), Position.ToVector());
-            res.IsVisible = IsVisible;
+            VectorSpriteItem res = new(Name, sprite, Geometry.ToGeometry(), Position.ToVector())
+            {
+                IsVisible = IsVisible
+            };
             foreach (SerializableVectorSpriteItem child in Children)
             {
                 res.AddChild(child.ToItem(sprite));

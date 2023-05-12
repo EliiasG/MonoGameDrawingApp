@@ -388,10 +388,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                                                                         child: new ContextMenuButton(
                                                                             environment: Environment,
                                                                             title: "Cancel",
-                                                                            onClick: () =>
-                                                                            {
-                                                                                PopupEnvironment.Close();
-                                                                            }
+                                                                            onClick: PopupEnvironment.Close
                                                                         ),
                                                                         centerHorizontal: true,
                                                                         centerVertical: true
