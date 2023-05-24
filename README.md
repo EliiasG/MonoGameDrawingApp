@@ -18,6 +18,10 @@ Using [an external library](https://github.com/NMO13/earclipper) for triangulati
 | [F] | Focus on selected item. |
 | [R] | Redraw all. (sometimes nessecary when dealing with modifiers that refernce other objects) |
 # Editing
+ Objects are represented as a list of points.  
+ To draw and export objects, the lists of points are renderd as polygons with a vertex at each point, and an edge between consecutive vertices.  
+ Edges may not cross eachother.  
+ 
  Drag points to move them.  
  Hold [Shift] and drag origin to move origin.  
  Hold [Ctrl] and click to add points at the end of the list.  
