@@ -5,15 +5,11 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class UpdateBlocker : IUiElement
     {
-        public readonly IUiElement Child;
-
-        private readonly UiEnvironment _environment;
-
         public bool ShouldUpdate { get; set; }
 
         public UpdateBlocker(UiEnvironment environment, IUiElement child)
         {
-            _environment = environment;
+            Environment = environment;
 
             Child = child;
             ShouldUpdate = true;
@@ -25,7 +21,9 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public int RequiredHeight => Child.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public IUiElement Child { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

@@ -9,31 +9,20 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 {
     public abstract class ScrollableListView : IScrollableView
     {
-        public IEnumerable<IUiElement> Items;
-
-        public readonly bool UpdateOutOfView;
-        public readonly int Spacing;
-
-        private readonly UiEnvironment _environment;
         private readonly RenderHelper _renderHelper;
 
         private IEnumerable<(Rectangle, IUiElement)> _placedItems;
         private IList<IUiElement> _oldItems;
         private Vector2 _position;
-        private int _height = 1;
-        private int _width = 1;
-        private int _maxHeight = 1;
-        private int _maxWidth = 1;
-        private bool _changed;
 
         protected ScrollableListView(UiEnvironment environment, IEnumerable<IUiElement> items, bool updateOutOfView, int spacing)
         {
-            _environment = environment;
+            Environment = environment;
             Items = items;
             UpdateOutOfView = updateOutOfView;
             Spacing = spacing;
             _renderHelper = new RenderHelper();
-            _placedItems = new (Rectangle, IUiElement)[0];
+            _placedItems = Array.Empty<(Rectangle, IUiElement)>();
         }
 
         public Vector2 Position
@@ -44,26 +33,31 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 if (_position != value)
                 {
                     _position = value;
-                    _changed = true;
+                    Changed = true;
                 }
             }
         }
 
-        public int Width => _width;
+        public int Width { get; private set; } = 1;
 
-        public int Height => _height;
+        public int Height { get; private set; } = 1;
 
-        public int MaxWidth => _maxWidth; // + 1 to not have the scrollbar divide by 0
+        public int MaxWidth { get; private set; } = 1; // + 1 to not have the scrollbar divide by 0
 
-        public int MaxHeight => _maxHeight;
+        public int MaxHeight { get; private set; } = 1;
 
-        public bool Changed => _changed;
+        public bool Changed { get; private set; }
 
         public int RequiredWidth => 1;
 
         public int RequiredHeight => 1;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public int Spacing { get; }
+
+        public bool UpdateOutOfView { get; }
+        public IEnumerable<IUiElement> Items { get; set; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -71,7 +65,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 
             Rectangle _view = new(0, 0, width, height);
 
-            if (_changed || _renderHelper.SizeChanged)
+            if (Changed || _renderHelper.SizeChanged)
             {
                 IList<(Vector2, Texture2D)> renders = new List<(Vector2, Texture2D)>();
 
@@ -100,23 +94,23 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 
                 _renderHelper.FinishSpriteBatchDraw();
             }
-            _changed = false;
+            Changed = false;
             return _renderHelper.Result;
         }
 
         public void Update(Vector2 position, int width, int height)
         {
-            _height = height;
-            _width = width;
+            Height = height;
+            Width = width;
 
-            if (_childrenChanged())
+            if (ChildrenChanged())
             {
-                _placedItems = _positionItems();
+                _placedItems = PositionItems();
             }
 
             Rectangle _view = new(0, 0, width, height);
-            _maxWidth = 1;
-            _maxHeight = 1;
+            MaxWidth = 1;
+            MaxHeight = 1;
 
             foreach ((Rectangle, IUiElement) item in _placedItems)
             {
@@ -125,15 +119,15 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 IUiElement element = item.Item2;
 
                 Point outer = pos + itemRect.Size;
-                _maxHeight = Math.Max(outer.Y, _maxHeight);
-                _maxWidth = Math.Max(outer.X, _maxWidth);
+                MaxHeight = Math.Max(outer.Y, MaxHeight);
+                MaxWidth = Math.Max(outer.X, MaxWidth);
 
                 Rectangle movedRect = new(itemRect.Location - _position.ToPoint(), itemRect.Size);
                 bool intersects = _view.Intersects(movedRect);
 
                 if (intersects)
                 {
-                    _changed = _changed || element.Changed;
+                    Changed = Changed || element.Changed;
                 }
 
                 if (UpdateOutOfView || intersects)
@@ -143,10 +137,10 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
             }
         }
 
-        private bool _childrenChanged()
+        private bool ChildrenChanged()
         {
 
-            if (_oldItems?.Count() != Items.Count())
+            if (_oldItems?.Count != Items.Count())
             {
                 goto FoundChange;
             }
@@ -166,10 +160,10 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 
         FoundChange:
             _oldItems = new List<IUiElement>(Items);
-            _changed = true;
+            Changed = true;
             return true;
         }
 
-        protected abstract IEnumerable<(Rectangle, IUiElement)> _positionItems();
+        protected abstract IEnumerable<(Rectangle, IUiElement)> PositionItems();
     }
 }

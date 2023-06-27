@@ -62,17 +62,17 @@ namespace MonoGameDrawingApp.VectorSprites.Attachments.UndoRedo
             }
         }
 
-        internal void _dataChanging(VectorSpriteItem item)
+        internal void DataChanging(VectorSpriteItem item)
         {
-            _add(new DataUndoRedoAction(item), item);
+            Add(new DataUndoRedoAction(item), item);
         }
 
-        internal void _childrenChanging(VectorSpriteItem item)
+        internal void ChildrenChanging(VectorSpriteItem item)
         {
-            _add(new ChildrenUndoRedoAction(item), item);
+            Add(new ChildrenUndoRedoAction(item), item);
         }
 
-        private void _add(IUndoRedoAction action, VectorSpriteItem item)
+        private void Add(IUndoRedoAction action, VectorSpriteItem item)
         {
             if (!_currentActions.ContainsKey(item))
             {

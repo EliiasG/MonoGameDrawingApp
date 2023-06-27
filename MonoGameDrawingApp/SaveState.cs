@@ -4,6 +4,7 @@ using MonoGameDrawingApp.VectorSprites;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -40,7 +41,7 @@ namespace MonoGameDrawingApp
             set
             {
                 _selectedColorPaletteIndex = _colorPalettes.IndexOf(value);
-                File.WriteAllText(SelectedPalettePath, _selectedColorPaletteIndex.ToString());
+                File.WriteAllText(SelectedPalettePath, _selectedColorPaletteIndex.ToString(NumberFormatInfo.InvariantInfo));
             }
         }
 
@@ -48,7 +49,7 @@ namespace MonoGameDrawingApp
         {
             _graphicsDevice = graphicsDevice;
             _colorPalettes = new List<ColorPalette>();
-            _defaultPalette = _fromTexture(content.Load<Texture2D>("palette"), "default");
+            _defaultPalette = FromTexture(content.Load<Texture2D>("palette"), "default");
 
             ReloadColorPalettes();
             ReloadProjects();
@@ -57,7 +58,7 @@ namespace MonoGameDrawingApp
             {
                 try
                 {
-                    _selectedColorPaletteIndex = int.Parse(File.ReadAllText(SelectedPalettePath));
+                    _selectedColorPaletteIndex = int.Parse(File.ReadAllText(SelectedPalettePath), NumberFormatInfo.InvariantInfo);
                 }
                 catch
                 {
@@ -92,7 +93,7 @@ namespace MonoGameDrawingApp
         public static void SetFirst(string path)
         {
             List<string> lines = File.ReadLines(ProjectsPath).ToList();
-            while (lines.Remove(path)) ;
+            while (lines.Remove(path)) { }
             lines.Insert(0, path);
             File.WriteAllLines(ProjectsPath, lines.ToArray());
             ReloadProjects();
@@ -130,12 +131,12 @@ namespace MonoGameDrawingApp
                 if (name != oldName)
                 {
                     Texture2D image = Texture2D.FromFile(_graphicsDevice, palettePath);
-                    _colorPalettes.Insert(i + 1, _fromTexture(image, name));
+                    _colorPalettes.Insert(i + 1, FromTexture(image, name));
                 }
             }
         }
 
-        private static ColorPalette _fromTexture(Texture2D texture, string name)
+        private static ColorPalette FromTexture(Texture2D texture, string name)
         {
             List<Color> colorList = new();
             ISet<Color> colors = new HashSet<Color>();

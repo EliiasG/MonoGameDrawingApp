@@ -27,7 +27,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 
         public override IEnumerable<IGeometryModifierParameter> Parameters { get; }
 
-        protected override Polygon _modifyPolygon(Polygon polygon)
+        protected override Polygon ModifyPolygon(Polygon polygon)
         {
             Vector2[] points = polygon.Vertices.ToArray();
 
@@ -44,7 +44,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
             if (resolution > 1)
             {
                 double pow = Math.Pow(2, resolution - 1);
-                amt = amount / (1 + (float)((pow - 1) / pow) / 2);
+                amt = amount / (1 + ((float)((pow - 1) / pow) / 2));
             }
 
             for (int i = 0; i < resolution; i++)
@@ -57,7 +57,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
                     Vector2 next = Util.GetItemCircled(points, j + 1);
 
                     newPoints[j * 2] = Vector2.Lerp(cur, prev, amt / Vector2.Distance(cur, prev));
-                    newPoints[j * 2 + 1] = Vector2.Lerp(cur, next, amt / Vector2.Distance(cur, next));
+                    newPoints[(j * 2) + 1] = Vector2.Lerp(cur, next, amt / Vector2.Distance(cur, next));
                 }
                 points = newPoints;
                 amt /= 4;

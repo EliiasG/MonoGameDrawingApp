@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Preview;
 using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Attachments;
 using MonoGameDrawingApp.VectorSprites.Export.Triangulation;
 using MonoGameDrawingApp.VectorSprites.Rendering.MonoGame;
 using System.Linq;
 
-namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering
+namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Preview
 {
     public class PreviewSpriteAttachment : IVectorSpriteAttachment
     {
@@ -30,24 +29,24 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering
 
         public void Draw(TriangleBatch triangleBatch)
         {
-            _draw(triangleBatch, Sprite.Root, Vector2.Zero);
+            Draw(triangleBatch, Sprite.Root, Vector2.Zero);
         }
 
         public void Retriangulate()
         {
-            _retriangluate(Sprite.Root);
+            Retriangluate(Sprite.Root);
         }
 
-        private void _retriangluate(VectorSpriteItem item)
+        private void Retriangluate(VectorSpriteItem item)
         {
             item.GetAttachment<PreviewSpriteItemAttachment>().Retriangulate();
             foreach (VectorSpriteItem child in item.Children)
             {
-                _retriangluate(child);
+                Retriangluate(child);
             }
         }
 
-        private void _draw(TriangleBatch triangleBatch, VectorSpriteItem item, Vector2 position)
+        private void Draw(TriangleBatch triangleBatch, VectorSpriteItem item, Vector2 position)
         {
             position += item.Position;
 
@@ -55,7 +54,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering
 
             foreach (VectorSpriteItem child in item.Children.Reverse())
             {
-                _draw(triangleBatch, child, position);
+                Draw(triangleBatch, child, position);
             }
         }
     }

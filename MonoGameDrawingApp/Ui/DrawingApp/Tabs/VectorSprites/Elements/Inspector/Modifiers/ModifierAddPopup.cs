@@ -11,6 +11,7 @@ using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
 using MonoGameDrawingApp.VectorSprites.Modifiers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector.Modifiers
@@ -44,7 +45,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             ).ToList();
 
             _searchBar = new TextInputField(Environment, "", new ITextInputFilter[] { new AlphanumericTextInputFilter() });
-            _searchBar.ValueChanged += _updateList;
+            _searchBar.ValueChanged += UpdateList;
             _searchBar.Deselected += popupEnvironment.Close;
             _searchBar.TextEntered += () =>
             {
@@ -55,7 +56,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
 
             _visibleButtons = new VScrollableListView(Environment, _buttons, false, ButtonSpacing);
 
-            _updateList();
+            UpdateList();
 
             _root = new StackView(
                 environment: Environment,
@@ -119,7 +120,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             _root.Update(position, width, height);
         }
 
-        private void _updateList()
+        private void UpdateList()
         {
             IEnumerable<ContextMenuButton> buttons;
             if (_searchBar.Value == string.Empty)
@@ -130,7 +131,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             {
                 buttons = _buttons.Where(
                     predicate: (button) =>
-                        button.Title.ToLower().Contains(_searchBar.Value.ToLower())
+                        button.Title.ToLower(CultureInfo.InvariantCulture).Contains(_searchBar.Value.ToLower(CultureInfo.InvariantCulture))
                 );
             }
             _first = buttons.FirstOrDefault();

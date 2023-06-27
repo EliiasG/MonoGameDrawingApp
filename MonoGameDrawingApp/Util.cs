@@ -47,7 +47,7 @@ namespace MonoGameDrawingApp
             }
             else
             {
-                return list[index % list.Count + list.Count];
+                return list[(index % list.Count) + list.Count];
             }
         }
 
@@ -59,7 +59,7 @@ namespace MonoGameDrawingApp
             }
             else
             {
-                list[index % list.Count + list.Count] = item;
+                list[(index % list.Count) + list.Count] = item;
             }
         }
     }

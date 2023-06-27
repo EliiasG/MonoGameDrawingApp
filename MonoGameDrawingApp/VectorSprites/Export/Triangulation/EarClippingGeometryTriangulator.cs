@@ -5,6 +5,7 @@ using System.Numerics;
 
 namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 {
+    [Obsolete("Can be buggy, and the external library probably works better")]
     public class EarClippingGeometryTriangulator : IPolygonTriangulator
     {
 
@@ -12,7 +13,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
         {
             try
             {
-                return _triangulate(polygon);
+                return TryTriangulate(polygon);
             }
             catch
             {
@@ -20,9 +21,9 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             }
         }
 
-        private static TriangulatedPolygon _triangulate(Polygon polygon)
+        private static TriangulatedPolygon TryTriangulate(Polygon polygon)
         {
-            Vector2[] vertices = _withoutCollinear(polygon.Vertices);
+            Vector2[] vertices = WithoutCollinear(polygon.Vertices);
             vertices = ExtraMath.MakeCounterClockwise(vertices);
 
             if (vertices.Length < 3)
@@ -49,9 +50,9 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                         continue;
                     }
 
-                    int previousIndex = _findNotNull(remaningIndices, i - 1, -1);
+                    int previousIndex = FindNotNull(remaningIndices, i - 1, -1);
                     int currentIndex = (int)remaningIndices[i];
-                    int nextIndex = _findNotNull(remaningIndices, i + 1, 1);
+                    int nextIndex = FindNotNull(remaningIndices, i + 1, 1);
 
                     Vector2 previous = vertices[previousIndex];
                     Vector2 current = vertices[currentIndex];
@@ -74,7 +75,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                         continue;
                     }
 
-                    if (_anyInTriangle(vertices, previous, current, next))
+                    if (AnyInTriangle(vertices, previous, current, next))
                     {
                         continue;
                     }
@@ -114,7 +115,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             return new TriangulatedPolygon(Array.Empty<Vector2>(), Array.Empty<int>(), polygon.Color);
         }
 
-        private static bool _anyInTriangle(Vector2[] points, Vector2 a, Vector2 b, Vector2 c)
+        private static bool AnyInTriangle(Vector2[] points, Vector2 a, Vector2 b, Vector2 c)
         {
             foreach (Vector2 p in points)
             {
@@ -122,7 +123,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
                 {
                     continue;
                 }
-                if (_isInTrangle(p, a, b, c))
+                if (IsInTrangle(p, a, b, c))
                 {
                     return true;
                 }
@@ -130,11 +131,11 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             return false;
         }
 
-        private static int _findNotNull(int?[] indices, int index, int move)
+        private static int FindNotNull(int?[] indices, int index, int move)
         {
             for (int i = 0; i < indices.Length; i++)
             {
-                int? idx = Util.GetItemCircled(indices, index + i * move);
+                int? idx = Util.GetItemCircled(indices, index + (i * move));
                 if (idx is int intIdx)
                 {
                     return intIdx;
@@ -143,15 +144,15 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             throw new ArgumentException("All values are null");
         }
 
-        private static Vector2[] _withoutCollinear(Vector2[] vertices)
+        private static Vector2[] WithoutCollinear(Vector2[] vertices)
         {
             List<Vector2> newVertecies = null;
 
             for (int i = 0; i < vertices.Length; i++)
             {
-                Vector2 last = _previousPoint(vertices, i);
+                Vector2 last = PreviousPoint(vertices, i);
                 Vector2 current = vertices[i];
-                Vector2 next = _nextPoint(vertices, i);
+                Vector2 next = NextPoint(vertices, i);
 
                 if (ExtraMath.IsOnLine(current, last, next))
                 {
@@ -166,17 +167,17 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             return newVertecies?.ToArray() ?? vertices;
         }
 
-        private static Vector2 _previousPoint(Vector2[] points, int index)
+        private static Vector2 PreviousPoint(Vector2[] points, int index)
         {
             return points[(index == 0 ? points.Length : index) - 1];
         }
 
-        private static Vector2 _nextPoint(Vector2[] points, int index)
+        private static Vector2 NextPoint(Vector2[] points, int index)
         {
             return points[index == points.Length - 1 ? 0 : (index + 1)];
         }
 
-        private static bool _isInTrangle(Vector2 point, Vector2 a, Vector2 b, Vector2 c)
+        private static bool IsInTrangle(Vector2 point, Vector2 a, Vector2 b, Vector2 c)
         {
             bool b1 = ExtraMath.IsCounterClockwise(new Vector2[] { a, b, point });
             bool b2 = ExtraMath.IsCounterClockwise(new Vector2[] { b, c, point });

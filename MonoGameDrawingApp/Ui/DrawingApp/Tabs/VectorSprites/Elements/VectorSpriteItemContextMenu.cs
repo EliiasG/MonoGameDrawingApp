@@ -24,31 +24,31 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
             _root = new ContextMenu(Environment, new IUiElement[]
             {
-                new ContextMenuButton(Environment, Item.IsVisible ? "Hide" : "Show", _changeVisible),
+                new ContextMenuButton(Environment, Item.IsVisible ? "Hide" : "Show", ChangeVisible),
                 new ContextMenuSeperator(Environment),
-                new ContextMenuButton(Environment, "Rename", _rename),
-                new ContextMenuButton(Environment, "Delete", _delete)
+                new ContextMenuButton(Environment, "Rename", Rename),
+                new ContextMenuButton(Environment, "Delete", Delete)
                 {
                     Disabled = item.Parent == null,
                 },
                 new ContextMenuSeperator(Environment),
-                new ContextMenuButton(Environment, "Cut", _cut)
+                new ContextMenuButton(Environment, "Cut", Cut)
                 {
                     Disabled = item.Parent == null,
                 },
-                new ContextMenuButton(Environment, "Copy", _copy),
-                new ContextMenuButton(Environment, "Paste", _paste)
+                new ContextMenuButton(Environment, "Copy", Copy),
+                new ContextMenuButton(Environment, "Paste", Paste)
                 {
                     Disabled = Environment.Clipboard is not SerializableVectorSpriteItem,
                 },
                 new ContextMenuSeperator(Environment),
-                new ContextMenuButton(Environment, "Add Item", _addItem),
+                new ContextMenuButton(Environment, "Add Item", AddItem),
                 new ContextMenuSeperator(Environment),
-                new ContextMenuButton(Environment, "Move Up", _moveUp)
+                new ContextMenuButton(Environment, "Move Up", MoveUp)
                 {
                     Disabled = Item.Parent == null || Item.Parent.Children.First() == Item
                 },
-                new ContextMenuButton(Environment, "Move Down", _moveDown)
+                new ContextMenuButton(Environment, "Move Down", MoveDown)
                 {
                     Disabled = Item.Parent == null || Item.Parent.Children.Last() == Item
                 },
@@ -77,7 +77,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             _root.Update(position, width, height);
         }
 
-        private void _rename()
+        private void Rename()
         {
             PopupEnvironment.OpenCentered(new TextInputPopup(
                 environment: Environment,
@@ -92,7 +92,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             ));
         }
 
-        private void _delete()
+        private void Delete()
         {
             PopupEnvironment.OpenCentered(new ChoicePopup(Environment, "Delete '" + Item.Name + "'", PopupEnvironment, new ChoicePopupOption[]
             {
@@ -101,19 +101,19 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             }));
         }
 
-        private void _copy()
+        private void Copy()
         {
             Environment.Clipboard = new SerializableVectorSpriteItem(Item);
             PopupEnvironment.Close();
         }
 
-        private void _cut()
+        private void Cut()
         {
-            _copy();
+            Copy();
             Item.Parent.RemoveChild(Item);
         }
 
-        private void _paste()
+        private void Paste()
         {
             if (Environment.Clipboard is SerializableVectorSpriteItem serializableItem)
             {
@@ -122,7 +122,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             PopupEnvironment.Close();
         }
 
-        private void _addItem()
+        private void AddItem()
         {
             PopupEnvironment.OpenCentered(new TextInputPopup(
                 environment: Environment,
@@ -137,19 +137,19 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             ));
         }
 
-        private void _moveUp()
+        private void MoveUp()
         {
             Item.MoveUp();
             PopupEnvironment.Close();
         }
 
-        private void _moveDown()
+        private void MoveDown()
         {
             Item.MoveDown();
             PopupEnvironment.Close();
         }
 
-        private void _changeVisible()
+        private void ChangeVisible()
         {
             Item.IsVisible = !Item.IsVisible;
             PopupEnvironment.Close();

@@ -7,17 +7,12 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class TextView : IUiElement
     {
-
-        private readonly UiEnvironment _environment;
-
         private string _text;
-        private bool _changed = true;
-
         private readonly RenderHelper _renderHelper;
 
         public TextView(UiEnvironment environment, string text)
         {
-            _environment = environment;
+            Environment = environment;
 
             _renderHelper = new RenderHelper();
             Text = text;
@@ -27,9 +22,9 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public int RequiredHeight => (int)Environment.Font.MeasureString(Text).Y;
 
-        public bool Changed => _changed;
+        public bool Changed { get; private set; } = true;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
         public string Text
         {
@@ -40,7 +35,7 @@ namespace MonoGameDrawingApp.Ui.Base
                 if (_text != value)
                 {
                     _text = string.Concat(value.Select((c) => chars.Contains(c) ? c : '?'));
-                    _changed = true;
+                    Changed = true;
                 }
             }
         }
@@ -63,7 +58,7 @@ namespace MonoGameDrawingApp.Ui.Base
                 _renderHelper.FinishSpriteBatchDraw();
             }
 
-            _changed = false;
+            Changed = false;
             return _renderHelper.Result;
         }
 

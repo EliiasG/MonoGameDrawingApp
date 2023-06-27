@@ -71,7 +71,7 @@ namespace MonoGameDrawingApp
             }
             else
             {
-                return a + aToB * distance;
+                return a + (aToB * distance);
             }
         }
 
@@ -83,9 +83,9 @@ namespace MonoGameDrawingApp
             float a1 = MathF.Atan2(point.Y, point.X);
             float a2 = MathF.Atan2(line.Y, line.X);
 
-            float a3 = a2 * 2 - a1;
+            float a3 = (a2 * 2) - a1;
 
-            return new Vector2(MathF.Cos(a3), MathF.Sin(a3)) * point.Length() + line1;
+            return (new Vector2(MathF.Cos(a3), MathF.Sin(a3)) * point.Length()) + line1;
         }
 
         public static bool IsCounterClockwise(Vector2[] vertices)
@@ -122,7 +122,7 @@ namespace MonoGameDrawingApp
                 Vector2 cur = vertices[i];
                 Vector2 next = Util.GetItemCircled(vertices, i + 1);
 
-                newVertices[i] = cur + GetExpanded(prev, cur, next, inv) * amount;
+                newVertices[i] = cur + (GetExpanded(prev, cur, next, inv) * amount);
             }
 
             return newVertices;
@@ -141,7 +141,7 @@ namespace MonoGameDrawingApp
 
             if (baBack == bcBack || baBack == -bcBack)
             {
-                float angle = MathF.Atan2(ba.Y, ba.X) - MathF.PI / 2;
+                float angle = MathF.Atan2(ba.Y, ba.X) - (MathF.PI / 2);
                 point = new(MathF.Cos(angle), MathF.Sin(angle));
             }
             else
@@ -166,7 +166,7 @@ namespace MonoGameDrawingApp
             Vector2 cb = b - c;
             Vector2 ab = b - a;
 
-            float dot = cb.X * ab.Y - cb.Y * ab.X;
+            float dot = (cb.X * ab.Y) - (cb.Y * ab.X);
 
             float angle;
 
@@ -176,7 +176,7 @@ namespace MonoGameDrawingApp
             bool invert;
             if (dot == 0)
             {
-                angle = MathF.Atan2(ba.Y, ba.X) - MathF.PI / 2;
+                angle = MathF.Atan2(ba.Y, ba.X) - (MathF.PI / 2);
                 invert = !counterClockwise;
             }
             else

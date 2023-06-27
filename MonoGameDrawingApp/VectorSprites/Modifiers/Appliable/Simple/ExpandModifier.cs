@@ -25,7 +25,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 
         public override IEnumerable<IGeometryModifierParameter> Parameters { get; }
 
-        protected override Polygon _modifyPolygon(Polygon polygon)
+        protected override Polygon ModifyPolygon(Polygon polygon)
         {
             if (polygon.Vertices.Length < 3)
             {

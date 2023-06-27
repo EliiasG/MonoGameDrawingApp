@@ -6,15 +6,9 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class MinSize : IUiElement
     {
-        public int MinWidth;
-        public int MinHeight;
-        public readonly IUiElement Child;
-
-        private readonly UiEnvironment _environment;
-
         public MinSize(UiEnvironment environment, IUiElement child, int width, int height)
         {
-            _environment = environment;
+            Environment = environment;
             Child = child;
             MinWidth = width;
             MinHeight = height;
@@ -26,7 +20,11 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public bool Changed => Child.Changed;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+        public int MinHeight { get; set; }
+        public int MinWidth { get; set; }
+
+        public IUiElement Child { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

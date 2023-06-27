@@ -6,25 +6,15 @@ namespace MonoGameDrawingApp.Ui.Base.Split
 {
     public abstract class BaseSplit : IUiElement
     {
-        public readonly IUiElement First;
-        public readonly IUiElement Second;
-
-        private readonly UiEnvironment _environment;
-
         private int _splitPosition;
 
         private bool _stick;
         private bool _stickToLast;
         private bool _stickToMiddle;
 
-        protected int _height = -1;
-        protected int _width = -1;
-        protected bool _changed;
-
-
         public BaseSplit(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition)
         {
-            _environment = environment;
+            Environment = environment;
 
             First = first;
             Second = second;
@@ -38,7 +28,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split
                 _stick = value < 0;
                 _stickToLast = value == -2;
                 _stickToMiddle = value == -3;
-                setSplitPositon(value);
+                SetSplitPositon(value);
             }
             get
             {
@@ -50,26 +40,26 @@ namespace MonoGameDrawingApp.Ui.Base.Split
                     }
                     else
                     {
-                        _splitPosition = _stickToLast ? Math.Max(_width, _height) : 0;
+                        _splitPosition = _stickToLast ? Math.Max(Width, Height) : 0;
                     }
                 }
-                setSplitPositon(_splitPosition); //to update the split position, as it may been restricted since set
+                SetSplitPositon(_splitPosition); //to update the split position, as it may been restricted since set
                 return _splitPosition;
             }
         }
 
-        private void setSplitPositon(int splitPosition)
+        private void SetSplitPositon(int splitPosition)
         {
-            if (_width == -1)
+            if (Width == -1)
             {
                 _splitPosition = splitPosition;
-                _changed = true;
+                Changed = true;
                 return;
             }
             int newSplitPosition = Math.Clamp(splitPosition, MinPosition, Math.Max(MaxPosition, MinPosition));
             if (newSplitPosition != _splitPosition)
             {
-                _changed = true;
+                Changed = true;
                 _splitPosition = newSplitPosition;
             }
         }
@@ -82,21 +72,27 @@ namespace MonoGameDrawingApp.Ui.Base.Split
 
         public abstract int MinPosition { get; }
 
-        public bool Changed => _changed;
+        public bool Changed { get; protected set; }
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+        protected int Width { get; set; } = -1;
+        protected int Height { get; set; } = -1;
+
+        public IUiElement Second { get; }
+
+        public IUiElement First { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
 
-            _height = height;
-            _width = width;
-            Texture2D res = _render(graphics);
-            _changed = false;
+            Height = height;
+            Width = width;
+            Texture2D res = Render(graphics);
+            Changed = false;
             return res;
         }
 
-        protected abstract Texture2D _render(Graphics graphics);
+        protected abstract Texture2D Render(Graphics graphics);
 
         public abstract void Update(Vector2 position, int width, int height);
     }

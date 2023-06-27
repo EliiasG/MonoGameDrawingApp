@@ -5,9 +5,10 @@ using MonoGameDrawingApp.Ui.Base;
 using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
-using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Rendering;
+using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Preview;
 using MonoGameDrawingApp.VectorSprites;
 using System;
+using System.Globalization;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 {
@@ -15,7 +16,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
     {
         private const float ZoomSpeed = 0.1f;
 
-        private readonly static Color[] s_backgroundColors = new Color[]
+        private static readonly Color[] s_backgroundColors = new Color[]
         {
             new Color(200, 200, 200),
             new Color(75, 75, 75),
@@ -33,9 +34,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         private readonly Grid _grid;
         private readonly VectorSpriteItemEditor _editor;
-        private Vector2? _worldDragStart = null;
-        private Vector2? _pixelDragStart = null;
-        private int _colorIndex = 0;
+        private Vector2? _worldDragStart;
+        private Vector2? _pixelDragStart;
+        private int _colorIndex;
         private bool _showGrid = true;
         private float _targetZoom = 50;
 
@@ -145,9 +146,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             {
                 if (mouse.RightButton == ButtonState.Pressed && Environment.OldMouse.RightButton == ButtonState.Released)
                 {
-                    _startDrag();
+                    StartDrag();
                 }
-                _targetZoom = Math.Clamp(_targetZoom + (mouse.ScrollWheelValue - Environment.OldMouse.ScrollWheelValue) / 1000f * _camera.Zoom, 5, 5000);
+                _targetZoom = Math.Clamp(_targetZoom + ((mouse.ScrollWheelValue - Environment.OldMouse.ScrollWheelValue) / 1000f * _camera.Zoom), 5, 5000);
             }
 
             bool dragging = _worldDragStart != null && mouse.RightButton == ButtonState.Pressed;
@@ -156,7 +157,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             {
                 Vector2 dragAmount = (Vector2)_pixelDragStart - mouse.Position.ToVector2();
                 dragAmount.Y *= -1;
-                _camera.Position = (Vector2)_worldDragStart + dragAmount / _camera.Zoom;
+                _camera.Position = (Vector2)_worldDragStart + (dragAmount / _camera.Zoom);
             }
             else
             {
@@ -187,7 +188,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 {
-                    _updateGridResolution();
+                    UpdateGridResolution();
                 }
                 else
                 {
@@ -203,10 +204,10 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 Changed = true;
             }
 
-            _updateZoom(dragging);
+            UpdateZoom(dragging);
         }
 
-        private void _updateGridResolution()
+        private void UpdateGridResolution()
         {
             VectorSpriteTabView.PopupEnvironment.OpenCentered(new TextInputPopup(
                 environment: Environment,
@@ -215,7 +216,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
                 {
                     try
                     {
-                        _grid.Resolution = Math.Clamp(int.Parse(newValue), 0, 512);
+                        _grid.Resolution = Math.Clamp(int.Parse(newValue, NumberFormatInfo.InvariantInfo), 0, 512);
                         _showGrid = true;
                         Changed = true;
                     }
@@ -226,13 +227,13 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             ));
         }
 
-        private void _updateZoom(bool dragging)
+        private void UpdateZoom(bool dragging)
         {
             float zoomDiff = _camera.Zoom - _targetZoom;
 
             if (dragging && zoomDiff != 0)
             {
-                _startDrag();
+                StartDrag();
             }
 
             float speed = ZoomSpeed * Math.Abs(zoomDiff);
@@ -240,7 +241,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
             _camera.Zoom -= Math.Clamp(zoomDiff, -speed - ZoomSpeed, speed + ZoomSpeed);
         }
 
-        private void _startDrag()
+        private void StartDrag()
         {
             _worldDragStart = _camera.Position;
             _pixelDragStart = Mouse.GetState().Position.ToVector2();

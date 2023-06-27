@@ -6,14 +6,11 @@ namespace MonoGameDrawingApp.Ui.Base
     public class StaticSize : IUiElement
     {
         public readonly IUiElement Child;
-
-        private readonly UiEnvironment _environment;
-
         private readonly RenderHelper _renderHelper;
 
         public StaticSize(UiEnvironment environment, IUiElement child)
         {
-            _environment = environment;
+            Environment = environment;
 
             Child = child;
             _renderHelper = new RenderHelper();
@@ -25,7 +22,7 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public int RequiredHeight => Child.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

@@ -35,11 +35,11 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees
 
             if (Directory.Exists(Path))
             {
-                _pasteDirectory(path);
+                PasteDirectory(path);
             }
             else if (File.Exists(Path))
             {
-                _pasteFile(path);
+                PasteFile(path);
             }
             else
             {
@@ -47,14 +47,14 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees
             }
         }
 
-        private void _pasteDirectory(string pastePath)
+        private void PasteDirectory(string pastePath)
         {
             Action<string, string> paste = IsMoving ? Directory.Move : IOHelper.CopyDirectory;
 
             paste(Path, pastePath);
         }
 
-        private void _pasteFile(string pastePath)
+        private void PasteFile(string pastePath)
         {
             Action<string, string> paste = IsMoving ? File.Move : File.Copy;
 

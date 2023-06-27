@@ -8,23 +8,18 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items
 {
     public class ContextMenuButton : IUiElement
     {
-        public readonly Action OnClick;
-        public bool Disabled;
-
-        private readonly UiEnvironment _environment;
-
         private readonly Button _button;
         private readonly ColorModifier _colorModifier;
         private readonly TextView _textView;
 
         public ContextMenuButton(UiEnvironment environment, string title, Action onClick)
         {
-            _environment = environment;
+            Environment = environment;
 
             OnClick = onClick;
 
             _textView = new TextView(environment, title);
-            _colorModifier = new ColorModifier(environment, _textView, _theme.DefaultTextColor);
+            _colorModifier = new ColorModifier(environment, _textView, Theme.DefaultTextColor);
             _button = new Button(environment, _colorModifier);
         }
 
@@ -40,9 +35,12 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items
 
         public int RequiredHeight => _button.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
-        private ITheme _theme => _environment.Theme;
+        private ITheme Theme => Environment.Theme;
+
+        public Action OnClick { get; }
+        public bool Disabled { get; set; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -51,7 +49,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items
 
         public void Update(Vector2 position, int width, int height)
         {
-            _colorModifier.Color = Disabled ? _theme.SelectedButtonColor : _button.ContainsMouse ? _theme.HoveringTextColor : _theme.DefaultTextColor;
+            _colorModifier.Color = Disabled ? Theme.SelectedButtonColor : _button.ContainsMouse ? Theme.HoveringTextColor : Theme.DefaultTextColor;
             if (_button.JustLeftClicked && !Disabled)
             {
                 OnClick();

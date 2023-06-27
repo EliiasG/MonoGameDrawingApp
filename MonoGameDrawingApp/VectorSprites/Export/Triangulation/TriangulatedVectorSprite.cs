@@ -16,7 +16,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
             List<int> indices = new();
             List<Color> colors = new();
 
-            _addSpriteItem(vertices, indices, colors, sprite.Root);
+            AddSpriteItem(vertices, indices, colors, sprite.Root);
 
             Vertices = vertices.ToArray();
             Indices = indices.ToArray();
@@ -29,7 +29,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
         public Color[] Colors { get; }
 
-        private void _addSpriteItem(List<Vector2> vertices, List<int> indices, List<Color> colors, VectorSpriteItem item)
+        private void AddSpriteItem(List<Vector2> vertices, List<int> indices, List<Color> colors, VectorSpriteItem item)
         {
             ModifiedGeometry modifiedGeometry = new(item.Geometry);
 
@@ -47,7 +47,7 @@ namespace MonoGameDrawingApp.VectorSprites.Export.Triangulation
 
             foreach (VectorSpriteItem child in item.Children.Reverse())
             {
-                _addSpriteItem(vertices, indices, colors, child);
+                AddSpriteItem(vertices, indices, colors, child);
             }
         }
     }

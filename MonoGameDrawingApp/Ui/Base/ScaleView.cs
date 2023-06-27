@@ -5,16 +5,11 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class ScaleView : IUiElement
     {
-        public readonly IUiElement Child;
-        public readonly bool DisableBlur;
-
-        private readonly UiEnvironment _environment;
-
         private readonly RenderHelper _renderHelper;
 
         public ScaleView(UiEnvironment environment, IUiElement child, bool disableBlur = false)
         {
-            _environment = environment;
+            Environment = environment;
             DisableBlur = disableBlur;
             Child = child;
             _renderHelper = new RenderHelper();
@@ -26,7 +21,11 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public bool Changed => Child.Changed;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public bool DisableBlur { get; }
+
+        public IUiElement Child { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

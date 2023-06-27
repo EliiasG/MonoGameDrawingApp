@@ -14,7 +14,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
             _renderHelper = new RenderHelper();
         }
 
-        public override int RequiredWidth => Items.Count > 0 ? Items.Sum((item) => item.RequiredWidth) + (Items.Count - 1) * Spacing : 1;
+        public override int RequiredWidth => Items.Count > 0 ? Items.Sum((item) => item.RequiredWidth) + ((Items.Count - 1) * Spacing) : 1;
 
         public override int RequiredHeight => Items.Count > 0 ? Items.Max((item) => item.RequiredHeight) : 3;
 
@@ -47,11 +47,11 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 _renderHelper.FinishSpriteBatchDraw();
             }
 
-            _changed = false;
+            Changed = false;
             return _renderHelper.Result;
         }
 
-        protected override void _updateItems(Vector2 position, int width, int height)
+        protected override void UpdateItems(Vector2 position, int width, int height)
         {
             Vector2 updatePositon = position;
             foreach (IUiElement item in new List<T>(Items))
@@ -59,7 +59,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 item.Update(updatePositon, item.RequiredWidth, height);
                 if (item.Changed)
                 {
-                    _changed = true;
+                    Changed = true;
                 }
                 updatePositon += new Vector2(item.RequiredWidth + Spacing, 0);
             }

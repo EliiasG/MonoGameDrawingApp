@@ -45,9 +45,9 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 if (_isVisible != value)
                 {
-                    _dataChanging();
+                    DataChanging();
                     _isVisible = value;
-                    _dataChanged();
+                    DataChanged();
                 }
             }
         }
@@ -59,9 +59,9 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 if (_name != value)
                 {
-                    _dataChanging();
+                    DataChanging();
                     _name = value;
-                    _dataChanged();
+                    DataChanged();
                 }
             }
         }
@@ -73,9 +73,9 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 if (_position != value)
                 {
-                    _dataChanging();
+                    DataChanging();
                     _position = value;
-                    _dataChanged();
+                    DataChanged();
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace MonoGameDrawingApp.VectorSprites
             get => _children;
             set
             {
-                _childrenChanging();
+                ChildrenChanging();
                 _children.Clear();
                 _children.Capacity = value.Count();
                 foreach (VectorSpriteItem child in value)
@@ -117,7 +117,7 @@ namespace MonoGameDrawingApp.VectorSprites
                     _children.Add(child);
                     child.Parent = this;
                 }
-                _childrenChanged();
+                ChildrenChanged();
             }
         }
 
@@ -126,16 +126,16 @@ namespace MonoGameDrawingApp.VectorSprites
             get => _modifiers;
             set
             {
-                _dataChanging();
+                DataChanging();
                 foreach (IGeometryModifier modifier in _modifiers.ToArray())
                 {
-                    _removeModifier(modifier);
+                    ForceRemoveModifier(modifier);
                 }
                 foreach (IGeometryModifier modifier in value.ToArray())
                 {
-                    _addModifier(modifier);
+                    ForceAddModifier(modifier);
                 }
-                _dataChanged();
+                DataChanged();
             }
         }
 
@@ -144,9 +144,9 @@ namespace MonoGameDrawingApp.VectorSprites
             _attchments.TryAdd(attachment.GetType(), attachment);
         }
 
-        public Type GetAttachment<Type>() where Type : IVectorSpriteItemAttachment
+        public T GetAttachment<T>() where T : IVectorSpriteItemAttachment
         {
-            return (Type)_attchments[typeof(Type)];
+            return (T)_attchments[typeof(T)];
         }
 
         public VectorSpriteItem GetChild(int index)
@@ -156,10 +156,10 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void RemoveChild(VectorSpriteItem child)
         {
-            _childrenChanging();
+            ChildrenChanging();
             _children.Remove(child);
             child.Parent = null;
-            _childrenChanged();
+            ChildrenChanged();
         }
 
         public void AddChild(VectorSpriteItem child)
@@ -169,48 +169,48 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void InsertChild(int index, VectorSpriteItem child)
         {
-            _childrenChanging();
+            ChildrenChanging();
             child.Parent?.RemoveChild(child);
             _children.Insert(index, child);
             child.Parent = this;
-            _childrenChanged();
+            ChildrenChanged();
         }
 
         public void AddModifier(IGeometryModifier modifier)
         {
-            _dataChanging();
-            _addModifier(modifier);
-            _dataChanged();
+            DataChanging();
+            ForceAddModifier(modifier);
+            DataChanged();
         }
 
         public void RemoveModifier(IGeometryModifier modifier)
         {
-            _dataChanging();
-            _removeModifier(modifier);
-            _dataChanged();
+            DataChanging();
+            ForceRemoveModifier(modifier);
+            DataChanged();
         }
 
         public void MoveModifierUp(IGeometryModifier modifier)
         {
-            _dataChanging();
+            DataChanging();
             int index = _modifiers.IndexOf(modifier);
             if (index > 0)
             {
                 _modifiers.RemoveAt(index);
                 _modifiers.Insert(index - 1, modifier);
             }
-            _dataChanged();
+            DataChanged();
         }
         public void MoveModifierDown(IGeometryModifier modifier)
         {
-            _dataChanging();
+            DataChanging();
             int index = _modifiers.IndexOf(modifier);
             if (index < _modifiers.Count - 1)
             {
                 _modifiers.RemoveAt(index);
                 _modifiers.Insert(index + 1, modifier);
             }
-            _dataChanged();
+            DataChanged();
         }
 
         public void MoveUp()
@@ -219,10 +219,10 @@ namespace MonoGameDrawingApp.VectorSprites
             int index = children.IndexOf(this);
             if (index > 0)
             {
-                Parent._childrenChanging();
+                Parent.ChildrenChanging();
                 children.RemoveAt(index);
                 children.Insert(index - 1, this);
-                Parent._childrenChanged();
+                Parent.ChildrenChanged();
             }
         }
 
@@ -232,34 +232,34 @@ namespace MonoGameDrawingApp.VectorSprites
             int index = children.IndexOf(this);
             if (index < children.Count - 1)
             {
-                Parent._childrenChanging();
+                Parent.ChildrenChanging();
                 children.RemoveAt(index);
                 children.Insert(index + 1, this);
-                Parent._childrenChanged();
+                Parent.ChildrenChanged();
             }
         }
 
-        private void _removeModifier(IGeometryModifier modifier)
+        private void ForceRemoveModifier(IGeometryModifier modifier)
         {
             _modifiers.Remove(modifier);
             foreach (IGeometryModifierParameter parameter in modifier.Parameters)
             {
-                parameter.Changed -= _dataChanged;
-                parameter.Changing -= _dataChanging;
+                parameter.Changed -= DataChanged;
+                parameter.Changing -= DataChanging;
             }
         }
 
-        private void _addModifier(IGeometryModifier modifier)
+        private void ForceAddModifier(IGeometryModifier modifier)
         {
             _modifiers.Add(modifier);
             foreach (IGeometryModifierParameter parameter in modifier.Parameters)
             {
-                parameter.Changed += _dataChanged;
-                parameter.Changing += _dataChanging;
+                parameter.Changed += DataChanged;
+                parameter.Changing += DataChanging;
             }
         }
 
-        private void _childrenChanged()
+        private void ChildrenChanged()
         {
             foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
             {
@@ -267,7 +267,7 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        internal void _dataChanged()
+        internal void DataChanged()
         {
             foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
             {
@@ -275,7 +275,7 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        private void _childrenChanging()
+        private void ChildrenChanging()
         {
             foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
             {
@@ -283,7 +283,7 @@ namespace MonoGameDrawingApp.VectorSprites
             }
         }
 
-        internal void _dataChanging()
+        internal void DataChanging()
         {
             foreach (IVectorSpriteItemAttachment attachment in _attchments.Values)
             {

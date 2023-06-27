@@ -15,7 +15,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
         public PopupEnvironment PopupEnvironment { get; init; }
 
-        protected override FileTab _makeTab(string path, TabEnvironment tabEnvironment)
+        protected override FileTab MakeTab(string path, TabEnvironment tabEnvironment)
         {
             return new VectorSpriteTab(tabEnvironment.Environment, path, PopupEnvironment);
         }

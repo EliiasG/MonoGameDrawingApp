@@ -16,7 +16,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter
 
         public override string Title => "Import Project";
 
-        protected override void _close()
+        public override void Close()
         {
             ForceClose();
         }

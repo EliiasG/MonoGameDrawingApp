@@ -9,7 +9,7 @@ namespace MonoGameDrawingApp.Export.VectorSprites
     {
         public override string OutputExtention => "tris";
 
-        protected override void _exportSprite(TriangulatedVectorSprite sprite, string exportFilePath)
+        protected override void ExportSprite(TriangulatedVectorSprite sprite, string exportFilePath)
         {
             using BinaryWriter writer = new(File.OpenWrite(exportFilePath));
 
@@ -33,7 +33,7 @@ namespace MonoGameDrawingApp.Export.VectorSprites
                     writer.Write(color.ToArgb());
                 }
 
-                _writeVector2(writer, sprite.Vertices[i]);
+                WriteVector2(writer, sprite.Vertices[i]);
 
                 old = color;
             }
@@ -46,7 +46,7 @@ namespace MonoGameDrawingApp.Export.VectorSprites
             }
         }
 
-        private void _writeVector2(BinaryWriter writer, Vector2 vector2)
+        private static void WriteVector2(BinaryWriter writer, Vector2 vector2)
         {
             writer.Write(vector2.X);
             writer.Write(vector2.Y);

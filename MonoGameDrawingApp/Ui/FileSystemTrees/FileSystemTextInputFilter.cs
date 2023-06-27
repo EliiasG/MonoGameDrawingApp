@@ -7,15 +7,11 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees
 {
     internal class FileSystemTextInputFilter : ITextInputFilter
     {
-        private readonly ISet<char> _allowedCharacters = " _-.,;+¤&()[]".ToHashSet();
+        public ISet<char> AllowedCharacters { get; } = " _-.,;+¤&()[]".ToHashSet();
 
-        private readonly ITextInputFilter[] _subFilters = new ITextInputFilter[]
+        public ITextInputFilter[] SubFilters { get; } = new ITextInputFilter[]
         {
             new AlphanumericTextInputFilter(),
         };
-
-        public ISet<char> AllowedCharacters => _allowedCharacters;
-
-        public ITextInputFilter[] SubFilters => _subFilters;
     }
 }

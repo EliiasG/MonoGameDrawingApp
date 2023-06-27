@@ -6,19 +6,12 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
 {
     public class PeekView : IScrollableView
     {
-        public readonly IUiElement Child;
-
-        private readonly UiEnvironment _environment;
-
         private Vector2 _position = Vector2.Zero;
         private readonly RenderHelper _renderHelper;
-        private bool _changed = true;
 
-        private int _width = 1;
-        private int _height = 1;
         public PeekView(UiEnvironment environment, IUiElement child)
         {
-            _environment = environment;
+            Environment = environment;
 
             _renderHelper = new RenderHelper();
             Child = child;
@@ -28,9 +21,9 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
 
         public int RequiredHeight => 1;
 
-        public bool Changed => _changed;
+        public bool Changed { get; private set; } = true;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
         public Vector2 Position
         {
@@ -40,24 +33,26 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
                 if (_position != value)
                 {
                     _position = value;
-                    _changed = true;
+                    Changed = true;
                 }
             }
         }
 
-        public int Width => _width;
+        public int Width { get; private set; } = 1;
 
-        public int Height => _height;
+        public int Height { get; private set; } = 1;
 
         public int MaxWidth => Child.RequiredWidth;
 
         public int MaxHeight => Child.RequiredHeight;
 
+        public IUiElement Child { get; }
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             _renderHelper.Begin(graphics, width, height);
 
-            if (_changed || _renderHelper.SizeChanged)
+            if (Changed || _renderHelper.SizeChanged)
             {
                 Texture2D childRender = Child.Render(graphics, Math.Max(width, Child.RequiredWidth), Math.Max(height, Child.RequiredHeight));
 
@@ -72,18 +67,18 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
                 _renderHelper.FinishSpriteBatchDraw();
             }
 
-            _changed = false;
+            Changed = false;
             return _renderHelper.Result;
         }
 
         public void Update(Vector2 position, int width, int height)
         {
-            _width = width;
-            _height = height;
+            Width = width;
+            Height = height;
             Child.Update(position - Position, width, height);
             if (Child.Changed)
             {
-                _changed = true;
+                Changed = true;
             }
         }
     }

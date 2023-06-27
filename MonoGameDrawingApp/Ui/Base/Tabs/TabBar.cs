@@ -8,8 +8,6 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 {
     public class TabBar : IScrollableView
     {
-        private readonly UiEnvironment _environment;
-
         private readonly List<TabView> _tabs;
 
         private readonly HScrollableListView _hListView;
@@ -17,7 +15,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 
         public TabBar(UiEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
 
             _tabs = new List<TabView>();
             _hListView = new HScrollableListView(environment, _tabs, false, 3);
@@ -30,7 +28,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 
         public bool Changed => _hListView.Changed;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
         public Vector2 Position
         {
@@ -62,6 +60,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
                 }
                 else if (_tabs.Count > 0)
                 {
+                    //maybe hacky but should not cause recursion, as this only runs when SelectedTab is set to null, and it sets SelectedTab to something that should not be null
                     SelectedTab = _tabs[0].Tab;
                 }
             }
@@ -104,9 +103,9 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
             _hListView.Update(position, width, height);
         }
 
-        public IEnumerable<Type> GetTabsOfType<Type>() where Type : Tab
+        public IEnumerable<T> GetTabsOfType<T>() where T : Tab
         {
-            return _tabs.FindAll((TabView v) => v.Tab is Type).ConvertAll((TabView v) => (Type)v.Tab);
+            return _tabs.FindAll((TabView v) => v.Tab is T).ConvertAll((TabView v) => (T)v.Tab);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements
 
         private bool _pressedSave;
         private Action<VectorSpriteItem> _onSelected;
-        private Button _treeButton;
+        private readonly Button _treeButton;
         private VectorSpriteTreeItem _selected;
 
         private MouseState _oldMouse;

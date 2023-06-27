@@ -12,7 +12,10 @@ namespace MonoGameDrawingApp.VectorSprites.Export
 
             Position = geometry.Item.AbsolutePosition;
 
-            if (!geometry.Item.IsVisible) return;
+            if (!geometry.Item.IsVisible)
+            {
+                return;
+            }
 
             foreach (IGeometryModifier modifier in geometry.Item.Modifiers)
             {

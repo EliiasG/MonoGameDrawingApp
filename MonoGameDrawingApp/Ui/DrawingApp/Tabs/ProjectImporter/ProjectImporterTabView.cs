@@ -14,9 +14,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter
 {
     public class ProjectImporterTabView : IUiElement
     {
-        public readonly DrawingAppStart Start;
-        public readonly ProjectImporterTab Tab;
-
         private readonly FileSystemTree _tree;
         private readonly VSplit _root;
         private readonly ContextMenuButton _importButton;
@@ -27,7 +24,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter
             Tab = tab;
             Environment = environment;
             _tree = new FileSystemTree("", start.Root.PopupEnvironment, start.Root.FileTypeManager, true, false);
-            _importButton = new ContextMenuButton(Environment, "Import", _import);
+            _importButton = new ContextMenuButton(Environment, "Import", Import);
             _root = new VSplitStandard(
                 environment: Environment,
                 first: new StackView(Environment, new List<IUiElement>() {
@@ -52,6 +49,10 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter
 
         public UiEnvironment Environment { get; init; }
 
+        public DrawingAppStart Start { get; }
+
+        public ProjectImporterTab Tab { get; }
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _root.Render(graphics, width, height);
@@ -64,7 +65,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.ProjectImporter
             _root.Update(position, width, height);
         }
 
-        private void _import()
+        private void Import()
         {
             if (_tree.Selected is DirectoryTreeItem item)
             {

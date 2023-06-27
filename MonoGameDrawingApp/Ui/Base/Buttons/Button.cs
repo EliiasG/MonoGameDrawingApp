@@ -6,15 +6,12 @@ namespace MonoGameDrawingApp.Ui.Base.Buttons
 {
     public class Button : IUiElement
     {
-        public readonly IUiElement Child;
-
-        private readonly UiEnvironment _environment;
         private Rectangle _bounds = Rectangle.Empty;
         private MouseState _oldMouse;
 
         public Button(UiEnvironment environment, IUiElement child)
         {
-            _environment = environment;
+            Environment = environment;
             Child = child;
         }
 
@@ -34,7 +31,9 @@ namespace MonoGameDrawingApp.Ui.Base.Buttons
 
         public bool JustRightClicked => RightClicked && !(_oldMouse.RightButton == ButtonState.Pressed);
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public IUiElement Child { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

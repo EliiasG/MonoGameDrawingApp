@@ -14,8 +14,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 {
     public class DrawingAppStart : IUiElement
     {
-
-        public readonly DrawingAppRoot Root;
         private readonly VScrollableListView _scrollableListView;
         private readonly IUiElement _root;
 
@@ -31,7 +29,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                 first: new VListView<IUiElement>(Environment, new List<IUiElement>()
                 {
                     new EmptySpace(Environment,  1, 5),
-                    new ContextMenuButton(Environment, "Import / Create Project", _import),
+                    new ContextMenuButton(Environment, "Import / Create Project", Import),
                     new EmptySpace(Environment,  1, 5),
                 }),
                 second: new StackView(Environment, new List<IUiElement>() {
@@ -50,6 +48,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         public UiEnvironment Environment { get; }
 
+        public DrawingAppRoot Root { get; }
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _root.Render(graphics, width, height);
@@ -66,36 +66,36 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             List<IUiElement> items = new();
             foreach (string line in SaveState.Projects)
             {
-                items.Add(_generateButton(line));
+                items.Add(GenerateButton(line));
             }
             _scrollableListView.Items = items;
         }
 
-        private void _remove(string path)
+        private void Remove(string path)
         {
             SaveState.Remove(path);
             ReloadProjects();
         }
 
-        private IUiElement _generateButton(string path)
+        private IUiElement GenerateButton(string path)
         {
             return new ContextMenuButton(Environment, path, () =>
             {
                 Root.PopupEnvironment.OpenCentered(new ChoicePopup(Environment, path, Root.PopupEnvironment, new ChoicePopupOption[]
                 {
-                    new ChoicePopupOption("Open", () => _open(path)),
-                    new ChoicePopupOption("Remove From List", () => _remove(path)),
+                    new ChoicePopupOption("Open", () => Open(path)),
+                    new ChoicePopupOption("Remove From List", () => Remove(path)),
                     new ChoicePopupOption("Cancel", () => Root.PopupEnvironment.Close()),
                 }));
             });
         }
 
-        private void _import()
+        private void Import()
         {
             Root.TabEnvironment.TabBar.OpenTab(new ProjectImporterTab(this), true);
         }
 
-        private void _open(string path)
+        private void Open(string path)
         {
             SaveState.SetFirst(path);
             ReloadProjects();

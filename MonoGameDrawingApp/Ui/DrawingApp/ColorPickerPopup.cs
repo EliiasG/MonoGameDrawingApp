@@ -13,6 +13,7 @@ using MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric;
 using MonoGameDrawingApp.VectorSprites;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp
 {
@@ -25,9 +26,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
         private const int InnerHeight = 600;
         private const int ColorButtonSpacing = 4;
         private const int ColorButtonAmount = 8;
-        private const int ColorButtonSize = (InnerWidth - ColorButtonSpacing - ScrollBarWidth) / ColorButtonAmount - ColorButtonSpacing;
-        private const int ValueInputWidth = InnerWidth / 4 - Spacing * 3 / 4;
-        private const int ColorViewWidth = InnerWidth / 3 - Spacing * 2 / 3;
+        private const int ColorButtonSize = ((InnerWidth - ColorButtonSpacing - ScrollBarWidth) / ColorButtonAmount) - ColorButtonSpacing;
+        private const int ValueInputWidth = (InnerWidth / 4) - (Spacing * 3 / 4);
+        private const int ColorViewWidth = (InnerWidth / 3) - (Spacing * 2 / 3);
         private const int ColorViewHeight = ColorViewWidth / 2;
         private const int ButtonHeight = (ColorViewHeight - Spacing) / 2;
         private const int TextHeight = 30;
@@ -56,23 +57,23 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
             _colorList = new List<IUiElement>();
 
-            _paletteButton = new ContextMenuButton(Environment, "Loading...", _selectPalette);
+            _paletteButton = new ContextMenuButton(Environment, "Loading...", SelectPalette);
             _newColorRect = new ColorRect(Environment, Color.White);
 
-            _rField = _generateValueField(Selected.R, (int v) => Selected = System.Drawing.Color.FromArgb(Selected.A, v, Selected.G, Selected.B));
-            _gField = _generateValueField(Selected.G, (int v) => Selected = System.Drawing.Color.FromArgb(Selected.A, Selected.R, v, Selected.B));
-            _bField = _generateValueField(Selected.B, (int v) => Selected = System.Drawing.Color.FromArgb(Selected.A, Selected.R, Selected.G, v));
-            _aField = _generateValueField(Selected.A, (int v) => Selected = System.Drawing.Color.FromArgb(v, Selected.R, Selected.G, Selected.B));
+            _rField = GenerateValueField((int v) => Selected = System.Drawing.Color.FromArgb(Selected.A, v, Selected.G, Selected.B));
+            _gField = GenerateValueField((int v) => Selected = System.Drawing.Color.FromArgb(Selected.A, Selected.R, v, Selected.B));
+            _bField = GenerateValueField((int v) => Selected = System.Drawing.Color.FromArgb(Selected.A, Selected.R, Selected.G, v));
+            _aField = GenerateValueField((int v) => Selected = System.Drawing.Color.FromArgb(v, Selected.R, Selected.G, Selected.B));
 
             Selected = previousColor;
 
-            _colorButton = _generateColorButton();
+            _colorButton = GenerateColorButton();
 
-            _internalPopupEnvironment = _generateInternalPopupEnvironment();
+            _internalPopupEnvironment = GenerateInternalPopupEnvironment();
 
             _root = _internalPopupEnvironment;
 
-            _setPalette(SaveState.SelectedColorPalette);
+            SetPalette(SaveState.SelectedColorPalette);
         }
 
         public PopupEnvironment PopupEnvironment { get; init; }
@@ -116,7 +117,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             _root.Update(position, width, height);
         }
 
-        private void _selectPalette()
+        private void SelectPalette()
         {
             List<IUiElement> items = new();
 
@@ -125,7 +126,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                 items.Add(new ContextMenuButton(Environment, colorPalette.Name, () =>
                 {
                     _internalPopupEnvironment.Close();
-                    _setPalette(colorPalette);
+                    SetPalette(colorPalette);
                 }));
             }
 
@@ -140,7 +141,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             _internalPopupEnvironment.Open(new Point(Spacing), new ContextMenu(Environment, items, _internalPopupEnvironment));
         }
 
-        private void _setPalette(ColorPalette colorPalette)
+        private void SetPalette(ColorPalette colorPalette)
         {
             SaveState.SelectedColorPalette = colorPalette;
             _paletteButton.Title = colorPalette.Name;
@@ -195,7 +196,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             _colorList.Add(new HListView<IUiElement>(Environment, row));
         }
 
-        private Button _generateColorButton()
+        private Button GenerateColorButton()
         {
             ScrollWindow scrollWindow = new(
                 environment: Environment,
@@ -212,7 +213,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             return new Button(Environment, scrollWindow);
         }
 
-        private PopupEnvironment _generateInternalPopupEnvironment()
+        private PopupEnvironment GenerateInternalPopupEnvironment()
         {
             // beatiful code, huh?
             return new PopupEnvironment(
@@ -227,7 +228,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                             items: new List<IUiElement>()
                             {
                                 new EmptySpace(Environment, 1, Spacing),
-                                _generateIndented(
+                                GenerateIndented(
                                     child: new MinSize(
                                         environment : Environment,
                                         child: new StackView(
@@ -248,7 +249,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                                     )
                                 ),
                                 new EmptySpace(Environment, 1, Spacing),
-                                _generateIndented(
+                                GenerateIndented(
                                     child: new MinSize(
                                         environment: Environment,
                                         child: new StackView(
@@ -264,7 +265,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                                     )
                                 ),
                                 new EmptySpace(Environment, 1, Spacing),
-                                _generateIndented(
+                                GenerateIndented(
                                     child: new MinSize(
                                         environment: Environment,
                                         child: new HScrollableListView(
@@ -304,7 +305,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
                                     )
                                 ),
                                 new EmptySpace(Environment, 1, Spacing),
-                                _generateIndented(
+                                GenerateIndented(
                                     child: new MinSize(
                                         environment: Environment,
                                         child: new HScrollableListView(
@@ -416,7 +417,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             );
         }
 
-        private TextInputField _generateValueField(int value, Action<int> changed)
+        private TextInputField GenerateValueField(Action<int> changed)
         {
             TextInputField newField = new(
                 environment: Environment,
@@ -441,7 +442,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             {
                 try
                 {
-                    int v = int.Parse(newField.Value);
+                    int v = int.Parse(newField.Value, NumberFormatInfo.InvariantInfo);
                     v = Math.Clamp(v, 0, 255);
                     changed(v);
                 }
@@ -454,7 +455,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             return newField;
         }
 
-        private IUiElement _generateIndented(IUiElement child)
+        private IUiElement GenerateIndented(IUiElement child)
         {
             return new HListView<IUiElement>(
                 environment: Environment,

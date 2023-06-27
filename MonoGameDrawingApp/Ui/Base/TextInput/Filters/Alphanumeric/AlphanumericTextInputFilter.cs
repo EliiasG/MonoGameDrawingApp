@@ -4,14 +4,12 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput.Filters.Alphanumeric
 {
     public class AlphanumericTextInputFilter : ITextInputFilter
     {
-        private readonly ITextInputFilter[] _subFilters = new ITextInputFilter[]
+        public ISet<char> AllowedCharacters => null;
+
+        public ITextInputFilter[] SubFilters { get; } = new ITextInputFilter[]
         {
             new AlphabeticTextInputFilter(),
             new NumericTextInputFilter(),
         };
-
-        public ISet<char> AllowedCharacters => null;
-
-        public ITextInputFilter[] SubFilters => _subFilters;
     }
 }

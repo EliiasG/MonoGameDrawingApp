@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
 
         public override int RequiredWidth => First.RequiredWidth + Second.RequiredWidth;
 
-        public override int MaxPosition => _width - Second.RequiredWidth;
+        public override int MaxPosition => Width - Second.RequiredWidth;
 
         public override int MinPosition => First.RequiredWidth;
     }

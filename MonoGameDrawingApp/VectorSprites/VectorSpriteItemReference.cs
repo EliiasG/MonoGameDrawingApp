@@ -39,7 +39,7 @@ namespace MonoGameDrawingApp.VectorSprites
                 {
                     try
                     {
-                        _loadFromPath();
+                        LoadFromPath();
                     }
                     catch
                     {
@@ -51,25 +51,27 @@ namespace MonoGameDrawingApp.VectorSprites
             }
             set
             {
-                if (_item != value)
+                if (_item == value)
                 {
-                    if (_item != null)
-                    {
-                        _item.GetAttachment<ChangeListenerVectorSpriteItemAttachment>().Changed -= _changed;
-                    }
-                    if (!_createFromPath)
-                    {
-                        _changing();
-                    }
-                    _item = value;
-                    if (!_createFromPath)
-                    {
-                        _changed();
-                    }
-                    if (_item != null)
-                    {
-                        _item.GetAttachment<ChangeListenerVectorSpriteItemAttachment>().Changed += _changed;
-                    }
+                    return;
+                }
+
+                if (_item != null)
+                {
+                    _item.GetAttachment<ChangeListenerVectorSpriteItemAttachment>().Changed -= CallChanged;
+                }
+                if (!_createFromPath)
+                {
+                    CallChanging();
+                }
+                _item = value;
+                if (!_createFromPath)
+                {
+                    CallChanged();
+                }
+                if (_item != null)
+                {
+                    _item.GetAttachment<ChangeListenerVectorSpriteItemAttachment>().Changed += CallChanged;
                 }
             }
         }
@@ -117,7 +119,7 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public Action Changed { get; set; }
 
-        private void _loadFromPath()
+        private void LoadFromPath()
         {
             if (_initPath == "NULL")
             {
@@ -126,7 +128,7 @@ namespace MonoGameDrawingApp.VectorSprites
                 return;
             }
             VectorSpriteItem item = _initSprite.Root;
-            IEnumerable<int> indices = _initPath.Split('/').Select((string s) => int.Parse(s));
+            IEnumerable<int> indices = _initPath.Split('/').Select(int.Parse);
             foreach (int i in indices)
             {
                 item = item.GetChild(i);
@@ -135,9 +137,12 @@ namespace MonoGameDrawingApp.VectorSprites
             _createFromPath = false;
         }
 
-        private void _changing() => Changing?.Invoke();
+        private void CallChanging()
+        {
+            Changing?.Invoke();
+        }
 
-        private void _changed()
+        private void CallChanged()
         {
             if (!_recursing)
             {

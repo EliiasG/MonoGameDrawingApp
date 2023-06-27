@@ -5,19 +5,13 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class ExternalImageView : IUiElement
     {
-        public readonly string Path;
-
-        private readonly UiEnvironment _environment;
-
-        private Texture2D _texture = null;
+        private Texture2D _texture;
 
         private readonly RenderHelper _renderHelper;
 
-        private bool _changed = true;
-
         public ExternalImageView(UiEnvironment environment, string path)
         {
-            _environment = environment;
+            Environment = environment;
             Path = path;
             _renderHelper = new RenderHelper();
         }
@@ -26,13 +20,15 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public int RequiredHeight => _texture == null ? 1 : _texture.Height;
 
-        public bool Changed => _changed;
+        public bool Changed { get; private set; } = true;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public string Path { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
-            _changed = false;
+            Changed = false;
             _renderHelper.Begin(graphics, width, height);
 
             if (_texture == null)
@@ -45,7 +41,7 @@ namespace MonoGameDrawingApp.Ui.Base
                 {
                     _texture = new ColorRect(Environment, Color.Transparent).Render(graphics, 1, 1);
                 }
-                _changed = true;
+                Changed = true;
             }
 
             if (_renderHelper.SizeChanged)

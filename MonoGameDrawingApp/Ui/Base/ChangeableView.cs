@@ -5,15 +5,11 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class ChangeableView : IUiElement
     {
-        private readonly UiEnvironment _environment;
-
         private IUiElement _child;
-
-        private bool _changed;
 
         public ChangeableView(UiEnvironment environment, IUiElement child)
         {
-            _environment = environment;
+            Environment = environment;
             _child = child;
         }
 
@@ -25,21 +21,25 @@ namespace MonoGameDrawingApp.Ui.Base
                 if (_child != value && value != null)
                 {
                     _child = value;
-                    _changed = true;
+                    Changed = true;
                 }
             }
         }
-        public bool Changed => _changed;
+        public bool Changed { get; private set; }
 
         public int RequiredWidth => Child.RequiredWidth;
 
         public int RequiredHeight => Child.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public UiEnvironment Environment1 => Environment;
+
+        public bool Changed1 { get => Changed; set => Changed = value; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
-            _changed = false;
+            Changed = false;
             return Child.Render(graphics, width, height);
         }
 
@@ -48,7 +48,7 @@ namespace MonoGameDrawingApp.Ui.Base
             Child.Update(position, width, height);
             if (Child.Changed)
             {
-                _changed = true;
+                Changed = true;
             }
         }
     }

@@ -16,12 +16,6 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
 
     public class FileCreatorMenu : IUiElement
     {
-        public readonly string Path;
-
-        public FileTypeManager FileTypeManager;
-        public PopupEnvironment PopupEnvironment;
-
-
         private const int Spacing = 5;
         private const int TextSpacing = 5;
         private const int ListWidth = 200;
@@ -29,7 +23,6 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
 
         private readonly IUiElement _root;
         private readonly TextInputField _textInputField;
-        private readonly UiEnvironment _environment;
         private readonly List<ContextMenuButton> _buttons;
 
         private CreatableFileType _selected;
@@ -37,7 +30,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
 
         public FileCreatorMenu(UiEnvironment environment, FileTypeManager fileTypeManager, PopupEnvironment popupEnvironment, string path)
         {
-            _environment = environment;
+            Environment = environment;
             FileTypeManager = fileTypeManager;
             _selected = new CreatableFileType(new EmptyFileCreator(), "Other", "");
             _buttons = new List<ContextMenuButton>();
@@ -48,7 +41,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
 
             foreach (CreatableFileType creatableFileType in fileTypeManager.CreatableFileTypes)
             {
-                typeButtons.Add(_generateButton(creatableFileType, false));
+                typeButtons.Add(GenerateButton(creatableFileType, false));
             }
 
             _textInputField = new TextInputField(Environment, _selected.Name, new ITextInputFilter[] { new FileSystemTextInputFilter() }, false, false, false, 100)
@@ -57,7 +50,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
                 Extention = _selected.Extension
             };
 
-            typeButtons.Add(_generateButton(_selected, true));
+            typeButtons.Add(GenerateButton(_selected, true));
 
             _root = new StackView(Environment, new IUiElement[]
             {
@@ -76,9 +69,9 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
                     new EmptySpace(Environment,  1, Spacing),
                     new CenterView(Environment, new HListView<IUiElement>(Environment, new List<IUiElement>
                     {
-                        new ContextMenuButton(Environment, "Cancel", () => PopupEnvironment.Close()),
+                        new ContextMenuButton(Environment, "Cancel", PopupEnvironment.Close),
                         new EmptySpace(Environment,  Spacing, 1),
-                        new ContextMenuButton(Environment, "Create File", _createFile),
+                        new ContextMenuButton(Environment, "Create File", CreateFile),
                     }), true, false),
                     new EmptySpace(Environment,  1, Spacing),
                 }),
@@ -91,7 +84,11 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
 
         public int RequiredHeight => _root.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public string Path { get; }
+        public FileTypeManager FileTypeManager { get; set; }
+        public PopupEnvironment PopupEnvironment { get; set; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -103,7 +100,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
             _root.Update(position, width, height);
         }
 
-        private IUiElement _generateButton(CreatableFileType creatableFileType, bool selected)
+        private IUiElement GenerateButton(CreatableFileType creatableFileType, bool selected)
         {
             int size = (int)Environment.FontHeight;
             IUiElement sprite = new SpriteView(Environment, FileTypeManager.GetIconPath("file" + creatableFileType.Extension));
@@ -132,7 +129,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup
             });
         }
 
-        private void _createFile()
+        private void CreateFile()
         {
             try
             {

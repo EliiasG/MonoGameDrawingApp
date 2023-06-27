@@ -7,20 +7,17 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public class PopupEnvironment : IUiElement
     {
-        public readonly IUiElement Child;
-
         private readonly UpdateBlocker _updateBlocker;
         private readonly StackView _outer;
         private readonly PeekView _peekView;
         private readonly ChangeableView _popup;
         private readonly IUiElement _empty;
-        private readonly UiEnvironment _environment;
 
         public PopupEnvironment(UiEnvironment environment, IUiElement child)
         {
             Child = child;
 
-            _environment = environment;
+            Environment = environment;
 
             _empty = new ColorRect(environment, Color.Transparent);
             _popup = new ChangeableView(environment, _empty);
@@ -35,7 +32,9 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 
         public int RequiredHeight => _outer.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public IUiElement Child { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

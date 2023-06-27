@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
         {
         }
 
-        protected override IEnumerable<(Rectangle, IUiElement)> _positionItems()
+        protected override IEnumerable<(Rectangle, IUiElement)> PositionItems()
         {
             List<(Rectangle, IUiElement)> result = new();
             Point currentPosition = Point.Zero;

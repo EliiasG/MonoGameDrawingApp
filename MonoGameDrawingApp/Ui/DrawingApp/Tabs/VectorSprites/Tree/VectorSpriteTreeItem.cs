@@ -14,7 +14,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
     {
         private readonly VectorSpriteTree _tree;
 
-        private bool _isOpen = false;
+        private bool _isOpen;
 
         public VectorSpriteTreeItem(VectorSpriteTree tree, PopupEnvironment popupEnvironment, VectorSpriteItem item)
         {
@@ -45,13 +45,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Tree
 
         public ITree Tree => _tree;
 
-        public IEnumerable<ITreeItem> Children
-        {
-            get
-            {
-                return Item.Children.Select((VectorSpriteItem item) => item.GetAttachment<VectorSpriteTreeItem>());
-            }
-        }
+        public IEnumerable<ITreeItem> Children => Item.Children.Select((VectorSpriteItem item) => item.GetAttachment<VectorSpriteTreeItem>());
 
         public void Clicked()
         {

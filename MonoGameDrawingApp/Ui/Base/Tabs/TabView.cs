@@ -7,28 +7,18 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 {
     public class TabView : IUiElement
     {
-        // class is a big mess, should use exisiting elements instead of rendering by itself
-        public readonly Tab Tab;
-
-        public readonly int Spacing;
-        public readonly int ExtraSize;
-
-        private readonly UiEnvironment _environment;
-
         private readonly IUiElement _background;
         private readonly IUiElement _backgroundSelected;
         private readonly IUiElement _closeButton;
 
         private readonly RenderHelper _renderHelper;
         private MouseState _oldMouse;
-        private bool _changed;
-
         private string _oldTile = "";
-        private bool _oldSelected = false;
+        private bool _oldSelected;
 
         public TabView(UiEnvironment environment, Tab tab, int spacing = 2, int extraSize = 2)
         {
-            _environment = environment;
+            Environment = environment;
 
             Tab = tab;
             Spacing = spacing;
@@ -45,13 +35,19 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 
         public int RequiredHeight => Math.Max((int)Environment.Font.MeasureString(Tab.Title).Y, Tab.HasCloseButton ? _closeButton.RequiredHeight : 0) + ExtraSize;
 
-        public bool Changed => _changed;
+        public bool Changed { get; private set; }
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public Tab Tab { get; }
+
+        public int Spacing { get; }
+
+        public int ExtraSize { get; }
 
         public void Update(Vector2 position, int width, int height)
         {
-            _updateChanged();
+            UpdateChanged();
             MouseState mouse = Mouse.GetState();
 
             Rectangle backgroundBounds = new(position.ToPoint(), new Point(width - Spacing, height));
@@ -78,11 +74,11 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
             _oldMouse = mouse;
         }
 
-        private void _updateChanged()
+        private void UpdateChanged()
         {
             if (_oldTile != Tab.Title || _oldSelected != Tab.IsSelected || _closeButton.Changed)
             {
-                _changed = true;
+                Changed = true;
             }
 
             _oldSelected = Tab.IsSelected;
@@ -121,14 +117,14 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
                 graphics.SpriteBatch.DrawString(
                     spriteFont: Environment.Font,
                     text: Tab.Title,
-                    position: new Vector2(ExtraSize, (height - (int)Environment.Font.MeasureString(Tab.Title).Y) / 2 + 1),
+                    position: new Vector2(ExtraSize, ((height - (int)Environment.Font.MeasureString(Tab.Title).Y) / 2) + 1),
                     color: Tab.IsSelected ? Environment.Theme.DefaultTextColor : Environment.Theme.HoveringTextColor
                 );
 
                 _renderHelper.FinishSpriteBatchDraw();
             }
 
-            _changed = false;
+            Changed = false;
             return _renderHelper.Result;
         }
     }

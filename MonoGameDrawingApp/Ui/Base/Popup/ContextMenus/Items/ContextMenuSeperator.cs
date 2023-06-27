@@ -7,13 +7,11 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items
 {
     public class ContextMenuSeperator : IUiElement
     {
-        private readonly UiEnvironment _environment;
-
         private readonly IUiElement _child;
 
         public ContextMenuSeperator(UiEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
             _child = new VListView<IUiElement>(environment, new List<IUiElement>
             {
                 new EmptySpace(Environment,  0, 5),
@@ -28,7 +26,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus.Items
 
         public int RequiredHeight => _child.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

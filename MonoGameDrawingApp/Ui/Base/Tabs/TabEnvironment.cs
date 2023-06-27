@@ -7,11 +7,6 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 {
     public class TabEnvironment : IUiElement
     {
-        public readonly TabBar TabBar;
-        public readonly IUiElement Background;
-
-        private readonly UiEnvironment _environment;
-
         private readonly ScrollWindow _scrollWindow;
         private readonly VSplit _outer;
         private readonly VSplit _inner;
@@ -19,7 +14,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 
         public TabEnvironment(UiEnvironment environment, IUiElement background)
         {
-            _environment = environment;
+            Environment = environment;
 
             TabBar = new TabBar(environment);
             _scrollWindow = new ScrollWindow(environment, TabBar, false, true);
@@ -36,7 +31,11 @@ namespace MonoGameDrawingApp.Ui.Base.Tabs
 
         public bool Changed => _outer.Changed;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public TabBar TabBar { get; }
+
+        public IUiElement Background { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

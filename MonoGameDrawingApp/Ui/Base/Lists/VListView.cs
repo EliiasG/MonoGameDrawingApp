@@ -16,17 +16,18 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
 
         public override int RequiredWidth => Items.Count > 0 ? Items.Max((item) => item.RequiredWidth) : 3;
 
-        public override int RequiredHeight => Items.Count > 0 ? Items.Sum((item) => item.RequiredHeight) + (Items.Count - 1) * Spacing : 1;
+        public override int RequiredHeight => Items.Count > 0 ? Items.Sum((item) => item.RequiredHeight) + ((Items.Count - 1) * Spacing) : 1;
 
         public override Texture2D Render(Graphics graphics, int width, int height)
         {
             _renderHelper.Begin(graphics, width, height);
 
-            if (_changed || _renderHelper.SizeChanged)
+            if (Changed || _renderHelper.SizeChanged)
             {
                 List<Texture2D> renders = new();
 
-                foreach (IUiElement item in Items.ToArray()) //using .ToArray(), since List may be modified while running loop
+                //using .ToArray(), since List may be modified while running loop
+                foreach (IUiElement item in Items.ToArray())
                 {
                     renders.Add(item.Render(graphics, width, item.RequiredHeight));
                 }
@@ -47,11 +48,11 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 _renderHelper.FinishSpriteBatchDraw();
             }
 
-            _changed = false;
+            Changed = false;
             return _renderHelper.Result;
         }
 
-        protected override void _updateItems(Vector2 position, int width, int height)
+        protected override void UpdateItems(Vector2 position, int width, int height)
         {
             Vector2 updatePositon = position;
             foreach (IUiElement item in Items)
@@ -59,7 +60,7 @@ namespace MonoGameDrawingApp.Ui.Base.Lists
                 item.Update(updatePositon, width, item.RequiredHeight);
                 if (item.Changed)
                 {
-                    _changed = true;
+                    Changed = true;
                 }
                 updatePositon += new Vector2(0, item.RequiredHeight + Spacing);
             }

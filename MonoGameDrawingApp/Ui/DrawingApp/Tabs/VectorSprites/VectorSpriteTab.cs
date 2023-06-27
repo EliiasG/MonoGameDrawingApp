@@ -22,11 +22,11 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
         public override bool HasCloseButton => true;
 
-        public override string Title => _originalTitle + (_spriteTabView.IsSaving ? "..." : (_spriteTabView.IsSaved ? "" : "*"));
+        public override string Title => OriginalTitle + (_spriteTabView.IsSaving ? "..." : (_spriteTabView.IsSaved ? "" : "*"));
 
-        private string _originalTitle => System.IO.Path.GetFileName(Path);
+        private string OriginalTitle => System.IO.Path.GetFileName(Path);
 
-        protected override void _close()
+        public override void Close()
         {
             if (_spriteTabView.IsSaved)
             {
@@ -34,7 +34,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             }
             else
             {
-                string message = "Close '" + _originalTitle + "'?";
+                string message = "Close '" + OriginalTitle + "'?";
                 ChoicePopup popup = new(_spriteTabView.Environment, message, _popupEnvironment, new ChoicePopupOption[]
                 {
                     new ChoicePopupOption("Save", () =>
@@ -42,9 +42,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
                         _spriteTabView.Save();
                         ForceClose();
                     }),
-                    new ChoicePopupOption("Don't save", () => {
-                        ForceClose();
-                    }),
+                    new ChoicePopupOption("Don't save", ForceClose),
                     new ChoicePopupOption("Cancel", () => { }),
                 });
                 _popupEnvironment.OpenCentered(popup);

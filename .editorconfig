@@ -11,3 +11,18 @@ dotnet_analyzer_diagnostic.severity = warning
 
 # CA1051: Do not declare visible instance fields
 dotnet_diagnostic.CA1051.severity = warning
+
+# IDE0005: Using directive is unnecessary.
+dotnet_diagnostic.IDE0005.severity = warning
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0046: Convert to conditional expression
+dotnet_style_prefer_conditional_expression_over_return = false
+
+# IDE0045: Convert to conditional expression
+dotnet_style_prefer_conditional_expression_over_assignment = false
+
+# CA2011: Avoid infinite recursion
+dotnet_diagnostic.CA2011.severity = suggestion

@@ -28,7 +28,7 @@ namespace MonoGameDrawingApp.Export
                 throw new IOException("Source directory does not exist: '" + SourcePath + "'");
             }
 
-            (IFileExporter, string)[] exporters = _getExporters();
+            (IFileExporter, string)[] exporters = GetExporters();
 
             Directory.CreateDirectory(outputPath);
 
@@ -90,7 +90,7 @@ namespace MonoGameDrawingApp.Export
             }
         }
 
-        private (IFileExporter, string)[] _getExporters()
+        private (IFileExporter, string)[] GetExporters()
         {
             if (!File.Exists(ProfilesPath))
             {

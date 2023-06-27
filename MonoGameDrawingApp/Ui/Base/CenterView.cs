@@ -5,17 +5,11 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class CenterView : IUiElement
     {
-        public readonly IUiElement Child;
-        public readonly bool CenterVertical;
-        public readonly bool CenterHorizontal;
-
-        private readonly UiEnvironment _environment;
-
         private readonly RenderHelper _renderHelper;
 
         public CenterView(UiEnvironment environment, IUiElement child, bool centerHorizontal, bool centerVertical)
         {
-            _environment = environment;
+            Environment = environment;
 
             Child = child;
             CenterVertical = centerVertical;
@@ -30,14 +24,20 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public int RequiredHeight => Child.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
-        private Vector2 _calculateChildPosition(int width, int height)
+        public bool CenterVertical { get; }
+
+        public bool CenterHorizontal { get; }
+
+        public IUiElement Child { get; }
+
+        private Vector2 CalculateChildPosition(int width, int height)
         {
-            return new Vector2(CenterHorizontal ? width / 2 - Child.RequiredWidth / 2 : 0, CenterVertical ? height / 2 - Child.RequiredHeight / 2 : 0);
+            return new Vector2(CenterHorizontal ? (width / 2) - (Child.RequiredWidth / 2) : 0, CenterVertical ? (height / 2) - (Child.RequiredHeight / 2) : 0);
         }
 
-        private Point _calculateChildSize(int width, int height)
+        private Point CalculateChildSize(int width, int height)
         {
             return new Point(CenterHorizontal ? Child.RequiredWidth : width, CenterVertical ? Child.RequiredHeight : height);
         }
@@ -48,8 +48,8 @@ namespace MonoGameDrawingApp.Ui.Base
 
             if (Changed || _renderHelper.SizeChanged)
             {
-                Vector2 position = _calculateChildPosition(width, height);
-                Point size = _calculateChildSize(width, height);
+                Vector2 position = CalculateChildPosition(width, height);
+                Point size = CalculateChildSize(width, height);
 
                 Texture2D render = Child.Render(graphics, size.X, size.Y);
 
@@ -69,8 +69,8 @@ namespace MonoGameDrawingApp.Ui.Base
 
         public void Update(Vector2 position, int width, int height)
         {
-            Point size = _calculateChildSize(width, height);
-            Vector2 childPosition = _calculateChildPosition(width, height);
+            Point size = CalculateChildSize(width, height);
+            Vector2 childPosition = CalculateChildPosition(width, height);
             Child.Update(position + childPosition, size.X, size.Y);
         }
     }

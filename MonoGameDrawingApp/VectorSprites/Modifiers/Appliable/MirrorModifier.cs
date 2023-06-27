@@ -25,8 +25,8 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable
 
         public void Apply(VectorSpriteItem item)
         {
-            VectorSpriteItem newItem = new VectorSpriteItem("Mirrored" + item.Name, item.Sprite);
-            newItem.Geometry.Points = _mirror(item.Geometry.Points, item.AbsolutePosition);
+            VectorSpriteItem newItem = new("Mirrored" + item.Name, item.Sprite);
+            newItem.Geometry.Points = Mirror(item.Geometry.Points, item.AbsolutePosition);
             newItem.Geometry.Color = item.Geometry.Color;
 
             if (item.Parent is VectorSpriteItem parent)
@@ -51,11 +51,11 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable
             for (int i = 0; i < c; i++)
             {
                 Polygon polygon = geometry.ModifiedPolygons[i * 2];
-                geometry.ModifiedPolygons.Insert(i * 2 + 1, new Polygon(_mirror(polygon.Vertices, geometry.Position), polygon.Color));
+                geometry.ModifiedPolygons.Insert((i * 2) + 1, new Polygon(Mirror(polygon.Vertices, geometry.Position), polygon.Color));
             }
         }
 
-        private Vector2[] _mirror(IEnumerable<Vector2> points, Vector2 position)
+        private Vector2[] Mirror(IEnumerable<Vector2> points, Vector2 position)
         {
             Vector2 first = _mirrorLine.Value.Item.AbsolutePosition - position;
             Vector2 second = first + _mirrorLine.Value.Item.Geometry.PointAt(0);

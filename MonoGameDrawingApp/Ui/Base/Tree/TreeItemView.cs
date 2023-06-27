@@ -11,18 +11,9 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 {
     public class TreeItemView : IUiElement
     {
-        public readonly ITreeItem TreeItem;
-        public readonly TreeView TreeView;
-        public readonly bool IndentChildren;
-
-        private bool _childrenChanged = true;
-        private bool _wasOpen = false;
-
-        private readonly UiEnvironment _environment;
-
+        private bool _wasOpen;
         private readonly HListView<IUiElement> _outer;
         private readonly List<TreeItemView> _empty;
-        private readonly int _indentation;
         private readonly IUiElement _openButtonIcon;
         private readonly IUiElement _closedButtonIcon;
         private readonly IUiElement _defaultButtonIcon;
@@ -36,11 +27,11 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 
         public TreeItemView(UiEnvironment environment, ITreeItem treeItem, int indentation, TreeView treeView, bool indentChildren)
         {
-            _environment = environment;
+            Environment = environment;
 
             TreeView = treeView;
             TreeItem = treeItem;
-            _indentation = indentation;
+            Indentation = indentation;
 
             _empty = new List<TreeItemView>();
             _children = new List<TreeItemView>();
@@ -104,10 +95,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
             });
         }
 
-        public int Indentation
-        {
-            get => _indentation;
-        }
+        public int Indentation { get; }
 
         public int RequiredWidth => _outer.RequiredWidth;
 
@@ -115,18 +103,24 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 
         public bool Changed => _outer.Changed;
 
-        public bool ChildrenChanged => _childrenChanged;
+        public bool ChildrenChanged { get; private set; } = true;
 
         public List<TreeItemView> Children => TreeItem.IsOpen ? _children : _empty;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public ITreeItem TreeItem { get; }
+
+        public bool IndentChildren { get; }
+
+        public TreeView TreeView { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _outer.Render(graphics, width, height);
         }
 
-        private bool _calculateChildrenChanged(IEnumerable<ITreeItem> itemChildren)
+        private bool CalculateChildrenChanged(IEnumerable<ITreeItem> itemChildren)
         {
             if (itemChildren.Count() != _children.Count)
             {
@@ -195,8 +189,8 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
                     goto After;
                 }
 
-                _childrenChanged = _calculateChildrenChanged(itemChildren);
-                if (_childrenChanged)
+                ChildrenChanged = CalculateChildrenChanged(itemChildren);
+                if (ChildrenChanged)
                 {
                     foreach (TreeItemView child in new List<TreeItemView>(_children)) // loop may modify _children
                     {
@@ -221,16 +215,16 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
             }
             else
             {
-                _childrenChanged = _wasOpen;
+                ChildrenChanged = _wasOpen;
             }
         After:
             if (_button.JustLeftClicked)
             {
                 TreeItem.IsOpen = !TreeItem.IsOpen;
-                _childrenChanged = true;
+                ChildrenChanged = true;
             }
 
-            _childrenChanged = _childrenChanged || Children.Any((item) => item.ChildrenChanged);
+            ChildrenChanged = ChildrenChanged || Children.Any((item) => item.ChildrenChanged);
             _wasOpen = TreeItem.IsOpen;
         }
     }

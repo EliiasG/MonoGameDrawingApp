@@ -8,11 +8,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public class MessagePopup : IUiElement
     {
-        public readonly string Message;
-
         private const int Spacing = 5;
-
-        private readonly UiEnvironment _environment;
         private readonly PopupEnvironment _popupEnvironment;
 
         private readonly IUiElement _outer;
@@ -21,7 +17,7 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
         public MessagePopup(UiEnvironment environment, string message, PopupEnvironment popupEnvironment)
         {
             Message = message;
-            _environment = environment;
+            Environment = environment;
             _popupEnvironment = popupEnvironment;
 
             _close = new TextButton(environment, "Close");
@@ -51,7 +47,9 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 
         public int RequiredHeight => _outer.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public string Message { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

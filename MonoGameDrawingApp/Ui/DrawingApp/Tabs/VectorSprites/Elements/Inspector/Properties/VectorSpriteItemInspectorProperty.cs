@@ -15,9 +15,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
 
         private VectorSpriteItem _item;
 
-        private IUiElement _background;
-        private IUiElement _backgroundSelected;
-        private ChangeableView _backgroundView;
+        private readonly IUiElement _background;
+        private readonly IUiElement _backgroundSelected;
+        private readonly ChangeableView _backgroundView;
 
         public VectorSpriteItemInspectorProperty(UiEnvironment environment, string name, VectorSpriteItem value, VectorSpriteTabView vectorSpriteTabView, Action changed)
         {
@@ -67,7 +67,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
                                 }
                                 else
                                 {
-                                    _setText();
+                                    SetText();
                                 }
                                 _backgroundView.Child = _background;
                             });
@@ -88,7 +88,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             set
             {
                 _item = value;
-                _setText();
+                SetText();
             }
         }
 
@@ -112,7 +112,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             _root.Update(position, width, height);
         }
 
-        private void _setText()
+        private void SetText()
         {
             _textView.Text = Value?.Name ?? "Click to select";
         }

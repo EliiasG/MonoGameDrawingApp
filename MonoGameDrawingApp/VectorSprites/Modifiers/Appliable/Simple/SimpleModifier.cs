@@ -14,22 +14,22 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 
         public void Apply(VectorSpriteItem item)
         {
-            Polygon polygon = _modifyPolygon(new Polygon(item.Geometry.Points.ToArray(), item.Geometry.Color));
+            Polygon polygon = ModifyPolygon(new Polygon(item.Geometry.Points.ToArray(), item.Geometry.Color));
             item.Geometry.Points = polygon.Vertices;
             item.Geometry.Color = polygon.Color;
         }
 
         public void Modify(ModifiedGeometry geometry)
         {
-            _start();
+            Start();
             for (int i = 0; i < geometry.ModifiedPolygons.Count; i++)
             {
-                geometry.ModifiedPolygons[i] = _modifyPolygon(geometry.ModifiedPolygons[i]);
+                geometry.ModifiedPolygons[i] = ModifyPolygon(geometry.ModifiedPolygons[i]);
             }
         }
 
-        protected virtual void _start() { }
+        protected virtual void Start() { }
 
-        protected abstract Polygon _modifyPolygon(Polygon polygon);
+        protected abstract Polygon ModifyPolygon(Polygon polygon);
     }
 }

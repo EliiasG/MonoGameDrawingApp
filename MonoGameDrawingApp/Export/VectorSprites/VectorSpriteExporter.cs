@@ -15,9 +15,9 @@ namespace MonoGameDrawingApp.Export.VectorSprites
         {
             VectorSprite vectorSprite = VectorSpriteJsonLoader.LoadVectorSprite(fromPath);
             vectorSprite.AddAttachment(new ChangeListenerVectorSpriteAttachment(() => { }));
-            _exportSprite(new TriangulatedVectorSprite(vectorSprite), exportFilePath);
+            ExportSprite(new TriangulatedVectorSprite(vectorSprite), exportFilePath);
         }
 
-        protected abstract void _exportSprite(TriangulatedVectorSprite sprite, string exportFilePath);
+        protected abstract void ExportSprite(TriangulatedVectorSprite sprite, string exportFilePath);
     }
 }

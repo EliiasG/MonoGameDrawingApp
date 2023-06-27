@@ -7,37 +7,33 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class StackView : IUiElement
     {
-        public readonly IEnumerable<IUiElement> Children;
-
-        private readonly UiEnvironment _environment;
-
         private readonly RenderHelper _renderHelper;
 
         private List<IUiElement> _old;
 
-        private bool _changed;
-
         public StackView(UiEnvironment environment, IEnumerable<IUiElement> children)
         {
-            _environment = environment;
+            Environment = environment;
             Children = children;
             _renderHelper = new RenderHelper();
             _old = new List<IUiElement>();
         }
 
-        public bool Changed => _changed;
+        public bool Changed { get; private set; }
 
         public int RequiredWidth => Children.Max((x) => x.RequiredWidth);
 
         public int RequiredHeight => Children.Max((x) => x.RequiredHeight);
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public IEnumerable<IUiElement> Children { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             _renderHelper.Begin(graphics, width, height);
 
-            if (_renderHelper.SizeChanged || _changed)
+            if (_renderHelper.SizeChanged || Changed)
             {
                 List<Texture2D> renders = new();
                 foreach (IUiElement child in Children)
@@ -59,7 +55,7 @@ namespace MonoGameDrawingApp.Ui.Base
                 _renderHelper.FinishSpriteBatchDraw();
             }
 
-            _changed = false;
+            Changed = false;
             return _renderHelper.Result;
         }
 
@@ -70,23 +66,26 @@ namespace MonoGameDrawingApp.Ui.Base
                 child.Update(position, width, height);
             }
 
-            _updateChanged();
+            UpdateChanged();
         }
 
-        private void _updateChanged()
+        private void UpdateChanged()
         {
-            if (_changed) return;
-
-            if (Children.Any((x) => x.Changed))
+            if (Changed)
             {
-                _changed = true;
                 return;
             }
 
-            if (Children.Count() != _old.Count())
+            if (Children.Any((x) => x.Changed))
+            {
+                Changed = true;
+                return;
+            }
+
+            if (Children.Count() != _old.Count)
             {
                 _old = new List<IUiElement>(Children);
-                _changed = true;
+                Changed = true;
                 return;
             }
 
@@ -95,7 +94,7 @@ namespace MonoGameDrawingApp.Ui.Base
             {
                 if (child != _old[i])
                 {
-                    _changed = true;
+                    Changed = true;
                     _old = new List<IUiElement>(Children);
                     return;
                 }

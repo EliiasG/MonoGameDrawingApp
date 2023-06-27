@@ -6,7 +6,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees
     {
         public abstract string[] Extentions { get; }
 
-        protected abstract FileTab _makeTab(string path, TabEnvironment tabEnvironment);
+        protected abstract FileTab MakeTab(string path, TabEnvironment tabEnvironment);
 
         public void Open(string path, TabEnvironment tabEnvironment)
         {
@@ -19,7 +19,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees
                 }
             }
 
-            tabEnvironment.TabBar.OpenTab(_makeTab(path, tabEnvironment), true);
+            tabEnvironment.TabBar.OpenTab(MakeTab(path, tabEnvironment), true);
         }
     }
 }

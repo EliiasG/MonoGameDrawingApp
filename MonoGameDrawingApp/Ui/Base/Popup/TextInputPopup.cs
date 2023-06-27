@@ -12,20 +12,15 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public class TextInputPopup : IUiElement
     {
-        public readonly Action<string> Confirmed;
-        public readonly PopupEnvironment PopupEnvironment;
-
-        private readonly UiEnvironment _environment;
-
         private readonly MinSize _outer;
         private readonly TextInputField _textInput;
         private readonly TextButton _confirmButton;
         private readonly TextButton _cancelButton;
-        private bool _done = false;
+        private bool _done;
 
         public TextInputPopup(UiEnvironment environment, PopupEnvironment popupEnvironment, Action<string> confirmed, ITextInputFilter[] filters, string title, string currentValue = "")
         {
-            _environment = environment;
+            Environment = environment;
             _textInput = new TextInputField(environment, currentValue, filters, true, false)
             {
                 IsSelected = true
@@ -119,7 +114,11 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 
         public int RequiredHeight => _outer.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public Action<string> Confirmed { get; }
+
+        public PopupEnvironment PopupEnvironment { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

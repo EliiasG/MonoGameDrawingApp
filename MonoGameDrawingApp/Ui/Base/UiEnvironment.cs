@@ -10,15 +10,7 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class UiEnvironment
     {
-        public readonly Graphics Graphics;
-        public readonly ITheme Theme;
-        public readonly float FontHeight;
-        public readonly ContentManager Content;
 
-        public MouseState OldMouse;
-        public KeyboardState OldKeyboardState;
-        public IUiElement Root;
-        public object Clipboard = null; //Maybe bad? the convention says not to create empty interfaces, and use attributes instead, but that does not seem to work for variable types
 
         public MouseCursor Cursor
         {
@@ -32,7 +24,23 @@ namespace MonoGameDrawingApp.Ui.Base
             get => _cursor;
         }
 
-        public readonly SpriteFont Font;
+        public SpriteFont Font { get; }
+
+        public MouseState OldMouse { get; set; }
+
+        public KeyboardState OldKeyboardState { get; set; }
+
+        public IUiElement Root { get; set; }
+
+        public object Clipboard { get; set; } //Maybe bad? the convention says not to create empty interfaces, and use attributes instead, but that does not seem to work for variable types
+
+        public Graphics Graphics { get; }
+
+        public ITheme Theme { get; }
+
+        public float FontHeight { get; }
+
+        public ContentManager Content { get; }
 
         private MouseCursor _cursor;
         private readonly List<GlobalShortcut> _globalShortcuts;
@@ -73,7 +81,7 @@ namespace MonoGameDrawingApp.Ui.Base
                 color: Color.White
             );
 
-            _updateShortcuts();
+            UpdateShortcuts();
 
             OldKeyboardState = Keyboard.GetState();
             OldMouse = Mouse.GetState();
@@ -95,14 +103,14 @@ namespace MonoGameDrawingApp.Ui.Base
             _globalShortcuts.Remove(shortcut);
         }
 
-        private void _updateShortcuts()
+        private void UpdateShortcuts()
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
             foreach (GlobalShortcut shortcut in _globalShortcuts)
             {
-                bool allDown = shortcut.ActivationKeys.All((Keys key) => keyboardState.IsKeyDown(key));
-                bool anyJustPressed = shortcut.ActivationKeys.Any((Keys key) => OldKeyboardState.IsKeyUp(key));
+                bool allDown = shortcut.ActivationKeys.All(keyboardState.IsKeyDown);
+                bool anyJustPressed = shortcut.ActivationKeys.Any(OldKeyboardState.IsKeyUp);
                 if (allDown && anyJustPressed)
                 {
                     shortcut.Run();

@@ -23,11 +23,11 @@ namespace MonoGameDrawingApp
 
         public static void CopyDirectory(string sourceDir, string destinationDir)
         {
-            _copyDirectory(sourceDir, destinationDir, new HashSet<string>());
+            CopyDirectory(sourceDir, destinationDir, new HashSet<string>());
         }
 
         //Based on C# Docs, https://learn.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories
-        private static void _copyDirectory(string sourceDir, string destinationDir, ISet<string> createdDirectories)
+        private static void CopyDirectory(string sourceDir, string destinationDir, ISet<string> createdDirectories)
         {
             // Get information about the source directory
             DirectoryInfo dir = new(sourceDir);
@@ -61,7 +61,7 @@ namespace MonoGameDrawingApp
             foreach (DirectoryInfo subDir in dirs)
             {
                 string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                _copyDirectory(subDir.FullName, newDestinationDir, createdDirectories);
+                CopyDirectory(subDir.FullName, newDestinationDir, createdDirectories);
             }
 
         }

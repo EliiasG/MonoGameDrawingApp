@@ -30,9 +30,9 @@ namespace MonoGameDrawingApp.VectorSprites
             {
                 if (_color != value)
                 {
-                    Item?._dataChanging();
+                    Item?.DataChanging();
                     _color = value;
-                    Item?._dataChanged();
+                    Item?.DataChanged();
                 }
             }
         }
@@ -42,24 +42,24 @@ namespace MonoGameDrawingApp.VectorSprites
             get => _points;
             set
             {
-                Item?._dataChanging();
+                Item?.DataChanging();
                 _points = new List<Vector2>(value);
-                Item?._dataChanged();
+                Item?.DataChanged();
             }
         }
 
         public void AddPoint(Vector2 point)
         {
-            Item?._dataChanging();
+            Item?.DataChanging();
             _points.Add(point);
-            Item?._dataChanged();
+            Item?.DataChanged();
         }
 
         public void RemovePointAt(int index)
         {
-            Item?._dataChanging();
+            Item?.DataChanging();
             _points.RemoveAt(index);
-            Item?._dataChanged();
+            Item?.DataChanged();
         }
 
         public Vector2 PointAt(int pointIndex)
@@ -69,16 +69,16 @@ namespace MonoGameDrawingApp.VectorSprites
 
         public void InsertPointAt(int index, Vector2 point)
         {
-            Item?._dataChanging();
+            Item?.DataChanging();
             _points.Insert(index, point);
-            Item?._dataChanged();
+            Item?.DataChanged();
         }
 
         public void ReplacePointAt(int index, Vector2 point)
         {
-            Item?._dataChanging();
+            Item?.DataChanging();
             _points[index] = point;
-            Item?._dataChanged();
+            Item?.DataChanged();
         }
 
         public int Size => _points.Count;

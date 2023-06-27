@@ -14,12 +14,12 @@
 
         public void ChildrenChanging()
         {
-            SpiteAttachment._childrenChanging(Item);
+            SpiteAttachment.ChildrenChanging(Item);
         }
 
         public void DataChanging()
         {
-            SpiteAttachment._dataChanging(Item);
+            SpiteAttachment.DataChanging(Item);
         }
     }
 }

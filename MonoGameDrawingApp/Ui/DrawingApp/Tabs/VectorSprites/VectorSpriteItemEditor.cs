@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameDrawingApp.VectorSprites;
+using System.Globalization;
 
 namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 {
@@ -23,7 +24,6 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
         private bool _isInOriginMode;
         private bool _isNearOrigin;
         private Vector2? _dragOffset;
-        private KeyboardState _oldKeyboard;
         private MouseState _oldMouse;
         private Vector2? _dragPosition;
         private bool _isInAddMode;
@@ -31,7 +31,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
         public VectorSpriteItemEditor(ContentManager contentManager, Camera camera, Grid grid)
         {
-            _loadImages(contentManager);
+            LoadImages(contentManager);
             Camera = camera;
             Grid = grid;
         }
@@ -53,7 +53,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             }
         }
 
-        public bool Changed { get; private set; } = false;
+        public bool Changed { get; private set; }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont font, Color color)
         {
@@ -63,19 +63,19 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             }
             if (_isInOriginMode || _isInAddMode)
             {
-                _renderIndices(spriteBatch, font, color);
-                _renderOrigin(spriteBatch, _isNearOrigin || _dragOffset != null ? _originSelected : _originDefault, color);
+                RenderIndices(spriteBatch, font, color);
+                RenderOrigin(spriteBatch, _isNearOrigin || _dragOffset != null ? _originSelected : _originDefault, color);
             }
             else
             {
-                _renderVertices(spriteBatch, color);
-                _renderOrigin(spriteBatch, _originDefault, color);
+                RenderVertices(spriteBatch, color);
+                RenderOrigin(spriteBatch, _originDefault, color);
             }
             if (_dragPosition != null && _selectedIndex == -1 && !_isInOriginMode)
             {
                 spriteBatch.Draw(
                     texture: _vertexSelected,
-                    position: _dragPosition.Value - _vertexSelected.Bounds.Size.ToVector2() / 2,
+                    position: _dragPosition.Value - (_vertexSelected.Bounds.Size.ToVector2() / 2),
                     color: color
                 );
             }
@@ -110,23 +110,22 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             {
                 if (_isInAddMode)
                 {
-                    _updateAddMode(position);
+                    UpdateAddMode(position);
                 }
                 else if (_isInOriginMode)
                 {
-                    _updateOriginMode(position);
+                    UpdateOriginMode(position);
                 }
                 else
                 {
-                    _updateVertexMode(position);
+                    UpdateVertexMode(position);
                 }
             }
 
             _oldMouse = mouse;
-            _oldKeyboard = keyboard;
         }
 
-        private static void _loadImages(ContentManager contentManager)
+        private static void LoadImages(ContentManager contentManager)
         {
             _originDefault ??= contentManager.Load<Texture2D>("icons/originDefault");
             _originSelected ??= contentManager.Load<Texture2D>("icons/originSelected");
@@ -134,7 +133,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             _vertexSelected ??= contentManager.Load<Texture2D>("icons/vertexSelected");
         }
 
-        private void _updateVertexMode(Vector2 position)
+        private void UpdateVertexMode(Vector2 position)
         {
             MouseState mouse = Mouse.GetState();
 
@@ -174,7 +173,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
                 }
                 else
                 {
-                    _updatePlaceOnLine(mousePos);
+                    UpdatePlaceOnLine(mousePos);
                 }
 
                 if (_selectedIndex != -1 && justClikced)
@@ -211,7 +210,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             }
         }
 
-        private void _updatePlaceOnLine(Vector2 mousePos)
+        private void UpdatePlaceOnLine(Vector2 mousePos)
         {
             float closestLineDistSq = AddOnLineDistanceSquared + 1;
             int size = Selected.Geometry.Size;
@@ -259,7 +258,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
         }
 
-        private void _updateOriginMode(Vector2 position)
+        private void UpdateOriginMode(Vector2 position)
         {
             MouseState mouse = Mouse.GetState();
 
@@ -310,7 +309,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             }
         }
 
-        private void _updateAddMode(Vector2 position)
+        private void UpdateAddMode(Vector2 position)
         {
             MouseState mouse = Mouse.GetState();
 
@@ -333,27 +332,27 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             }
         }
 
-        private void _renderOrigin(SpriteBatch spriteBatch, Texture2D texture, Color color)
+        private void RenderOrigin(SpriteBatch spriteBatch, Texture2D texture, Color color)
         {
             Vector2 position = Camera.WorldToPixel(_isInOriginMode ? _dragPosition ?? Selected.AbsolutePosition : Selected.AbsolutePosition);//Selected.AbsolutePosition);
             spriteBatch.Draw(
                 texture: texture,
-                position: position - _originDefault.Bounds.Size.ToVector2() / 2,
+                position: position - (_originDefault.Bounds.Size.ToVector2() / 2),
                 color: color
             );
         }
 
-        private void _renderIndices(SpriteBatch spriteBatch, SpriteFont font, Color color)
+        private void RenderIndices(SpriteBatch spriteBatch, SpriteFont font, Color color)
         {
             int i = 0;
             foreach (Vector2 point in Selected.Geometry.Points)
             {
-                string text = i.ToString();
+                string text = i.ToString(NumberFormatInfo.InvariantInfo);
 
                 spriteBatch.DrawString(
                     spriteFont: font,
                     text: text,
-                    position: Camera.WorldToPixel(point + Selected.AbsolutePosition) - font.MeasureString(text) / 2,
+                    position: Camera.WorldToPixel(point + Selected.AbsolutePosition) - (font.MeasureString(text) / 2),
                     color: color//Util.InvertColor(BackgroundColor)
                 );
 
@@ -361,7 +360,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
             }
         }
 
-        private void _renderVertices(SpriteBatch spriteBatch, Color color)
+        private void RenderVertices(SpriteBatch spriteBatch, Color color)
         {
             int i = 0;
 
@@ -375,7 +374,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites
 
                 spriteBatch.Draw(
                     texture: texture,
-                    position: position - texture.Bounds.Size.ToVector2() / 2,
+                    position: position - (texture.Bounds.Size.ToVector2() / 2),
                     color: color
                 );
                 ++i;

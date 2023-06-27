@@ -6,18 +6,13 @@ using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.Base.TextInput.Filters;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace MonoGameDrawingApp.Ui.Base.TextInput
 {
     public class TextInputField : IUiElement
     {
-        public readonly int MaxLength;
-
-        public readonly ITextInputFilter[] Filters;
-
-        private readonly UiEnvironment _environment;
-
         private readonly Dictionary<Keys, char> _customKeyChars;
         private readonly Dictionary<char, char> _customShiftVersions;
         private readonly Dictionary<char, char> _customAltVersions;
@@ -44,7 +39,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
 
         public TextInputField(UiEnvironment environment, string value, ITextInputFilter[] filters, bool isSelectable = true, bool isDeselectable = true, bool centerHorizontal = false, int maxLength = -1)
         {
-            _environment = environment;
+            Environment = environment;
 
             Value = value;
             _cursorPosition = value.Length;
@@ -56,9 +51,9 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
 
             IsSelected = false;
 
-            _customKeyChars = _createCustomKeyChars();
-            _customShiftVersions = _createCustomShiftVersions();
-            _customAltVersions = _createCustomAltVersions();
+            _customKeyChars = CreateCustomKeyChars();
+            _customShiftVersions = CreateCustomShiftVersions();
+            _customAltVersions = CreateCustomAltVersions();
 
             /* 
              * Simplified Structure:
@@ -138,7 +133,11 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
 
         public int RequiredHeight => _button.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public int MaxLength { get; }
+
+        public ITextInputFilter[] Filters { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -149,8 +148,8 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
         {
             if (IsSelected)
             {
-                _updateTyping();
-                if (IsDeselectable && (Mouse.GetState().LeftButton == ButtonState.Pressed && !_button.ContainsMouse && _oldMouse.LeftButton == ButtonState.Released || Environment.JustPressed(Keys.Escape)))
+                UpdateTyping();
+                if (IsDeselectable && ((Mouse.GetState().LeftButton == ButtonState.Pressed && !_button.ContainsMouse && _oldMouse.LeftButton == ButtonState.Released) || Environment.JustPressed(Keys.Escape)))
                 {
                     IsSelected = false;
                     Deselected?.Invoke();
@@ -175,22 +174,22 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             }
 
             _oldMouse = Mouse.GetState();
-            _updateUiState();
+            UpdateUiState();
             _button.Update(position, width, height);
         }
 
-        private void _updateUiState()
+        private void UpdateUiState()
         {
             _cursorPosition = Math.Min(_cursorPosition, Value.Length);
             _counter = (_counter + 1) % 60;
             _textView.Text = Value + Extention;
             _currentBrackground.Child = IsSelected ? _backgroundSelected : _button.ContainsMouse ? _backgroundHovering : _background;
             _currentCursor.Child = IsSelected && _counter < 30 ? _cursorOn : _cursorOff;
-            _cursorOuter.SplitPosition = (int)Environment.Font.MeasureString(Value.Substring(0, _cursorPosition)).X;
+            _cursorOuter.SplitPosition = (int)Environment.Font.MeasureString(Value[.._cursorPosition]).X;
             _cursorInner.SplitPosition = 0;
         }
 
-        private void _updateTyping()
+        private void UpdateTyping()
         {
             KeyboardState _keyboard = Keyboard.GetState();
             Keys[] keys = _keyboard.GetPressedKeys();
@@ -211,34 +210,43 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
                 _counter = 0;
             }
 
-            if (MaxLength != -1 && Value.Length >= MaxLength || keys.Contains(Keys.LeftControl))
+            if ((MaxLength != -1 && Value.Length >= MaxLength) || keys.Contains(Keys.LeftControl))
             {
                 return;
             }
 
             foreach (Keys key in keys)
             {
-                if (!Environment.JustPressed(key)) continue;
+                if (!Environment.JustPressed(key))
+                {
+                    continue;
+                }
 
-                string keyName = _customKeyChars.ContainsKey(key) ? _customKeyChars[key].ToString() : key.ToString();
-                if (keyName.Length > 1) continue;
+                string keyName = _customKeyChars.TryGetValue(key, out char value1) ? value1.ToString() : key.ToString();
+                if (keyName.Length > 1)
+                {
+                    continue;
+                }
 
                 bool shift = _keyboard.IsKeyDown(Keys.LeftShift);
                 bool isUpper = shift != _keyboard.CapsLock;
 
-                char keyChar = (isUpper ? keyName : keyName.ToLower()).First();
+                char keyChar = (isUpper ? keyName : keyName.ToLower(CultureInfo.InvariantCulture)).First();
 
-                keyChar = _customShiftVersions.ContainsKey(keyChar) && shift ? _customShiftVersions[keyChar] : keyChar;
-                keyChar = _customAltVersions.ContainsKey(keyChar) && _keyboard.IsKeyDown(Keys.LeftAlt) ? _customAltVersions[keyChar] : keyChar;
+                keyChar = _customShiftVersions.TryGetValue(keyChar, out char value2) && shift ? value2 : keyChar;
+                keyChar = _customAltVersions.TryGetValue(keyChar, out char value3) && _keyboard.IsKeyDown(Keys.LeftAlt) ? value3 : keyChar;
 
-                if (!_checkFilters(keyChar, Filters)) continue;
+                if (!CheckFilters(keyChar, Filters))
+                {
+                    continue;
+                }
 
-                _typeChar(keyChar);
+                TypeChar(keyChar);
 
             }
         }
 
-        private bool _checkFilters(char key, ITextInputFilter[] filters)
+        private bool CheckFilters(char key, ITextInputFilter[] filters)
         {
             foreach (ITextInputFilter filter in filters)
             {
@@ -247,9 +255,12 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
                     return true;
                 }
 
-                if (filter.SubFilters == null) continue;
+                if (filter.SubFilters == null)
+                {
+                    continue;
+                }
 
-                if (_checkFilters(key, filter.SubFilters))
+                if (CheckFilters(key, filter.SubFilters))
                 {
                     return true;
                 }
@@ -258,14 +269,14 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             return false;
         }
 
-        private void _typeChar(char value)
+        private void TypeChar(char value)
         {
             Value = Value.Insert(_cursorPosition, value.ToString());
             ++_cursorPosition;
             _counter = 0;
         }
 
-        private Dictionary<Keys, char> _createCustomKeyChars()
+        private static Dictionary<Keys, char> CreateCustomKeyChars()
         {
             return new Dictionary<Keys, char>
             {
@@ -286,7 +297,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             };
         }
 
-        private Dictionary<char, char> _createCustomShiftVersions()
+        private static Dictionary<char, char> CreateCustomShiftVersions()
         {
             return new Dictionary<char, char>
             {
@@ -303,7 +314,7 @@ namespace MonoGameDrawingApp.Ui.Base.TextInput
             };
         }
 
-        private Dictionary<char, char> _createCustomAltVersions()
+        private static Dictionary<char, char> CreateCustomAltVersions()
         {
             return new Dictionary<char, char>
             {

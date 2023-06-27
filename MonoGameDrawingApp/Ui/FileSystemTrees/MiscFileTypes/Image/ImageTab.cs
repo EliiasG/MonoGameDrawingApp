@@ -17,7 +17,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image
 
         public override string Title => System.IO.Path.GetFileName(Path);
 
-        protected override void _close()
+        public override void Close()
         {
             ForceClose();
         }

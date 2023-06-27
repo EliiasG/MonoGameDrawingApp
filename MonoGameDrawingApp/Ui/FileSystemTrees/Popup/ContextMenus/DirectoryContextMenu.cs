@@ -12,26 +12,18 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
 {
     public class DirectoryContextMenu : IUiElement
     {
-        public readonly string Path;
-        public readonly PopupEnvironment PopupEnvironment;
-        public readonly FileTypeManager FileTypeManager;
-
-        private readonly UiEnvironment _environment;
-
-        private readonly IUiElement _root;
-
         public DirectoryContextMenu(UiEnvironment environment, string path, PopupEnvironment popupEnvironment, bool isRoot, FileTypeManager fileTypeManager)
         {
             Path = path;
-            _environment = environment;
+            Environment = environment;
             PopupEnvironment = popupEnvironment;
             FileTypeManager = fileTypeManager;
 
-            ContextMenuButton rename = new(environment, "Rename", _rename);
-            ContextMenuButton delete = new(environment, "Delete", _delete);
-            ContextMenuButton cut = new(environment, "Cut", _cut);
-            ContextMenuButton copy = new(environment, "Copy", _copy);
-            ContextMenuButton paste = new(environment, "Paste", _paste);
+            ContextMenuButton rename = new(environment, "Rename", Rename);
+            ContextMenuButton delete = new(environment, "Delete", Delete);
+            ContextMenuButton cut = new(environment, "Cut", Cut);
+            ContextMenuButton copy = new(environment, "Copy", Copy);
+            ContextMenuButton paste = new(environment, "Paste", Paste);
 
             rename.Disabled = isRoot;
             delete.Disabled = isRoot;
@@ -40,7 +32,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
 
             paste.Disabled = environment.Clipboard is not FileSystemEntityCopyReferance;
 
-            _root = new ContextMenu(Environment, new IUiElement[]
+            Root = new ContextMenu(Environment, new IUiElement[]
             {
                 rename,
                 delete,
@@ -49,32 +41,40 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
                 copy,
                 paste,
                 new ContextMenuSeperator(environment),
-                new ContextMenuButton(environment, "Add Directory", _addDirectory),
-                new ContextMenuButton(environment, "Add File", _addFile),
+                new ContextMenuButton(environment, "Add Directory", AddDirectory),
+                new ContextMenuButton(environment, "Add File", AddFile),
                 new ContextMenuSeperator(environment),
-                new ContextMenuButton(environment, "Show in explorer", _openExplorer),
+                new ContextMenuButton(environment, "Show in explorer", OpenExplorer),
             }, popupEnvironment);
         }
 
-        public bool Changed => _root.Changed;
+        public bool Changed => Root.Changed;
 
-        public int RequiredWidth => _root.RequiredWidth;
+        public int RequiredWidth => Root.RequiredWidth;
 
-        public int RequiredHeight => _root.RequiredHeight;
+        public int RequiredHeight => Root.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public PopupEnvironment PopupEnvironment { get; }
+
+        public string Path { get; }
+
+        public FileTypeManager FileTypeManager { get; }
+
+        public IUiElement Root { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
-            return _root.Render(graphics, width, height);
+            return Root.Render(graphics, width, height);
         }
 
         public void Update(Vector2 position, int width, int height)
         {
-            _root.Update(position, width, height);
+            Root.Update(position, width, height);
         }
 
-        private void _rename()
+        private void Rename()
         {
             string name = System.IO.Path.GetFileName(Path);
 
@@ -90,7 +90,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
                     }
                     try
                     {
-                        int lastSlashIndex = Math.Max(Path.LastIndexOf("/"), Path.LastIndexOf("\\")) + 1;
+                        int lastSlashIndex = Math.Max(Path.LastIndexOf("/", StringComparison.Ordinal), Path.LastIndexOf("\\", StringComparison.Ordinal)) + 1;
                         Directory.Move(Path, string.Concat(Path.AsSpan(0, lastSlashIndex), newName));
                         return;
                     }
@@ -113,19 +113,19 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
             PopupEnvironment.OpenCentered(popup);
         }
 
-        private void _copy()
+        private void Copy()
         {
             Environment.Clipboard = new FileSystemEntityCopyReferance(Path, false);
             PopupEnvironment.Close();
         }
 
-        private void _cut()
+        private void Cut()
         {
             Environment.Clipboard = new FileSystemEntityCopyReferance(Path, true);
             PopupEnvironment.Close();
         }
 
-        private void _delete()
+        private void Delete()
         {
             ChoicePopup choicePopup = new(Environment, "Delete '" + System.IO.Path.GetFileName(Path) + "'?", PopupEnvironment, new ChoicePopupOption[]
             {
@@ -136,7 +136,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
             PopupEnvironment.OpenCentered(choicePopup);
         }
 
-        private void _paste()
+        private void Paste()
         {
             PopupEnvironment.Close();
             if (Environment.Clipboard is FileSystemEntityCopyReferance clipboard)
@@ -158,13 +158,13 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
             }
         }
 
-        private void _openExplorer()
+        private void OpenExplorer()
         {
             PopupEnvironment.Close();
             IOHelper.OpenInExplorer(Path);
         }
 
-        private void _addDirectory()
+        private void AddDirectory()
         {
             TextInputPopup popup = new(
                 environment: Environment,
@@ -188,7 +188,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
             PopupEnvironment.OpenCentered(popup);
         }
 
-        private void _addFile()
+        private void AddFile()
         {
             PopupEnvironment.OpenCentered(new FileCreatorMenu(Environment, FileTypeManager, PopupEnvironment, Path));
         }

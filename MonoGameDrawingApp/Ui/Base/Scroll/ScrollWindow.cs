@@ -9,21 +9,6 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
 {
     public class ScrollWindow : IUiElement
     {
-        public readonly bool IsLeft;
-        public readonly bool IsTop;
-        public readonly bool AllowHoverScrolling;
-
-        public Vector2 Position = Vector2.Zero;
-
-        public readonly VScrollBar VScrollBar;
-        public readonly HScrollBar HScrollBar;
-
-        public int ScrollBarSize = 10;
-
-        public readonly IUiElement _corner;
-
-        private readonly UiEnvironment _environment;
-
         private MouseState _oldMouse;
 
         private readonly IScrollableView _child;
@@ -34,7 +19,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
 
         public ScrollWindow(UiEnvironment environment, IScrollableView child, bool isLeft = false, bool isTop = false, bool allowHoverScrolling = true)
         {
-            _environment = environment;
+            Environment = environment;
 
             IsLeft = isLeft;
             IsTop = isTop;
@@ -45,17 +30,17 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
             HScrollBar = new HScrollBar(environment);
 
             _child = child;
-            _corner = new ColorRect(environment, Color.Transparent);
+            Corner = new ColorRect(environment, Color.Transparent);
 
             if (isLeft)
             {
                 _main = new HSplitStandard(environment, VScrollBar, _child, 1);
-                _scrollBar = new HSplitStandard(environment, _corner, HScrollBar, 1);
+                _scrollBar = new HSplitStandard(environment, Corner, HScrollBar, 1);
             }
             else
             {
                 _main = new HSplitStandard(environment, _child, VScrollBar, 1);
-                _scrollBar = new HSplitStandard(environment, HScrollBar, _corner, 1);
+                _scrollBar = new HSplitStandard(environment, HScrollBar, Corner, 1);
             }
             if (isTop)
             {
@@ -73,17 +58,31 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
 
         public bool Changed => _outer.Changed;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public bool IsLeft { get; }
+
+        public bool IsTop { get; }
+
+        public bool AllowHoverScrolling { get; }
+        public Vector2 Position { get; set; }
+
+        public HScrollBar HScrollBar { get; }
+
+        public VScrollBar VScrollBar { get; }
+        public int ScrollBarSize { get; set; } = 10;
+
+        public IUiElement Corner { get; }
 
         public void Update(Vector2 position, int width, int height)
         {
-            _updateSplits(width, height);
-            _updateBars(width, height);
+            UpdateSplits(width, height);
+            UpdateBars();
             if (AllowHoverScrolling)
             {
-                _updateHoverScrolling(position, width, height);
+                UpdateHoverScrolling(position, width, height);
             }
-            _updatePosition();
+            UpdatePosition();
             _outer.Update(position, width, height);
         }
 
@@ -92,7 +91,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
             return _outer.Render(graphics, width, height);
         }
 
-        private void _updateSplits(int width, int height)
+        private void UpdateSplits(int width, int height)
         {
             bool hVisible = _child.Height < _child.MaxHeight;
             int hDist = hVisible ? ScrollBarSize : 1;
@@ -109,7 +108,7 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
             VScrollBar.Disabled = !hVisible;
         }
 
-        private void _updateBars(int width, int height)
+        private void UpdateBars()
         {
             VScrollBar.Size = Math.Min(_child.MaxHeight, _child.Height);
             VScrollBar.End = _child.MaxHeight;
@@ -118,12 +117,12 @@ namespace MonoGameDrawingApp.Ui.Base.Scroll
             HScrollBar.End = _child.MaxWidth;
         }
 
-        private void _updatePosition()
+        private void UpdatePosition()
         {
             _child.Position = new Vector2(HScrollBar.Position, VScrollBar.Position);
         }
 
-        private void _updateHoverScrolling(Vector2 position, int width, int height)
+        private void UpdateHoverScrolling(Vector2 position, int width, int height)
         {
             MouseState mouse = Mouse.GetState();
             Point boundsPosition = position.ToPoint() + new Point(IsLeft ? ScrollBarSize : 0, IsTop ? ScrollBarSize : 0);

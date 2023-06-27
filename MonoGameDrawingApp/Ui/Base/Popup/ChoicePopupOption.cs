@@ -2,7 +2,7 @@
 
 namespace MonoGameDrawingApp.Ui.Base.Popup
 {
-    public struct ChoicePopupOption
+    public readonly struct ChoicePopupOption
     {
         public ChoicePopupOption(string name, Action selected)
         {

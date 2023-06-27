@@ -73,13 +73,13 @@ namespace MonoGameDrawingApp
 
             if (vertexData.Length >= MaxVertexCount || indices.Length >= MaxIndexCount)
             {
-                _forceDrawTriangles(vertexData, indices, vertexData.Length, indices.Length / 3);
+                ForceDrawTriangles(vertexData, indices, vertexData.Length, indices.Length / 3);
                 return;
             }
 
             if (_vertexCount + vertexData.Length > MaxVertexCount || _indexCount + indices.Length > MaxIndexCount)
             {
-                _flush();
+                Flush();
             }
 
             foreach (int index in indices)
@@ -100,19 +100,19 @@ namespace MonoGameDrawingApp
                 throw new InvalidOperationException("Begin must be called before calling End.");
             }
             _isStarted = false;
-            _flush();
+            Flush();
         }
 
-        private void _flush()
+        private void Flush()
         {
-            _forceDrawTriangles(_vertices, _indices, _vertexCount, _indexCount / 3);
+            ForceDrawTriangles(_vertices, _indices, _vertexCount, _indexCount / 3);
             _indexCount = 0;
             _vertexCount = 0;
 
             //no reason to clear array, whats after the _index- and _vertexCount does not matter
         }
 
-        private void _forceDrawTriangles(VertexPositionColor[] vertexData, int[] indices, int vertexCount, int triangleCount)
+        private void ForceDrawTriangles(VertexPositionColor[] vertexData, int[] indices, int vertexCount, int triangleCount)
         {
             if (triangleCount == 0)
             {
@@ -131,11 +131,11 @@ namespace MonoGameDrawingApp
                     int c = indices[triangleStart + 2];
 
                     newIndices[triangleStart * 2] = a;
-                    newIndices[triangleStart * 2 + 1] = b;
-                    newIndices[triangleStart * 2 + 2] = a;
-                    newIndices[triangleStart * 2 + 3] = c;
-                    newIndices[triangleStart * 2 + 4] = b;
-                    newIndices[triangleStart * 2 + 5] = c;
+                    newIndices[(triangleStart * 2) + 1] = b;
+                    newIndices[(triangleStart * 2) + 2] = a;
+                    newIndices[(triangleStart * 2) + 3] = c;
+                    newIndices[(triangleStart * 2) + 4] = b;
+                    newIndices[(triangleStart * 2) + 5] = c;
                 }
 
                 VertexPositionColor[] newVertices = new VertexPositionColor[vertexCount];

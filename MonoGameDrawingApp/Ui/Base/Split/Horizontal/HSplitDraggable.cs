@@ -6,15 +6,9 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
 {
     public class HSplitDraggable : HSplit
     {
-        //Edited copy-paste of VSplitDraggable, maybe i should refactor it at some point
-        //Problably never gonna happen
-        public readonly int HandleWidth;
         private readonly HSplit _outer;
         private readonly HSplit _left;
         private int _dragOffset = -1;
-
-        public IUiElement Splitter;
-        public bool _wasPressed = false;
 
         public HSplitDraggable(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition, int handleWidth) : base(environment, first, second, splitPosition)
         {
@@ -32,14 +26,19 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
             _outer = new HSplitStandard(environment, First, _left, splitPosition);
         }
 
-        protected override Texture2D _render(Graphics graphics)
+        protected override Texture2D Render(Graphics graphics)
         {
-            return _outer.Render(graphics, _width, _height);
+            return _outer.Render(graphics, Width, Height);
         }
 
         public override int MaxPosition => base.MaxPosition - HandleWidth;
 
         public override int RequiredWidth => base.RequiredWidth + HandleWidth;
+
+        public bool WasPressed { get; set; }
+        public IUiElement Splitter { get; set; }
+
+        public int HandleWidth { get; }
 
         public override void Update(Vector2 position, int width, int height)
         {
@@ -50,7 +49,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
 
             if (_outer.Changed)
             {
-                _changed = true;
+                Changed = true;
             }
 
             MouseState mouse = Mouse.GetState();
@@ -58,10 +57,10 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Horizontal
 
             bool left = mouse.LeftButton == ButtonState.Pressed;
 
-            bool justPressed = left && !_wasPressed;
-            _wasPressed = left;
+            bool justPressed = left && !WasPressed;
+            WasPressed = left;
 
-            bool isInVertical = mouse.Y >= barPosition.Y && mouse.Y <= barPosition.Y + _height;
+            bool isInVertical = mouse.Y >= barPosition.Y && mouse.Y <= barPosition.Y + Height;
             bool isInHorizontal = mouse.X >= barPosition.X && mouse.X <= barPosition.X + HandleWidth;
             bool isIn = isInVertical && isInHorizontal;
 

@@ -9,7 +9,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Parameters
 
         public GeometryModifierParameter(T value, string name, Func<T, T> change = null)
         {
-            _setValue(value);
+            SetValue(value);
             _change = change;
             Name = name;
         }
@@ -30,28 +30,35 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Parameters
                 {
                     if (_value is IListenable listenable)
                     {
-                        listenable.Changing -= _changing;
-                        listenable.Changed -= _changed;
+                        listenable.Changing -= OnChanging;
+                        listenable.Changed -= OnChanged;
                     }
-                    _changing();
-                    _setValue(val);
-                    _changed();
+                    OnChanging();
+                    SetValue(val);
+                    OnChanged();
                 }
             }
         }
 
-        private void _setValue(T val)
+        private void SetValue(T val)
         {
             _value = val;
             if (val is IListenable listenable)
             {
-                listenable.Changing += _changing;
-                listenable.Changed += _changed;
+                listenable.Changing += OnChanging;
+                listenable.Changed += OnChanged;
             }
         }
 
-        private void _changing() => Changing?.Invoke();
-        private void _changed() => Changed?.Invoke();
+        private void OnChanging()
+        {
+            Changing?.Invoke();
+        }
+
+        private void OnChanged()
+        {
+            Changed?.Invoke();
+        }
 
         public object ObjectValue => _value;
     }

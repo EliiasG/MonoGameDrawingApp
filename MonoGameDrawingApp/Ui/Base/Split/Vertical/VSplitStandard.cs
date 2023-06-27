@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameDrawingApp.Ui.Base;
-using MonoGameDrawingApp.Ui.Base.Split;
 
 namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 {
@@ -12,18 +10,18 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
         {
             _splitHelper = new SplitStandardHelper();
         }
-        private Vector2 _secondPosition => new(0, SplitPosition);
+        private Vector2 SecondPosition => new(0, SplitPosition);
 
         public override void Update(Vector2 position, int width, int height)
         {
             First.Update(position, width, SplitPosition);
-            Second.Update(position + _secondPosition, width, height - SplitPosition);
-            _changed = _changed || First.Changed || Second.Changed;
+            Second.Update(position + SecondPosition, width, height - SplitPosition);
+            Changed = Changed || First.Changed || Second.Changed;
         }
 
-        protected override Texture2D _render(Graphics graphics)
+        protected override Texture2D Render(Graphics graphics)
         {
-            return _splitHelper.Render(graphics, Changed, _width, _height, _secondPosition, First, Second);
+            return _splitHelper.Render(graphics, Changed, Width, Height, SecondPosition, First, Second);
         }
     }
 }

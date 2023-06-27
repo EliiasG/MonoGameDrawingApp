@@ -6,7 +6,6 @@ using MonoGameDrawingApp.Ui.Base.Buttons;
 using MonoGameDrawingApp.Ui.Base.Lists;
 using MonoGameDrawingApp.Ui.Base.Split.Horizontal;
 using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Properties;
-using MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Properties.Typed;
 using MonoGameDrawingApp.VectorSprites;
 using MonoGameDrawingApp.VectorSprites.Modifiers;
 using MonoGameDrawingApp.VectorSprites.Modifiers.Parameters;
@@ -18,7 +17,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
 {
     public class GeometryModifierInspectorView : IUiElement
     {
-        const int IndentaionAmount = 8;
+        private const int IndentaionAmount = 8;
 
         private readonly IUiElement _root;
 
@@ -46,9 +45,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
                 )
             };
 
-            parameterViews = modifier.Parameters.Select(
-                (IGeometryModifierParameter parameter) => _generateParameterView(parameter)
-            );
+            parameterViews = modifier.Parameters.Select(GenerateParameterView);
 
             foreach (IModifierParameterView property in parameterViews)
             {
@@ -108,7 +105,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Elements.Inspector
             _root.Update(position, width, height);
         }
 
-        private IModifierParameterView _generateParameterView(IGeometryModifierParameter parameter)
+        private IModifierParameterView GenerateParameterView(IGeometryModifierParameter parameter)
         {
             return parameter switch
             {

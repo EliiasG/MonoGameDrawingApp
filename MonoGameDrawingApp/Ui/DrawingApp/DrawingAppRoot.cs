@@ -12,15 +12,9 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 {
     public class DrawingAppRoot : IUiElement
     {
-        public readonly TabEnvironment TabEnvironment;
-        public readonly PopupEnvironment PopupEnvironment;
-        public readonly FileTypeManager FileTypeManager;
-
-        private readonly UiEnvironment _environment;
-
         public DrawingAppRoot(UiEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
             SaveState.Init(environment.Content, environment.Graphics.Device);
             TabEnvironment = new TabEnvironment(Environment, new DrawingAppStart(Environment, this));
             PopupEnvironment = new PopupEnvironment(Environment, TabEnvironment);
@@ -51,7 +45,13 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
 
         public int RequiredHeight => PopupEnvironment.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public TabEnvironment TabEnvironment { get; }
+
+        public PopupEnvironment PopupEnvironment { get; }
+
+        public FileTypeManager FileTypeManager { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

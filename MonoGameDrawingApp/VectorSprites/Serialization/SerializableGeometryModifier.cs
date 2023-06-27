@@ -17,7 +17,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
         {
             Name = modifier.Name;
             Parameters = modifier.Parameters.Select(
-                (IGeometryModifierParameter p) => _convertValue(p.ObjectValue)
+                (IGeometryModifierParameter p) => ConvertValue(p.ObjectValue)
             ).ToArray();
         }
 
@@ -32,15 +32,16 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
             int i = 0;
             foreach (IGeometryModifierParameter parameter in modifier.Parameters)
             {
-                _setParameter(parameter, Parameters[i++], sprite);
+                SetParameter(parameter, Parameters[i++], sprite);
             }
 
             return modifier;
         }
 
-        private void _setParameter(IGeometryModifierParameter parameter, object value, VectorSprite sprite)
+        private static void SetParameter(IGeometryModifierParameter parameter, object value, VectorSprite sprite)
         {
             JsonElement? jsonElement = value as JsonElement?;
+            //ide is dumb, don't use the expression here
             switch (parameter)
             {
                 case GeometryModifierParameter<Vector2> v:
@@ -66,7 +67,7 @@ namespace MonoGameDrawingApp.VectorSprites.Serialization
             }
         }
 
-        private object _convertValue(object value)
+        private static object ConvertValue(object value)
         {
             return value switch
             {

@@ -23,7 +23,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 
         public override IEnumerable<IGeometryModifierParameter> Parameters { get; }
 
-        protected override Polygon _modifyPolygon(Polygon polygon)
+        protected override Polygon ModifyPolygon(Polygon polygon)
         {
             Vector2[] points = polygon.Vertices.ToArray();
             for (int i = 0; i < points.Length; i++)

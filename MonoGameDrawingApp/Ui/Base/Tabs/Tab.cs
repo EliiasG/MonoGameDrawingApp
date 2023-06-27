@@ -2,19 +2,13 @@
 {
     public abstract class Tab
     {
-        public TabBar TabBar;
-        public bool IsSelected = false;
-
         public abstract IUiElement Child { get; }
         public abstract bool HasCloseButton { get; }
         public abstract string Title { get; }
+        public bool IsSelected { get; set; }
+        public TabBar TabBar { get; set; }
 
-        protected abstract void _close();
-
-        public void Close()
-        {
-            _close();
-        }
+        public abstract void Close();
 
         public void ForceClose()
         {

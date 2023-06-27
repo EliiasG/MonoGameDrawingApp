@@ -6,13 +6,9 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 {
     public class VSplitDraggable : VSplit
     {
-        public readonly int HandleHeight;
         private readonly VSplit _outer;
         private readonly VSplit _bottom;
         private int _dragOffset = -1;
-
-        public IUiElement Splitter;
-        public bool _wasPressed = false;
 
         public VSplitDraggable(UiEnvironment environment, IUiElement first, IUiElement second, int splitPosition, int handleHeight) : base(environment, first, second, splitPosition)
         {
@@ -30,14 +26,18 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
             _outer = new VSplitStandard(environment, First, _bottom, splitPosition);
         }
 
-        protected override Texture2D _render(Graphics graphics)
+        protected override Texture2D Render(Graphics graphics)
         {
-            return _outer.Render(graphics, _width, _height);
+            return _outer.Render(graphics, Width, Height);
         }
 
         public override int MaxPosition => base.MaxPosition - HandleHeight;
 
         public override int RequiredHeight => base.RequiredHeight + HandleHeight;
+
+        public int HandleHeight { get; }
+        public IUiElement Splitter { get; set; }
+        public bool WasPressed { get; set; }
 
         public override void Update(Vector2 position, int width, int height)
         {
@@ -48,7 +48,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 
             if (_outer.Changed)
             {
-                _changed = true;
+                Changed = true;
             }
 
             MouseState mouse = Mouse.GetState();
@@ -56,8 +56,8 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 
             bool left = mouse.LeftButton == ButtonState.Pressed;
 
-            bool justPressed = left && !_wasPressed;
-            _wasPressed = left;
+            bool justPressed = left && !WasPressed;
+            WasPressed = left;
 
             bool isInVertical = mouse.Y >= barPosition.Y && mouse.Y <= barPosition.Y + HandleHeight;
             bool isInHorizontal = mouse.X >= barPosition.X && mouse.X <= barPosition.X + width;

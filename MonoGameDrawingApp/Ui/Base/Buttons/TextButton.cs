@@ -7,20 +7,15 @@ namespace MonoGameDrawingApp.Ui.Base.Buttons
 {
     public class TextButton : IUiElement
     {
-        public readonly Button Button;
-        public readonly string Text;
-
-        private readonly UiEnvironment _environment;
-
         private readonly TextView _textView;
         private readonly ColorModifier _colorModifier;
 
         public TextButton(UiEnvironment environment, string text)
         {
             Text = text;
-            _environment = environment;
+            Environment = environment;
             _textView = new TextView(environment, text);
-            _colorModifier = new ColorModifier(environment, _textView, _theme.DefaultTextColor);
+            _colorModifier = new ColorModifier(environment, _textView, Theme.DefaultTextColor);
             Button = new Button(environment, _colorModifier);
         }
 
@@ -31,9 +26,13 @@ namespace MonoGameDrawingApp.Ui.Base.Buttons
 
         public int RequiredHeight => Button.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
-        private ITheme _theme => _environment.Theme;
+        private ITheme Theme => Environment.Theme;
+
+        public Button Button { get; }
+
+        public string Text { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -42,7 +41,7 @@ namespace MonoGameDrawingApp.Ui.Base.Buttons
 
         public void Update(Vector2 position, int width, int height)
         {
-            _colorModifier.Color = Button.ContainsMouse ? _theme.HoveringTextColor : _theme.DefaultTextColor;
+            _colorModifier.Color = Button.ContainsMouse ? Theme.HoveringTextColor : Theme.DefaultTextColor;
 
             if (Button.ContainsMouse)
             {

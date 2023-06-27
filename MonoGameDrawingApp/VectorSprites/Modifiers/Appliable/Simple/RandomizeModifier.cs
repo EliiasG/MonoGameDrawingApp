@@ -28,14 +28,14 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 
         public override IEnumerable<IGeometryModifierParameter> Parameters { get; }
 
-        protected override Polygon _modifyPolygon(Polygon polygon)
+        protected override Polygon ModifyPolygon(Polygon polygon)
         {
             Vector2[] vertices = polygon.Vertices.ToArray();
             Random rnd = new(_seed.Value);
 
             for (int i = 0; i < vertices.Length; i++)
             {
-                vertices[i] = vertices[i] + new Vector2((rnd.NextSingle() - 0.5f) * 2, (rnd.NextSingle() - 0.5f) * 2) * _amount.Value;
+                vertices[i] = vertices[i] + (new Vector2((rnd.NextSingle() - 0.5f) * 2, (rnd.NextSingle() - 0.5f) * 2) * _amount.Value);
             }
 
             return new Polygon(vertices, polygon.Color);

@@ -23,7 +23,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers
             () => new CopyModifier(),
         };
 
-        private static readonly Dictionary<string, Func<IGeometryModifier>> s_nameModifierSet = _generateNameModifierSet();
+        private static readonly Dictionary<string, Func<IGeometryModifier>> s_nameModifierSet = GenerateNameModifierSet();
 
         public static IEnumerable<string> ModifierNames => s_nameModifierSet.Keys;
 
@@ -32,7 +32,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers
             return s_nameModifierSet[modifierName]();
         }
 
-        private static Dictionary<string, Func<IGeometryModifier>> _generateNameModifierSet()
+        private static Dictionary<string, Func<IGeometryModifier>> GenerateNameModifierSet()
         {
             Dictionary<string, Func<IGeometryModifier>> res = new();
 

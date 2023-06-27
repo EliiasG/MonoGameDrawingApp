@@ -1,6 +1,5 @@
 ﻿using MonoGameDrawingApp.Ui.Base.Popup;
 using MonoGameDrawingApp.Ui.Base.Tree.TreeItems;
-using MonoGameDrawingApp.Ui.FileSystemTrees;
 
 namespace MonoGameDrawingApp.Ui.FileSystemTrees.Items
 {

@@ -8,21 +8,15 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 {
     public class ChoicePopup : IUiElement
     {
-        public readonly string Title;
-
         private const int Spacing = 5;
         private const int ButtonSpacing = 15;
-
-        private readonly UiEnvironment _environment;
-        private readonly PopupEnvironment _popupEnvironment;
-
         private readonly IUiElement _outer;
 
         public ChoicePopup(UiEnvironment environment, string title, PopupEnvironment popupEnvironment, ChoicePopupOption[] options)
         {
             Title = title;
-            _environment = environment;
-            _popupEnvironment = popupEnvironment;
+            Environment = environment;
+            PopupEnvironment = popupEnvironment;
 
             List<IUiElement> buttons = new();
 
@@ -65,7 +59,11 @@ namespace MonoGameDrawingApp.Ui.Base.Popup
 
         public int RequiredHeight => _outer.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public string Title { get; }
+
+        public PopupEnvironment PopupEnvironment { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

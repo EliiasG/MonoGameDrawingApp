@@ -7,12 +7,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image
 {
     public class ImageTabView : IUiElement
     {
-        public string Path;
-
         private const int Spacing = 20;
-
-        private readonly UiEnvironment _environment;
-
         private readonly IUiElement _root;
 
         private readonly IUiElement _image;
@@ -21,7 +16,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image
 
         public ImageTabView(UiEnvironment environment, string path)
         {
-            _environment = environment;
+            Environment = environment;
             Path = path;
             _image = new ExternalImageView(
                 environment: environment,
@@ -48,7 +43,8 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image
 
         public int RequiredHeight => _root.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+        public string Path { get; set; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

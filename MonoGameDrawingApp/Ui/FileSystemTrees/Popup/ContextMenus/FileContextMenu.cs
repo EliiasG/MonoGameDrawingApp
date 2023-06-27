@@ -13,32 +13,26 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
 {
     public class FileContextMenu : IUiElement
     {
-        public readonly string Path;
-        public readonly PopupEnvironment PopupEnvironment;
-        public readonly FileTypeManager FileOpener;
-
-        private readonly UiEnvironment _environment;
-
         private readonly IUiElement _root;
 
 
         public FileContextMenu(UiEnvironment environment, string path, PopupEnvironment popupEnvironment, FileTypeManager fileOpener)
         {
             Path = path;
-            _environment = environment;
+            Environment = environment;
             PopupEnvironment = popupEnvironment;
 
             _root = new ContextMenu(environment, new List<IUiElement>
             {
-                new ContextMenuButton(environment, "Open", _open),
+                new ContextMenuButton(environment, "Open", Open),
                 new ContextMenuSeperator(environment),
-                new ContextMenuButton(environment, "Rename", _rename),
-                new ContextMenuButton(environment, "Delete", _delete),
+                new ContextMenuButton(environment, "Rename", Rename),
+                new ContextMenuButton(environment, "Delete", Delete),
                 new ContextMenuSeperator(environment),
-                new ContextMenuButton(environment, "Cut", _cut),
-                new ContextMenuButton(environment, "Copy", _copy),
+                new ContextMenuButton(environment, "Cut", Cut),
+                new ContextMenuButton(environment, "Copy", Copy),
                 new ContextMenuSeperator(environment),
-                new ContextMenuButton(environment, "Show in explorer", _openExplorer),
+                new ContextMenuButton(environment, "Show in explorer", OpenExplorer),
             }, popupEnvironment);
 
             FileOpener = fileOpener;
@@ -50,7 +44,13 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
 
         public int RequiredHeight => _root.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
+
+        public string Path { get; }
+
+        public PopupEnvironment PopupEnvironment { get; }
+
+        public FileTypeManager FileOpener { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {
@@ -62,13 +62,13 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
             _root.Update(position, width, height);
         }
 
-        private void _open()
+        private void Open()
         {
             PopupEnvironment.Close();
             FileOpener.OpenFile(Path);
         }
 
-        private void _rename()
+        private void Rename()
         {
             string name = System.IO.Path.GetFileName(Path);
 
@@ -84,7 +84,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
                     }
                     try
                     {
-                        Directory.Move(Path, string.Concat(Path.AsSpan(0, Math.Max(Path.LastIndexOf("/"), Path.LastIndexOf("\\")) + 1), newName));
+                        Directory.Move(Path, string.Concat(Path.AsSpan(0, Math.Max(Path.LastIndexOf("/", StringComparison.Ordinal), Path.LastIndexOf("\\", StringComparison.Ordinal)) + 1), newName));
                         return;
                     }
                     catch (Exception e)
@@ -102,19 +102,19 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
             PopupEnvironment.OpenCentered(popup);
         }
 
-        private void _copy()
+        private void Copy()
         {
             Environment.Clipboard = new FileSystemEntityCopyReferance(Path, false);
             PopupEnvironment.Close();
         }
 
-        private void _cut()
+        private void Cut()
         {
             Environment.Clipboard = new FileSystemEntityCopyReferance(Path, true);
             PopupEnvironment.Close();
         }
 
-        private void _delete()
+        private void Delete()
         {
             ChoicePopup choicePopup = new(Environment, "Delete '" + System.IO.Path.GetFileName(Path) + "'?", PopupEnvironment, new ChoicePopupOption[]
             {
@@ -125,7 +125,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.Popup.ContextMenus
             PopupEnvironment.OpenCentered(choicePopup);
         }
 
-        private void _openExplorer()
+        private void OpenExplorer()
         {
             PopupEnvironment.Close();
             IOHelper.OpenInExplorer(Path);

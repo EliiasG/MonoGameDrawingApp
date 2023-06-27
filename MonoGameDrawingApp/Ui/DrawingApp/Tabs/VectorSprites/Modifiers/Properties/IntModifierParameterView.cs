@@ -24,16 +24,16 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.VectorSprites.Modifiers.Properti
                 Parameter.Value = _property.Value;
                 _property.Value = Parameter.Value;
             };
-            Parameter.Changed += _updateProperty;
+            Parameter.Changed += UpdateProperty;
             return _property;
         }
 
         public void Done()
         {
-            Parameter.Changed -= _updateProperty;
+            Parameter.Changed -= UpdateProperty;
         }
 
-        private void _updateProperty()
+        private void UpdateProperty()
         {
             _property.Value = Parameter.Value;
         }

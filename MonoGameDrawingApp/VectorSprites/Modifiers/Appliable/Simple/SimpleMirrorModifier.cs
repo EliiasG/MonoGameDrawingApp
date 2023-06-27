@@ -22,7 +22,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
 
         public override IEnumerable<IGeometryModifierParameter> Parameters { get; }
 
-        protected override Polygon _modifyPolygon(Polygon polygon)
+        protected override Polygon ModifyPolygon(Polygon polygon)
         {
             if (polygon.Vertices.Length < 3)
             {
@@ -32,7 +32,7 @@ namespace MonoGameDrawingApp.VectorSprites.Modifiers.Appliable.Simple
             Vector2 line1 = Util.GetItemCircled(polygon.Vertices, _indexOffset.Value);
             Vector2 line2 = Util.GetItemCircled(polygon.Vertices, _indexOffset.Value + 1);
 
-            Vector2[] newVertices = new Vector2[polygon.Vertices.Length * 2 - 2];
+            Vector2[] newVertices = new Vector2[(polygon.Vertices.Length * 2) - 2];
             int cur = 0;
             for (int i = 0; i < polygon.Vertices.Length - 1; i++)
             {

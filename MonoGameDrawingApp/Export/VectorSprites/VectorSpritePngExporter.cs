@@ -28,7 +28,7 @@ namespace MonoGameDrawingApp.Export.VectorSprites
         public bool RoundUnits { get; }
 
 
-        protected override void _exportSprite(TriangulatedVectorSprite sprite, string exportFilePath)
+        protected override void ExportSprite(TriangulatedVectorSprite sprite, string exportFilePath)
         {
             float left = 0, right = 0, top = 0, bottom = 0;
 

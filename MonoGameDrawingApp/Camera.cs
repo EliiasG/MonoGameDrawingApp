@@ -59,16 +59,16 @@ namespace MonoGameDrawingApp
 
         public void Update(int width, int height)
         {
-            _left = -width / 2f / Zoom + Position.X;
-            _right = width / 2f / Zoom + Position.X;
-            _bottom = -height / 2f / Zoom + Position.Y;
-            _top = height / 2f / Zoom + Position.Y;
+            _left = (-width / 2f / Zoom) + Position.X;
+            _right = (width / 2f / Zoom) + Position.X;
+            _bottom = (-height / 2f / Zoom) + Position.Y;
+            _top = (height / 2f / Zoom) + Position.Y;
         }
 
         public Vector2 PixelToWorld(Vector2 pixel)
         {
-            float x = _left + pixel.X / Zoom;
-            float y = _top - pixel.Y / Zoom;
+            float x = _left + (pixel.X / Zoom);
+            float y = _top - (pixel.Y / Zoom);
             return new Vector2(x, y);
         }
 

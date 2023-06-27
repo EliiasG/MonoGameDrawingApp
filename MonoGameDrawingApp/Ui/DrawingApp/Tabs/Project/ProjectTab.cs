@@ -46,7 +46,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project
 
         public override string Title => "Project";
 
-        protected override void _close()
+        public override void Close()
         {
             Root.PopupEnvironment.OpenCentered(new ChoicePopup(Root.Environment, "Close project? (will not save files!)", Root.PopupEnvironment, new ChoicePopupOption[]
             {
@@ -63,7 +63,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp.Tabs.Project
                         selected.ForceClose();
                     }
                 }),
-                new ChoicePopupOption("Cancel", () => Root.PopupEnvironment.Close()),
+                new ChoicePopupOption("Cancel", Root.PopupEnvironment.Close),
             }));
         }
     }

@@ -10,7 +10,7 @@ namespace MonoGameDrawingApp.Ui.Base.Split.Vertical
 
         public override int RequiredHeight => First.RequiredHeight + Second.RequiredHeight;
 
-        public override int MaxPosition => _height - Second.RequiredHeight;
+        public override int MaxPosition => Height - Second.RequiredHeight;
 
         public override int MinPosition => First.RequiredHeight;
     }

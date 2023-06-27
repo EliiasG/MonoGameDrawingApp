@@ -40,7 +40,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             {
                 float screenOffset = width / 2 % spacing;
                 float positionOffset = offset.X % spacing;
-                int position = (int)(i * spacing + screenOffset - positionOffset - spacing);
+                int position = (int)((i * spacing) + screenOffset - positionOffset - spacing);
                 spriteBatch.Draw(
                     texture: _pixel,
                     destinationRectangle: new Rectangle(position - 1, 0, 2, height),
@@ -52,7 +52,7 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
             {
                 float screenOffset = height / 2 % spacing;
                 float positionOffset = -offset.Y % spacing;
-                int position = (int)(i * spacing + screenOffset - positionOffset - spacing);
+                int position = (int)((i * spacing) + screenOffset - positionOffset - spacing);
                 spriteBatch.Draw(
                     texture: _pixel,
                     destinationRectangle: new Rectangle(0, position - 1, width, 2),
@@ -64,8 +64,8 @@ namespace MonoGameDrawingApp.Ui.DrawingApp
         public void RenderBackground(SpriteBatch spriteBatch, int width, int height, Color color)
         {
             float zoom = Camera.Zoom * 2;
-            int horizontalAmount = (int)(width / zoom + 4);
-            int verticalAmount = (int)(height / zoom + 4);
+            int horizontalAmount = (int)((width / zoom) + 4);
+            int verticalAmount = (int)((height / zoom) + 4);
 
             Vector2 start = new(-Camera.Position.X * Camera.Zoom % zoom, Camera.Position.Y * Camera.Zoom % zoom);
             start -= new Vector2(zoom) * 2;

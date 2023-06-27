@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameDrawingApp.Ui.Base.Buttons;
 using MonoGameDrawingApp.Ui.Base.Lists;
 using MonoGameDrawingApp.Ui.Base.Scroll;
-using MonoGameDrawingApp.Ui.Base.Tree.TreeItems;
 using MonoGameDrawingApp.Ui.Base.Tree.Trees;
 using System.Collections.Generic;
 
@@ -11,13 +10,6 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 {
     public class TreeView : IScrollableView
     {
-        public readonly bool HideRoot;
-
-        public ITree Tree;
-        public bool ItemClicked = false;
-        public int IndentationAmount;
-
-        private readonly UiEnvironment _environment;
         private readonly Button _button;
         private readonly TreeItemView _rootView;
         private readonly VScrollableListView _listView;
@@ -29,10 +21,10 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
         public TreeView(UiEnvironment environment, int indentationAmount, int spacing, ITree tree, bool hideRoot)
         {
             Tree = tree;
-            _environment = environment;
+            Environment = environment;
             _rootView = new TreeItemView(Environment, tree.Root, 1, this, !hideRoot);
             _items = new List<TreeItemView>();
-            _listView = new VScrollableListView(environment, _items, false, 3);
+            _listView = new VScrollableListView(environment, _items, false, spacing);
             _button = new Button(environment, _listView);
             HideRoot = hideRoot;
             IndentationAmount = indentationAmount;
@@ -44,7 +36,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 
         public int RequiredHeight => _button.RequiredHeight;
 
-        public UiEnvironment Environment => _environment;
+        public UiEnvironment Environment { get; }
 
         public Vector2 Position { get => _listView.Position; set => _listView.Position = value; }
 
@@ -56,6 +48,12 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 
         public int MaxHeight => _listView.MaxHeight;
 
+        public ITree Tree { get; set; }
+        public bool ItemClicked { get; set; }
+        public int IndentationAmount { get; set; }
+
+        public bool HideRoot { get; }
+
         public Texture2D Render(Graphics graphics, int width, int height)
         {
             return _button.Render(graphics, width, height);
@@ -63,7 +61,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
 
         public void Update(Vector2 position, int width, int height)
         {
-            _updateItems();
+            UpdateItems();
 
             if (!ItemClicked && _oldJustLeft)
             {
@@ -81,7 +79,7 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
             _button.Update(position, width, height);
         }
 
-        private void _updateItems()
+        private void UpdateItems()
         {
             if (HideRoot)
             {
@@ -99,16 +97,16 @@ namespace MonoGameDrawingApp.Ui.Base.Tree
                 {
                     _items.Add(_rootView);
                 }
-                _addChildren(_rootView);
+                AddChildren(_rootView);
             }
         }
 
-        private void _addChildren(TreeItemView item)
+        private void AddChildren(TreeItemView item)
         {
             foreach (TreeItemView child in item.Children)
             {
                 _items.Add(child);
-                _addChildren(child);
+                AddChildren(child);
             }
         }
     }

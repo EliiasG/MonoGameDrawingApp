@@ -6,7 +6,7 @@ namespace MonoGameDrawingApp.Ui.FileSystemTrees.MiscFileTypes.Image
     {
         public override string[] Extentions => new string[] { "png", "jpg", "jpeg", "jfif", "pjpeg", "pjp" };
 
-        protected override FileTab _makeTab(string path, TabEnvironment tabEnvironment)
+        protected override FileTab MakeTab(string path, TabEnvironment tabEnvironment)
         {
             return new ImageTab(tabEnvironment.Environment, path);
         }
