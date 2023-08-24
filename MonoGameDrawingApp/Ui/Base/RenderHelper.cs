@@ -7,11 +7,11 @@ namespace MonoGameDrawingApp.Ui.Base
 {
     public class RenderHelper
     {
-        private RenderTarget2D _renderTarget = null;
-        private Graphics _graphics = null;
+        private RenderTarget2D _renderTarget;
+        private Graphics _graphics;
 
-        private int _width = 0;
-        private int _height = 0;
+        private int _width;
+        private int _height;
 
         private bool _changed = true;
 

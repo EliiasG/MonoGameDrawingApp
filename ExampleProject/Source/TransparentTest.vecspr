@@ -1,0 +1,75 @@
+{
+  "Root": {
+    "Name": "Root",
+    "IsVisible": true,
+    "Position": {
+      "X": 0,
+      "Y": 0
+    },
+    "Geometry": {
+      "Points": [
+        {
+          "X": -1,
+          "Y": 1
+        },
+        {
+          "X": 1,
+          "Y": 1
+        },
+        {
+          "X": 1,
+          "Y": -1
+        },
+        {
+          "X": -1,
+          "Y": -1
+        }
+      ],
+      "Color": {
+        "R": 104,
+        "G": 111,
+        "B": 153,
+        "A": 255
+      }
+    },
+    "Modifiers": [],
+    "Children": [
+      {
+        "Name": "NewItem",
+        "IsVisible": true,
+        "Position": {
+          "X": 0,
+          "Y": 0
+        },
+        "Geometry": {
+          "Points": [
+            {
+              "X": -2,
+              "Y": 0.5
+            },
+            {
+              "X": 2,
+              "Y": 0.5
+            },
+            {
+              "X": 2,
+              "Y": -0.5
+            },
+            {
+              "X": -2,
+              "Y": -0.5
+            }
+          ],
+          "Color": {
+            "R": 255,
+            "G": 255,
+            "B": 255,
+            "A": 100
+          }
+        },
+        "Modifiers": [],
+        "Children": []
+      }
+    ]
+  }
+}

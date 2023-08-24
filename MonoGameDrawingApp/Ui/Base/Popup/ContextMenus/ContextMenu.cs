@@ -9,7 +9,6 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus
 {
     public class ContextMenu : IUiElement
     {
-        public readonly PopupEnvironment PopupEnvironment;
         private MouseState _oldMouse;
 
         private readonly StackView _outer;
@@ -43,6 +42,8 @@ namespace MonoGameDrawingApp.Ui.Base.Popup.ContextMenus
         public int RequiredHeight => _inner.RequiredHeight + 8;
 
         public UiEnvironment Environment { get; }
+
+        public PopupEnvironment PopupEnvironment { get; }
 
         public Texture2D Render(Graphics graphics, int width, int height)
         {

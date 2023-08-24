@@ -31,7 +31,7 @@ namespace MonoGameDrawingApp
 
         public static Microsoft.Xna.Framework.Color ToXnaColor(System.Drawing.Color color)
         {
-            return new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
+            return new Microsoft.Xna.Framework.Color(color.R * color.A / 255, color.G * color.A / 255, color.B * color.A / 255, color.A);
         }
 
         public static System.Drawing.Color ToDrawingColor(Microsoft.Xna.Framework.Color color)
