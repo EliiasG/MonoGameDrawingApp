@@ -30,7 +30,10 @@ namespace MonoGameDrawingApp.Export.VectorSprites
 
                 if (changedColor)
                 {
-                    writer.Write(color.ToArgb());
+                    writer.Write(color.A);
+                    writer.Write(color.R);
+                    writer.Write(color.G);
+                    writer.Write(color.B);
                 }
 
                 WriteVector2(writer, sprite.Vertices[i]);
